@@ -17,12 +17,12 @@ const Header = () => {
   <nav className='flex items-center space-x-3.5'>
   <div><a href="#">HOME</a></div>
 
-  <NavigationMenu>
-  <NavigationMenuList>
+  <NavigationMenu >
+  <NavigationMenuList >
     <NavigationMenuItem>
       <NavigationMenuTrigger>BATH & BODY</NavigationMenuTrigger>
-      <NavigationMenuContent>
-        <NavigationMenuLink>Link</NavigationMenuLink>
+      <NavigationMenuContent >
+        <NavigationMenuLink className="w-[600px]">Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
@@ -32,7 +32,7 @@ const Header = () => {
     <NavigationMenuItem>
       <NavigationMenuTrigger>HAIR CARE</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <NavigationMenuLink>Link</NavigationMenuLink>
+        <NavigationMenuLink className="w-[600px]">Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
@@ -42,7 +42,7 @@ const Header = () => {
     <NavigationMenuItem>
       <NavigationMenuTrigger>SKIN CARE</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <NavigationMenuLink>Link</NavigationMenuLink>
+        <NavigationMenuLink className="w-[600px]">Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
         <NavigationMenuLink>Link</NavigationMenuLink>
