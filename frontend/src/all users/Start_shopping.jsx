@@ -33,10 +33,11 @@ const Start_shopping = () => {
 
       <div className="flex space-x-20 justify-center ">
         {startShope.map((start) => (
-          <div className="relative">
+          <div className="relative hover:shadow-lg hover:scale-105 duration-300" key={start.id}>
             <img src={start.img} alt="product3" className="h-[400px] w-full " />
 
             <Button className="absolute top-0">GET SHOP</Button>
+            <p className="absolute top-[50%] p-10 text-[var(--six)] font-bold">{start.description}</p>
           </div>
         ))}
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import founderImage from '../assets/pexels-sarah-chai-7262993.jpg'
+import founderImage from '../assets/shampoo-4213395_640.jpg'
 const MeetTofounder = () => {
   return (
     <div className="flex justify-center items-center md:mx-40 my-10">
