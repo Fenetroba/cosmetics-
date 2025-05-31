@@ -1,7 +1,7 @@
-const express = require('express');
+import  express  from 'express';
 const router = express.Router();
-const Property = require('../models/Property');
-const { auth, adminAuth } = require('../middleware/auth');
+import  Property from '../models/Property';
+import  { auth, adminAuth } from '../middleware/auth';
 
 // Get all properties with filters
 router.get('/', async (req, res) => {

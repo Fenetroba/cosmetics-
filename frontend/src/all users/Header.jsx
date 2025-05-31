@@ -85,7 +85,7 @@ const Header = () => {
       <div className=" my-4">
      
        
-        <Button className=" max-md:w-[200px]"><Link to="/Auth/login">LOGIN</Link></Button>
+        <Button className=" max-md:w-[200px]"><Link to="/Auth/login">LOGIN </Link></Button>
       </div>
     </section>
   );

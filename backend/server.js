@@ -1,7 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
+import  express  from 'express';
+import mongoose from 'mongoose';
+import  cors from 'cors';
+import  dotenv  from 'dotenv';
+import Auth from './routes/auth.js'
+import users from './routes/users.js'
+import dbconnect from './lib/DB.js';
 
 // Load environment variables
 dotenv.config();
@@ -10,18 +13,28 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+
+  origin: "http://localhost:5173",
+
+  methods: ["POST", "GET", "PATCH", "DELETE","PUT"],
+  allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/real-estate')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/properties', require('./routes/properties'));
-app.use('/api/users', require('./routes/users'));
+app.use('/api/auth',Auth);
+// app.use('/api/properties');
+app.use('/api/users',users );
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -33,4 +46,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  dbconnect()
 }); 
