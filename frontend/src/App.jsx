@@ -1,35 +1,21 @@
+import AllComponent from "./all users/AllComponent";
+import "./App.css";
+import Login from "./Page/Auth/Login";
 
-
-import './App.css'
-import Footer from './Components/Users/footer'
-import BestSell from './all users/BestSell'
-import Founder_favorite from './all users/Founder_favorite'
-import Header from './all users/Header'
-import Inform from './all users/Inform'
-import MeetTofounder from './all users/MeetTofounder'
-import Start_shopping from './all users/Start_shopping'
-import UserSay from './all users/UserSay'
-import Herosection from './all users/herosection'
-import {}from react-router-dom
+import { Routes, Route } from "react-router-dom";
+import Registration from "./Page/Auth/Registration";
 
 function App() {
-
-
   return (
-    <>
-     <Header/>
-     <Herosection/>
-        <Inform/>
-        <BestSell/>
-        <Start_shopping/>
-        <MeetTofounder/>
-        <Founder_favorite/>
-        <UserSay/>
-        <Footer/>
+    <div>
+      <Routes>
+        <Route path="/" element={<AllComponent />} />
 
-        
-    </>
-  )
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Registration />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

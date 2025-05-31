@@ -25,7 +25,7 @@ const Header = () => {
       </div>
       <nav className={`flex flex-col md:flex-row items-center space-x-0 md:ml-18 md:space-x-3.5 mt-9 md:mt-0 ${navVisible ? "visible" : "max-md:hidden"} md:visible`}>
         <div className='max-sm:mb-3'>
-          <a href="#" className="hover:underline">HOME</a>
+          <a href="/" className="hover:underline">HOME</a>
         </div>
 
         <NavigationMenu className='max-md:my-10'>
@@ -85,7 +85,7 @@ const Header = () => {
       <div className=" my-4">
      
        
-        <Button className=" max-md:w-[200px]"><a href="../Page/Auth/Registratio">LOGIN</a></Button>
+        <Button className=" max-md:w-[200px]"><Link to="/Auth/login">LOGIN</Link></Button>
       </div>
     </section>
   );
