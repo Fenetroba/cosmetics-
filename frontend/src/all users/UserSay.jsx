@@ -12,7 +12,7 @@ const UserSay = () => {
      <h1 className="text-[var(--three)] font-extrabold text-2xl p-1 uppercase mt-20 m-10">
             What Clients Say
         </h1>
-        <div className='flex space-x-2 m-10'>
+        <div className='flex sm:flex-row flex-col  space-x-2 space-y-3.5 m-10'>
           {
                UserInfo.map((info)=>(
                     <div key={info.id} className=' shadow-sm hover:shadow-lg hover:scale-105 duration-300 md:w-100 py-16 px-5'>

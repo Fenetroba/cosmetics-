@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import product from "../assets/product1.jpg"
+import product from "../assets/product2.jpg"
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from '@/Components/ui/button'
@@ -7,25 +7,25 @@ const carouselItems = [
   {
     id: 1,
     image: product,
-    title: "Drive Your Dreams Forward with Prime Cars",
+    title: "Drive Your Dreams Forward",
     subtitle: "Ethiopia's Premier Vehicle Import & Sales Company",
   },
   {
     id: 2,
     image: product,
-    title: "Luxury Vehicles for Every Lifestyle",
+    title: "Luxury Vehicles for ",
     subtitle: "Premium Selection of Imported Cars",
   },
   {
     id: 3,
     image: product,
-    title: "Experience Excellence on the Road",
+    title: "Experience Excellence",
     subtitle: "Quality Service and Exceptional Value",
   },
   {
     id: 4,
     image: product,
-    title: "Experience Excellence on the Road",
+    title: "Experience Excellence ",
     subtitle: "Quality Service and Exceptional Value",
   },
   {
@@ -59,12 +59,12 @@ const Herosection = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-  <section className='bg-[var(--two)] h-[90vh] w-full flex items-center justify-between'>
-<div className='w-2xl h-[90vh] '>
+  <section className='bg-[var(--two)] w-full flex md:flex-row flex-col items-center justify-between'>
+<div className='w-full h-[90vh] '>
 
   <div className="relative h-[500px] overflow-hidden rounded-lg sm:h-[550px]">
           {/* Carousel slides */}
-          <div className="relative h-full w-full">
+          <div className="relative h-full">
             {carouselItems.map((item, index) => (
               <div
                 key={item.id}
@@ -77,7 +77,7 @@ const Herosection = () => {
                 {/* Background image */}
                 <div className="relative h-full w-full">
                 
-                    <img src={item.image || "/pr-car.png"} alt={`Slide ${index + 1}`}    className='w-full h-full p-4' />
+                    <img src={item.image} alt={`Slide ${index + 1}`}    className='cover p-4 text-center w-full' />
                   
                  
                 </div>

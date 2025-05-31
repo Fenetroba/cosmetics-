@@ -26,12 +26,12 @@ const startShope = [
 ];
 const Start_shopping = () => {
   return (
-    <div className="mt-10 m-10 border-4 p-10">
+    <div className="mt-10 m-10 border-4 p-10 ">
       <h1 className="text-[var(--two)] font-extrabold text-3xl p-7 uppercase">
         start to shopping
       </h1>
 
-      <div className="flex space-x-20 justify-center ">
+      <div className="flex sm:flex-row flex-col items-center sm:space-x-20 space-y-3.5 justify-center ">
         {startShope.map((start) => (
           <div className="relative hover:shadow-lg hover:scale-105 duration-300" key={start.id}>
             <img src={start.img} alt="product3" className="h-[400px] w-full " />
