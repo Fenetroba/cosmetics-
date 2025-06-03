@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import AuthRoute from "./Components/Page_protector/CheckAuth";
 import Login from "./Page/Auth/Login";
 import Register from "./Page/Auth/Register";
-import Navbar from "./all users/Header";
 import AllComponent from "./all users/AllComponent";
-import UserDashboard from "./Components/Dashboard/UserDashboard";
 import AuthLayer from "./Components/Layers/AuthLayer";
 import ShopLayer from "./Components/Layers/shopLayer";
 import Home from "./Page/user/Home";
 import AdminLayer from "./Components/Layers/AdminLayer";
 import { useEffect } from "react";
 import { checkAuthStatus } from "./redux/features/authSlice";
+import Profile from "./Components/Users/profile";
+import Setting from "./Components/Users/Setting";
+import AdminDashboard from "./Components/Dashboard/AdminDashboard";
+import { Toaster } from "@/components/ui/sonner"
+
 
 function App() {
   const location = useLocation();
@@ -35,6 +38,7 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <Toaster/>
       
       <main>
         <Routes>
@@ -71,8 +75,8 @@ function App() {
             }
           >
             <Route path="home" element={<Home isAuthenticated={isAuthenticated} />} />
-            <Route path="profile" element={<UserDashboard />} />
-            <Route path="settings" element={<UserDashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<Setting />} />
           </Route>
 
           {/* Admin Routes */}
@@ -85,8 +89,8 @@ function App() {
             }
           >
             <Route path="home" element={<Home />} />
-            <Route path="dashboard" element={<UserDashboard />} />
-            <Route path="settings" element={<UserDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard/>} />
+            <Route path="settings" element={<AdminDashboard />} />
           </Route>
 
           {/* Catch all route - redirect to home */}

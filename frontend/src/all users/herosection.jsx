@@ -12,18 +12,22 @@ const carouselItems = [
     image: product1,
     title: "Drive Your Dreams Forward",
     subtitle: "Ethiopia's Premier Vehicle Import & Sales Company",
+    class:"rounded-tr-full"
   },
   {
     id: 2,
     image: product2,
     title: "Luxury Vehicles for ",
     subtitle: "Premium Selection of Imported Cars",
+   
+    class:"rounded-tl-full"
   },
   {
     id: 3,
     image: product3,
     title: "Experience Excellence",
     subtitle: "Quality Service and Exceptional Value",
+    class:"rounded-t-full",
   },
   {
     id: 4,
@@ -75,7 +79,7 @@ const Herosection = () => {
                 {/* Background image */}
                 <div className="relative h-full w-full">
                 
-                    <img src={item.image} alt={`Slide ${index + 1}`}    className='cover p-4 text-center w-full' />
+                    <img src={item.image} alt={`Slide ${index + 1}`} className={`cover p-4 text-center w-full ${item.class}`} />
                   
                  
                 </div>

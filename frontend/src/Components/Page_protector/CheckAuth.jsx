@@ -14,7 +14,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
   const UnauthorizedPage = "/unauth-page";
   const ProfilePage = "/profile";
   const SettingsPage = "/settings";
-  const DashboardPage = "/dashboard";
+ 
 
   // If not authenticated, only allow access to login, register, and home
   if (!isAuth) {
@@ -63,36 +63,24 @@ const AuthRoute = ({ children, isAuth, user }) => {
     return <Navigate to={AdminHome} />;
   }
 
-  // Check profile access
-  if (isAuth && location.pathname.includes(ProfilePage)) {
-    if (!user) {
-      return <Navigate to={login} />;
-    }
-  }
-
-  // Check settings access
-  if (isAuth && location.pathname.includes(SettingsPage)) {
-    if (!user) {
-      return <Navigate to={login} />;
-    }
-  }
-
-  // Check dashboard access
-  if (isAuth && location.pathname.includes(DashboardPage)) {
-    if (!user) {
-      return <Navigate to={login} />;
-    }
-    if (user?.role === "admin" && !location.pathname.includes("admin")) {
-      return <Navigate to={AdminHome} />;
-    }
-  }
-
   // Check shop routes access
-  if (isAuth && location.pathname.includes("/shop") && !location.pathname.includes(ShopHome)) {
+  if (isAuth && location.pathname.includes("/shop")) {
     if (!user) {
       return <Navigate to={login} />;
     }
     if (user?.role === "admin") {
+      return <Navigate to={AdminHome} />;
+    }
+    // Allow access to all shop routes for authenticated non-admin users
+    return <>{children}</>;
+  }
+
+  // Check dashboard access
+  if (isAuth && (location.pathname.includes(ProfilePage) ||location.pathname.includes(SettingsPage))) {
+    if (!user) {
+      return <Navigate to={login} />;
+    }
+    if (user?.role === "admin" && !location.pathname.includes("admin")) {
       return <Navigate to={AdminHome} />;
     }
   }

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,39 +8,58 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { BaggageClaim, LucideMenu, LucideShoppingCart, Search, User } from 'lucide-react';
-import { Button } from '@/Components/ui/button';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '@/redux/features/authSlice';
+import { LucideMenu, LucideShoppingCart, Search, UserPen } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/Components/ui/button";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@/redux/features/authSlice";
 
-const Header = ({isAuthenticated}) => {
+const Header = ({ isAuthenticated }) => {
   const [navVisible, setNavVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
-const dispatch=useDispatch()
-  const LogOutHandler=()=>{
-    dispatch(logoutUser())
-  }
+  const dispatch = useDispatch();
+  const LogOutHandler = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-10 relative">
       <div className="text-xl font-bold">Logo</div>
       <div className="flex items-center md:hidden">
-        <div className="absolute right-3 text-2xl cursor-pointer" onClick={() => setNavVisible(!navVisible)}>
+        <div
+          className="absolute right-3 text-2xl cursor-pointer"
+          onClick={() => setNavVisible(!navVisible)}
+        >
           <LucideMenu />
         </div>
       </div>
-      <nav className={`flex flex-col md:flex-row items-center space-x-0 md:ml-18 md:space-x-3.5 mt-9 md:mt-0 ${navVisible ? "visible" : "max-md:hidden"} md:visible`}>
-        <div className='max-sm:mb-3'>
-          <a href="/" className="hover:underline">HOME</a>
+      <nav
+        className={`flex flex-col md:flex-row items-center space-x-0 md:ml-18 md:space-x-3.5 mt-9 md:mt-0 ${
+          navVisible ? "visible" : "max-md:hidden"
+        } md:visible`}
+      >
+        <div className="max-sm:mb-3">
+          <a href="/" className="hover:underline">
+            HOME
+          </a>
         </div>
 
-        <NavigationMenu className='max-md:my-10'>
+        <NavigationMenu className="max-md:my-10">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>BATH & BODY</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="md:w-[500px]">Link</NavigationMenuLink>
+                <NavigationMenuLink className="md:w-[500px]">
+                  Link
+                </NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
@@ -49,7 +69,9 @@ const dispatch=useDispatch()
             <NavigationMenuItem>
               <NavigationMenuTrigger>HAIR CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="md:w-[500px]">Link</NavigationMenuLink>
+                <NavigationMenuLink className="md:w-[500px]">
+                  Link
+                </NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
@@ -59,7 +81,9 @@ const dispatch=useDispatch()
             <NavigationMenuItem>
               <NavigationMenuTrigger>SKIN CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="sm:w-[500px]">Link</NavigationMenuLink>
+                <NavigationMenuLink className="sm:w-[500px]">
+                  Link
+                </NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
                 <NavigationMenuLink>Link</NavigationMenuLink>
@@ -69,13 +93,20 @@ const dispatch=useDispatch()
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className='max-md:my-6'>
-          <a href="#" className="hover:underline">CONTACT</a>
+        <div className="max-md:my-6">
+          <a href="#" className="hover:underline">
+            CONTACT
+          </a>
         </div>
         <div>
-          <a href="#" className="hover:underline">ABOUT US</a>
+          <a href="#" className="hover:underline">
+            ABOUT US
+          </a>
         </div>
-        <div className='max-sm:mt-3 max-sm:mr-5 cursor-pointer' onClick={() => setSearchVisible(!searchVisible)}>
+        <div
+          className="max-sm:mt-3 max-sm:mr-5 cursor-pointer"
+          onClick={() => setSearchVisible(!searchVisible)}
+        >
           <Search className="sm:my-3" />
         </div>
         {searchVisible && (
@@ -89,18 +120,47 @@ const dispatch=useDispatch()
         )}
       </nav>
       <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
-        
+        {isAuthenticated && (
+          <p className="flex cursor-pointer items-center relative">
+            {" "}
+            <LucideShoppingCart />
+            <span className="absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold">
+              0
+            </span>{" "}
+          </p>
+        )}
+        {isAuthenticated ? (
+          <Button
+            className="max-md:w-[200px] cursor-pointer"
+            onClick={LogOutHandler}
+          >
+            {" "}
+            LOGOUT
+          </Button>
+        ) : (
+          <Button className=" max-md:w-[200px] cursor-pointer">
+            <Link to="/auth/login">LOGIN </Link>
+          </Button>
+        )}
         {
-          isAuthenticated && <p className='flex cursor-pointer items-center relative'> <LucideShoppingCart/><span className='absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold'>0</span> </p>
+        
+        
+        <DropdownMenu>
+  <DropdownMenuTrigger><UserPen className=" cursor-pointer" /></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem><Link to="/shop/Profile">Profile</Link> </DropdownMenuItem>
+    <DropdownMenuItem><Link to="/shop/settings">Setting</Link> </DropdownMenuItem>
+
+  </DropdownMenuContent>
+</DropdownMenu>
         }
-     {
-      isAuthenticated ? <Button className='max-md:w-[200px] cursor-pointer' onClick={LogOutHandler}> LOGOUT</Button>:
-        <Button className=" max-md:w-[200px] cursor-pointer"><Link to="/auth/login">LOGIN </Link></Button>
-     }
-       
+
+        
       </div>
     </section>
   );
-}
+};
 
 export default Header;
