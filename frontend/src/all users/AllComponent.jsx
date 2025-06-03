@@ -8,12 +8,12 @@ import MeetTofounder from "./MeetTofounder";
 import Start_shopping from "./Start_shopping";
 import UserSay from ".//UserSay";
 import Herosection from "./herosection";
-import Footer from "../Components/Users/Footer";
+import Footer from "./Footer";
 
-const AllComponent = () => {
+const AllComponent = ({isAuthenticated}) => {
   return (
     <div>
-     <Header />
+     <Header  isAuthenticated={isAuthenticated}/>
  <Herosection />
  <Inform />
  <BestSell />

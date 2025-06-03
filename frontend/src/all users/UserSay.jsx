@@ -1,9 +1,9 @@
 import React from 'react'
 const UserInfo=[
-     {id:1,img:"",name:"chaltu",description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
-     {id:2,img:"",name:"beti",description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
-     {id:3,img:"",name:"solana",description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
-     {id:4,img:"",name:"chaseniltu",description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
+     {id:1,img:"",name:"chaltu" ,description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
+     {id:2,img:"",name:"beti", description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
+     {id:3,img:"",name:"solana" ,description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
+     {id:4,img:"",name:"chaseniltu" ,description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa eius quis ipsa laborum rem saepe '},
 ]
 
 const UserSay = () => {

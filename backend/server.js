@@ -2,6 +2,7 @@ import  express  from 'express';
 import mongoose from 'mongoose';
 import  cors from 'cors';
 import  dotenv  from 'dotenv';
+import cookieParser from 'cookie-parser';
 import Auth from './routes/auth.js'
 import users from './routes/users.js'
 import dbconnect from './lib/DB.js';
@@ -14,9 +15,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-
   origin: "http://localhost:5173",
-
   methods: ["POST", "GET", "PATCH", "DELETE","PUT"],
   allowedHeaders: [
       "Content-Type",
@@ -27,9 +26,9 @@ app.use(cors({
   ],
   credentials: true
 }));
+
 app.use(express.json());
-
-
+app.use(cookieParser());
 
 // Routes
 app.use('/api/auth',Auth);

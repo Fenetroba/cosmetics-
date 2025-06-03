@@ -1,5 +1,5 @@
 import Header from '@/all users/Header';
-import Footer from '@/Components/Users/Footer';
+import Footer from '@/all users/Footer';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,14 +16,14 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-    return () => {
-      dispatch(clearError());
-    };
-  }, [isAuthenticated, navigate, dispatch]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate('shop/home');
+  //   }
+  //   return () => {
+  //     dispatch(clearError());
+  //   };
+  // }, [isAuthenticated, navigate, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

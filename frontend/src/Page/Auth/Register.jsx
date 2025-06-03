@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, clearError } from '../../redux/features/authSlice';
 import Header from '@/all users/Header';
-import Footer from '@/Components/Users/Footer';
+import Footer from '@/all users/Footer';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Registration = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate('/user/shop');
     }
     return () => {
       dispatch(clearError());

@@ -11,7 +11,7 @@ import { BaggageClaim, LucideMenu, Search, User } from 'lucide-react';
 import { Button } from '@/Components/ui/button';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({isAuthenticated}) => {
   const [navVisible, setNavVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
 
@@ -83,9 +83,11 @@ const Header = () => {
         )}
       </nav>
       <div className=" my-4">
-     
+     {
+      isAuthenticated ? <Button className='max-md:w-[200px]'> LOGOUT</Button>:
+        <Button className=" max-md:w-[200px]"><Link to="/auth/login">LOGIN </Link></Button>
+     }
        
-        <Button className=" max-md:w-[200px]"><Link to="/Auth/login">LOGIN </Link></Button>
       </div>
     </section>
   );

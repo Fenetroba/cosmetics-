@@ -78,7 +78,8 @@ export const Registration=async (req, res) => {
          user: {
            id: user._id,
            email: user.email,
-           username: user.username
+           username: user.username,
+           role:user.role
          }
        });
      } catch (error) {
@@ -94,34 +95,50 @@ export const Me=async (req, res) => {
      }
    }
 
-const auth = async (req, res, next) => {
+// Add a check auth status endpoint
+export const checkAuth = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+    // Check if user exists in request (set by auth middleware)
+    if (!req.user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Not authenticated' 
+      });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Not authenticated' });
-  }
-};
+    // Get fresh user data from database
+    const user = await User.findById(req.user._id).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'User not found' 
+      });
+    }
 
-// Add a check auth status endpoint
-const checkAuth = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select('-password');
-    res.json({ user });
+    return res.json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
-    res.status(401).json({ message: 'Not authenticated' });
+    console.error('CheckAuth Error:', error);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Error checking authentication status' 
+    });
   }
 };
 
 // In your logout controller
-const logout = (req, res) => {
+export const logout = (req, res) => {
   res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+  return res.json({ 
+    success: true,
+    message: 'Logged out successfully' 
+  });
 };
