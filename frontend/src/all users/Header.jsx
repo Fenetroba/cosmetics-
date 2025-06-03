@@ -7,13 +7,19 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { BaggageClaim, LucideMenu, Search, User } from 'lucide-react';
+import { BaggageClaim, LucideMenu, LucideShoppingCart, Search, User } from 'lucide-react';
 import { Button } from '@/Components/ui/button';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '@/redux/features/authSlice';
 
 const Header = ({isAuthenticated}) => {
   const [navVisible, setNavVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
+const dispatch=useDispatch()
+  const LogOutHandler=()=>{
+    dispatch(logoutUser())
+  }
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-10 relative">
@@ -82,10 +88,14 @@ const Header = ({isAuthenticated}) => {
           </div>
         )}
       </nav>
-      <div className=" my-4">
+      <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
+        
+        {
+          isAuthenticated && <p className='flex cursor-pointer items-center relative'> <LucideShoppingCart/><span className='absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold'>0</span> </p>
+        }
      {
-      isAuthenticated ? <Button className='max-md:w-[200px]'> LOGOUT</Button>:
-        <Button className=" max-md:w-[200px]"><Link to="/auth/login">LOGIN </Link></Button>
+      isAuthenticated ? <Button className='max-md:w-[200px] cursor-pointer' onClick={LogOutHandler}> LOGOUT</Button>:
+        <Button className=" max-md:w-[200px] cursor-pointer"><Link to="/auth/login">LOGIN </Link></Button>
      }
        
       </div>

@@ -1,39 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import product from "../assets/product2.jpg"
+import product1 from "../assets/product2.jpg"
+import product2 from "../assets/product3.jpg"
+import product3 from "../assets/product4.jpg"
+import product4 from "../assets/product5.jpg"
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from '@/Components/ui/button'
 const carouselItems = [
   {
     id: 1,
-    image: product,
+    image: product1,
     title: "Drive Your Dreams Forward",
     subtitle: "Ethiopia's Premier Vehicle Import & Sales Company",
   },
   {
     id: 2,
-    image: product,
+    image: product2,
     title: "Luxury Vehicles for ",
     subtitle: "Premium Selection of Imported Cars",
   },
   {
     id: 3,
-    image: product,
+    image: product3,
     title: "Experience Excellence",
     subtitle: "Quality Service and Exceptional Value",
   },
   {
     id: 4,
-    image: product,
+    image: product4,
     title: "Experience Excellence ",
     subtitle: "Quality Service and Exceptional Value",
   },
-  {
-    id: 5,
-    image: product,
-    title: "Experience Excellence on the Road",
-    subtitle: "Quality Service and Exceptional Value",
-  },
+
   
 ];
 const Herosection = () => {

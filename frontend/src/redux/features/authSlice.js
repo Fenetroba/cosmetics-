@@ -50,12 +50,27 @@ export const checkAuthStatus = createAsyncThunk(
   'auth/checkStatus',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/auth/check', {
-        withCredentials: true
+      // Check if token exists in cookies
+      const response = await axios.get('/auth/checkauth', {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
-      return response.data;
+
+      // If we get a successful response with user data, user is authenticated
+      if (response.data.success && response.data.user) {
+        return {
+          success: true,
+          user: response.data.user
+        };
+      }
+
+      // If no user data in response, user is not authenticated
+      return rejectWithValue({ message: 'Not authenticated' });
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      // If there's an error or no token in cookies, user is not authenticated
+      return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
     }
   }
 );
@@ -111,13 +126,20 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
       // Check Auth Status
+      .addCase(checkAuthStatus.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(checkAuthStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
       })
       .addCase(checkAuthStatus.rejected, (state) => {
+        state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+        state.error = null; // Clear any previous errors
       });
   },
 });

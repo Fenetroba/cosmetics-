@@ -15,13 +15,21 @@ import { checkAuthStatus } from "./redux/features/authSlice";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(checkAuthStatus());
-    
   }, [dispatch]);
 
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   console.log("Auth Status:", isAuthenticated, "User:", user, "Current Path:", location.pathname);
 
