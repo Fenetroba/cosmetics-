@@ -15,6 +15,7 @@ import Setting from "./Components/Users/Setting";
 import AdminDashboard from "./Components/Dashboard/AdminDashboard";
 import { Toaster } from "@/components/ui/sonner"
 import UserInfo from "./Components/Admin/UserInfo";
+import Cart from "./Page/user/Cart";
 
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
             <Route path="home" element={<Home isAuthenticated={isAuthenticated} />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Setting />} />
+            <Route path="cart" element={<Cart/>} />
           </Route>
 
           {/* Admin Routes */}

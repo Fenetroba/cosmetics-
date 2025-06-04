@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import Header from '@/all users/Header';
 
+
+
 const Profile = () => {
+  const location=useLocation()
   const dispatch = useDispatch();
   const { profile, isLoading, error } = useSelector((state) => state.user);
 
@@ -46,7 +49,7 @@ const Profile = () => {
       </div>
     );
   }
-  const location=useLocation()
+
 
   // Check if profile.user exists (backend might be sending data nested under user property)
   const userData = profile.user || profile;
@@ -54,6 +57,7 @@ const Profile = () => {
   return (
     <section>
       {location.pathname === 'shop/profile' &&  <Header/>}
+ 
       
     <div className="container mx-auto   h-full p-10 m-10 rounded-2xl ">
     
@@ -126,12 +130,29 @@ const Profile = () => {
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-4">
+          {
+            userData.role==='admin'?(
+             <div>
+               <Button variant="outline" asChild>
+            <Link to="/admin/settings">Edit Profile</Link>
+          </Button>
           <Button variant="outline" asChild>
+            <Link to="/admin/home">Back To HOme</Link>
+          </Button>
+          </div>
+            ):(
+              <div>
+            <Button variant="outline" asChild>
             <Link to="/shop/settings">Edit Profile</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link to="/shop/orders">View Orders</Link>
           </Button>
+              </div>
+            )
+            
+          }
+        
         </div>
       </div>
     </div>

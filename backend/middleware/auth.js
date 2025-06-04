@@ -1,74 +1,52 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import User from '../models/user.js';
 import env from 'dotenv'
 env.config()
 
-export const auth = async (req, res, next) => {
+export const isAuthenticated = async (req, res, next) => {
   try {
-    // Get token from cookie or Authorization header
-    const token = req.cookies.token 
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+
     if (!token) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        message: 'Authentication required. No token provided.' 
+        message: 'Please login to access this resource'
       });
     }
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findOne({ _id: decoded.userId }).select('-password');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-password');
 
-      if (!user) {
-        return res.status(401).json({ 
-          success: false,
-          message: 'User not found.' 
-        });
-      }
-
-      // Attach user and token to request object
-      req.user = user;
-      req.token = token;
-      next();
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({ 
-          success: false,
-          message: 'Token expired. Please login again.' 
-        });
-      }
-      if (error.name === 'JsonWebTokenError') {
-        return res.status(401).json({ 
-          success: false,
-          message: 'Invalid token. Please login again.' 
-        });
-      }
-      throw error;
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not found'
+      });
     }
+
+    req.user = user;
+    next();
   } catch (error) {
-    console.error('Auth Middleware Error:', error);
-    res.status(500).json({ 
+    return res.status(401).json({
       success: false,
-      message: 'Internal server error during authentication.' 
+      message: 'Invalid token or token expired'
     });
   }
 };
 
-export const adminAuth = async (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
   try {
-    await auth(req, res, () => {
-      if (req.user.role !== 'admin') {
-        return res.status(403).json({ 
-          success: false,
-          message: 'Access denied. Admin privileges required.' 
-        });
-      }
-      next();
-    });
+    if (!req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Admin privileges required.'
+      });
+    }
+    next();
   } catch (error) {
-    console.error('Admin Auth Middleware Error:', error);
-    res.status(500).json({ 
+    return res.status(500).json({
       success: false,
-      message: 'Internal server error during admin authentication.' 
+      message: 'Error checking admin status'
     });
   }
 };
@@ -98,4 +76,4 @@ export const optionalAuth = async (req, res, next) => {
   }
 };
 
-export default { auth, adminAuth, optionalAuth }; 
+export default { isAuthenticated, isAdmin, optionalAuth }; 

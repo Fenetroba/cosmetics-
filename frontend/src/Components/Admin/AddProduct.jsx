@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createProduct } from '../../redux/features/productSlice'
 import {
   Sheet,
   SheetContent,
@@ -19,8 +21,11 @@ import {
   SelectValue,
 } from "../ui/select"
 import ImageUpload from './ImageUpload'
+import { toast } from "sonner";
 
 const Sider = () => {
+  const dispatch = useDispatch();
+  
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -59,42 +64,39 @@ const Sider = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Create FormData object for multipart/form-data
-      const formDataToSend = new FormData();
+      // Prepare the product data
+      const productData = {
+        ...formData,
+        price: Number(formData.price),
+        stock: Number(formData.stock),
+        images: images // The images array should contain the Cloudinary URLs
+      };
+
+      // Dispatch the createProduct action
+      const resultAction = await dispatch(createProduct(productData));
       
-      // Append all form fields
-      Object.keys(formData).forEach(key => {
-        if (key === 'features') {
-          formDataToSend.append(key, JSON.stringify(formData[key]));
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
-
-      // Append all images
-      images.forEach((image, index) => {
-        formDataToSend.append('images', image);
-      });
-
-      // TODO: Add your API call here
-      console.log('Form data:', formData);
-      console.log('Images:', images);
-
-      // Reset form after successful submission
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        category: '',
-        brand: '',
-        stock: '',
-        features: {
-          size: ''
-        }
-      });
-      setImages([]);
+      if (createProduct.fulfilled.match(resultAction)) {
+        toast.success("Product created successfully");
+        
+        // Reset form
+        setFormData({
+          name: '',
+          description: '',
+          price: '',
+          category: '',
+          brand: '',
+          stock: '',
+          features: {
+            size: ''
+          }
+        });
+        setImages([]);
+      } else {
+        const errorMessage = resultAction.payload?.message || 'Failed to create product';
+        toast.error(errorMessage);
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.error(error.message || 'An error occurred while creating the product');
     } finally {
       setLoading(false);
     }

@@ -14,6 +14,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
   const UnauthorizedPage = "/unauth-page";
   const ProfilePage = "/profile";
   const SettingsPage = "/settings";
+  const cart = "/cart";
  
 
   // If not authenticated, only allow access to login, register, and home
@@ -72,6 +73,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
     // Allow access to shop routes, profile, and settings
     if (location.pathname.includes("/shop") || 
         location.pathname.includes(ProfilePage) || 
+        location.pathname.includes(cart) || 
         location.pathname.includes(SettingsPage)) {
       return <>{children}</>;
     }

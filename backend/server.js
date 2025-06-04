@@ -4,13 +4,16 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
+import path from 'path';
 import morgan from 'morgan';
 
 // Import routes
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import productRoutes from './routes/product.js';
+import uploadRoutes from './routes/upload.js';
+import cartRoutes from './routes/cart.js';
 
 // Load environment variables
 dotenv.config();
@@ -23,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
 app.use(morgan('dev'));
@@ -31,12 +34,14 @@ app.use(morgan('dev'));
 // Static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.use('/uploads', express.static(join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -46,27 +51,46 @@ app.get('/health', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
+  res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    error: process.env.NODE_ENV === 'development' ? err : {}
+  });
+});
+
+// Handle 404 routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
   });
 });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    // Start server
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1);
+  }
+};
+
+// Start server
+const startServer = async () => {
+  try {
+    await connectDB();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-  })
-  .catch((error) => {
-    console.error('MongoDB connection error:', error);
+  } catch (error) {
+    console.error('Error starting server:', error);
     process.exit(1);
-  });
+  }
+};
+
+startServer();
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {

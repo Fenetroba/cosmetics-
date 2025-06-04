@@ -3,54 +3,65 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Product name is required'],
     trim: true
   },
   description: {
     type: String,
-    required: true
+    required: [true, 'Product description is required']
   },
   price: {
     type: Number,
-    required: true
+    required: [true, 'Product price is required'],
+    min: [0, 'Price cannot be negative']
   },
   category: {
     type: String,
-    enum: ['skincare', 'makeup', 'haircare', 'fragrance', 'bath', 'tools'],
-    required: true
+    required: [true, 'Product category is required'],
+    enum: {
+      values: ['skincare', 'makeup', 'haircare', 'fragrance', 'bath', 'tools'],
+      message: '{VALUE} is not a valid category'
+    }
   },
   brand: {
     type: String,
-    required: true
+    required: [true, 'Product brand is required'],
+    trim: true
   },
   stock: {
     type: Number,
-    required: true,
-    min: 0
+    required: [true, 'Product stock is required'],
+    min: [0, 'Stock cannot be negative']
   },
-  images: [{
-    type: String,
-    required: true
-  }],
+  images: {
+    type: [String],
+    required: [true, 'At least one product image is required'],
+    validate: {
+      validator: function(v) {
+        return v.length > 0;
+      },
+      message: 'At least one product image is required'
+    }
+  },
   features: {
     size: {
       type: String,
-      required: true
+      required: [true, 'Product size is required'],
+      trim: true
     },
-    ingredients: [{
-      type: String
-    }],
-    skinType: [{
-      type: String,
-      enum: ['all', 'dry', 'oily', 'combination', 'sensitive']
-    }],
-    benefits: [{
-      type: String
-    }],
-    size: {
-      type: String,
-      required: true
+    ingredients: {
+      type: [String],
+      default: []
+    },
+    benefits: {
+      type: [String],
+      default: []
     }
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'Product owner is required']
   },
   ratings: {
     average: {
@@ -99,9 +110,10 @@ const productSchema = new mongoose.Schema({
     max: 100,
     default: 0
   },
-  tags: [{
-    type: String
-  }]
+  tags: {
+    type: [String],
+    default: []
+  }
 }, {
   timestamps: true
 });

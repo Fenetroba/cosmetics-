@@ -1,5 +1,5 @@
 import express from 'express';
-import { body, param, query } from 'express-validator';
+import { body, param } from 'express-validator';
 import {
   createProduct,
   getProducts,
@@ -15,7 +15,7 @@ import { auth, adminAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Validation middleware
+// Basic validation rules
 const validateProduct = [
   body('name').trim().notEmpty().withMessage('Product name is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
@@ -25,15 +25,7 @@ const validateProduct = [
   body('brand').trim().notEmpty().withMessage('Brand is required'),
   body('stock').isInt({ min: 0 }).withMessage('Stock must be a positive number'),
   body('features.size').trim().notEmpty().withMessage('Size is required'),
-  body('features.ingredients').isArray().withMessage('Ingredients must be an array'),
-  body('features.skinType').isArray().withMessage('Skin type must be an array'),
-  body('features.benefits').isArray().withMessage('Benefits must be an array'),
   body('images').isArray().withMessage('Images must be an array')
-];
-
-const validateReview = [
-  body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
-  body('comment').trim().notEmpty().withMessage('Comment is required')
 ];
 
 // Public routes
@@ -43,37 +35,20 @@ router.get('/new', getNewProducts);
 router.get('/category/:category', getProductsByCategory);
 router.get('/:id', getProduct);
 
-// Protected routes (require authentication)
+// Protected routes
 router.use(auth);
 
-// Review routes
-router.post(
-  '/:id/reviews',
+// Review route
+router.post('/:id/reviews', [
   param('id').isMongoId().withMessage('Invalid product ID'),
-  validateReview,
-  addReview
-);
+  body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
+  body('comment').trim().notEmpty().withMessage('Comment is required')
+], addReview);
 
 // Admin routes
 router.use(adminAuth);
-
-router.post(
-  '/',
-  validateProduct,
-  createProduct
-);
-
-router.put(
-  '/:id',
-  param('id').isMongoId().withMessage('Invalid product ID'),
-  validateProduct,
-  updateProduct
-);
-
-router.delete(
-  '/:id',
-  param('id').isMongoId().withMessage('Invalid product ID'),
-  deleteProduct
-);
+router.post('/', validateProduct, createProduct);
+router.put('/:id', [param('id').isMongoId(), ...validateProduct], updateProduct);
+router.delete('/:id', param('id').isMongoId(), deleteProduct);
 
 export default router; 

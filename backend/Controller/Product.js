@@ -9,22 +9,31 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
+    console.log('Creating product with data:', req.body);
+    console.log('User ID:', req.user._id);
+
     const product = new Product({
       ...req.body,
-      owner: req.user._id // Assuming user is authenticated and attached to req
+      owner: req.user._id
     });
 
+    console.log('Product model created:', product);
+
     await product.save();
+    console.log('Product saved successfully');
+
     res.status(201).json({
       success: true,
       message: "Product created successfully",
       data: product
     });
   } catch (error) {
+    console.error('Error creating product:', error);
     res.status(500).json({
       success: false,
       message: "Error creating product",
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
@@ -37,7 +46,6 @@ export const getProducts = async (req, res) => {
       brand,
       minPrice,
       maxPrice,
-      skinType,
       sort = 'createdAt',
       order = 'desc',
       page = 1,
@@ -49,7 +57,6 @@ export const getProducts = async (req, res) => {
     const query = {};
     if (category) query.category = category;
     if (brand) query.brand = brand;
-    if (skinType) query['features.skinType'] = skinType;
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = Number(minPrice);

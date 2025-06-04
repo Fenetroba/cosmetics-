@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, TowerControl } from "lucide-react"
+import { Calendar,ListOrdered , Home, Inbox, Search, Settings, TowerControl } from "lucide-react"
 
 import {
   Sidebar,
@@ -15,7 +15,7 @@ import {
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/admin/home",
     icon: Home,
   },
   {
@@ -23,20 +23,16 @@ const items = [
     url: "#",
     icon: Inbox,
   },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
+
   {
     title: "Settings",
     url: "#",
     icon: Settings,
+  },
+  {
+    title: "Order",
+    url: "#",
+    icon: ListOrdered,
   },
 ]
 

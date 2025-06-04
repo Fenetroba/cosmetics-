@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/Components/ui/button";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/features/authSlice";
 
 const Header = ({ isAuthenticated }) => {
@@ -30,6 +30,9 @@ const Header = ({ isAuthenticated }) => {
   const LogOutHandler = () => {
     dispatch(logoutUser());
   };
+
+  const { cartItems } = useSelector((state) => state.cart);
+
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-10 relative">
@@ -122,16 +125,19 @@ const Header = ({ isAuthenticated }) => {
       </nav>
       <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
         {isAuthenticated && (
+          <Link to="/shop/cart">
           <p
             className="flex cursor-pointer items-center relative"
-            onClick={() => setclickCart(!clickCart)}
+          
           >
-            {" "}
+           
+           
             <LucideShoppingCart />
             <span className="absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold">
-              0
+             {cartItems.length}
             </span>{" "}
           </p>
+           </Link>
         )}
         {isAuthenticated ? (
           <Button

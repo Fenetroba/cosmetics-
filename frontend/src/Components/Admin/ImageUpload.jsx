@@ -1,27 +1,52 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadImage } from '../../redux/features/productSlice';
+import { toast } from 'sonner';
 
 const ImageUpload = ({ onImagesChange }) => {
   const [previews, setPreviews] = useState([]);
+  const dispatch = useDispatch();
+  const { loading: uploading, error: uploadError } = useSelector(state => state.products.uploadStatus);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    // Create preview URLs for the images
-    const newPreviews = acceptedFiles.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }));
+  const onDrop = useCallback(async (acceptedFiles) => {
+    try {
+      const uploadedUrls = [];
+      
+      for (const file of acceptedFiles) {
+        // Create preview URL
+        const preview = URL.createObjectURL(file);
+        
+        // Upload to Cloudinary
+        const result = await dispatch(uploadImage(file)).unwrap();
+        
+        if (!result || !result.secure_url) {
+          throw new Error('Failed to get image URL from upload response');
+        }
+        
+        uploadedUrls.push({
+          url: result.secure_url,
+          preview
+        });
+      }
 
-    setPreviews(prev => [...prev, ...newPreviews]);
-    onImagesChange(acceptedFiles);
-  }, [onImagesChange]);
+      setPreviews(prev => [...prev, ...uploadedUrls]);
+      onImagesChange(uploadedUrls.map(img => img.url));
+      toast.success('Images uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      toast.error(error.message || 'Failed to upload images');
+    }
+  }, [dispatch, onImagesChange]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
       'image/*': ['.jpeg', '.jpg', '.png', '.webp']
     },
-    multiple: true
+    multiple: true,
+    disabled: uploading
   });
 
   const removeImage = (index) => {
@@ -29,6 +54,7 @@ const ImageUpload = ({ onImagesChange }) => {
       const newPreviews = [...prev];
       URL.revokeObjectURL(newPreviews[index].preview);
       newPreviews.splice(index, 1);
+      onImagesChange(newPreviews.map(img => img.url));
       return newPreviews;
     });
   };
@@ -38,10 +64,13 @@ const ImageUpload = ({ onImagesChange }) => {
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-          ${isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary'}`}
+          ${isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary'}
+          ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        <input {...getInputProps()} />
-        {isDragActive ? (
+        <input {...getInputProps()} disabled={uploading} />
+        {uploading ? (
+          <p className="text-primary">Uploading images...</p>
+        ) : isDragActive ? (
           <p className="text-primary">Drop the images here...</p>
         ) : (
           <div className="space-y-2">
@@ -50,6 +79,10 @@ const ImageUpload = ({ onImagesChange }) => {
           </div>
         )}
       </div>
+
+      {uploadError && (
+        <p className="text-red-500 text-sm">{uploadError}</p>
+      )}
 
       {previews.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">

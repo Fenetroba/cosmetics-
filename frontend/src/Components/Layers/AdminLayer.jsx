@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 const AdminLayer = () => {
   return (
-    <div className='m-8 shadow-2xl h-96'>
+    <div className='sm:m-8 rounded-tr-[14%] shadow-2xl'>
      <Outlet/>
     </div>
   )
