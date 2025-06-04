@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "@/redux/features/authSlice";
 
 const Header = ({ isAuthenticated }) => {
+  const [clickCart, setclickCart] = useState();
   const [navVisible, setNavVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const dispatch = useDispatch();
@@ -58,36 +59,36 @@ const Header = ({ isAuthenticated }) => {
               <NavigationMenuTrigger>BATH & BODY</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="md:w-[500px]">
-                  Link
+                  Snail Oil
                 </NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
+                <NavigationMenuLink>Avocado Oil</NavigationMenuLink>
+                <NavigationMenuLink>Wankot</NavigationMenuLink>
+                <NavigationMenuLink>Vaslin</NavigationMenuLink>
+                <NavigationMenuLink>Others</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>HAIR CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="md:w-[500px]">
-                  Link
+                Castor Oil
                 </NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
+                <NavigationMenuLink>Coconut Oil</NavigationMenuLink>
+                <NavigationMenuLink>Argan Oil</NavigationMenuLink>
+                <NavigationMenuLink>Olive Oil</NavigationMenuLink>
+                <NavigationMenuLink>Jojoba Oil</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>SKIN CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="sm:w-[500px]">
-                  Link
+                Tea Tree Oil
                 </NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-                <NavigationMenuLink>Link</NavigationMenuLink>
+                <NavigationMenuLink>Grapeseed Oil</NavigationMenuLink>
+                <NavigationMenuLink>Sweet Almond Oil</NavigationMenuLink>
+                <NavigationMenuLink>Rosehip Oil</NavigationMenuLink>
+                <NavigationMenuLink>Jojoba Oil</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
@@ -121,7 +122,10 @@ const Header = ({ isAuthenticated }) => {
       </nav>
       <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
         {isAuthenticated && (
-          <p className="flex cursor-pointer items-center relative">
+          <p
+            className="flex cursor-pointer items-center relative"
+            onClick={() => setclickCart(!clickCart)}
+          >
             {" "}
             <LucideShoppingCart />
             <span className="absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold">
@@ -143,21 +147,22 @@ const Header = ({ isAuthenticated }) => {
           </Button>
         )}
         {
-        
-        
-        <DropdownMenu>
-  <DropdownMenuTrigger><UserPen className=" cursor-pointer" /></DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem><Link to="/shop/Profile">Profile</Link> </DropdownMenuItem>
-    <DropdownMenuItem><Link to="/shop/settings">Setting</Link> </DropdownMenuItem>
-
-  </DropdownMenuContent>
-</DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <UserPen className=" cursor-pointer" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link to="/shop/Profile">Profile</Link>{" "}
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/shop/settings">Setting</Link>{" "}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         }
-
-        
       </div>
     </section>
   );

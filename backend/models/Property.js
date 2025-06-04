@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const propertySchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true,
     trim: true
@@ -10,85 +10,38 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  },
-  location: {
-    address: {
-      type: String,
-      required: true
-    },
-    city: {
-      type: String,
-      required: true
-    },
-    state: {
-      type: String,
-      required: true
-    },
-    zipCode: {
-      type: String,
-      required: true
-    }
-  },
-  propertyType: {
+  type: {
     type: String,
-    enum: ['house', 'apartment', 'condo', 'townhouse', 'land'],
-    required: true
+    required: true,
+    enum: ['text', 'number', 'boolean', 'select']
   },
-  status: {
-    type: String,
-    enum: ['for-sale', 'for-rent', 'sold', 'rented'],
-    required: true
+  options: {
+    type: [String],
+    default: []
   },
-  features: {
-    bedrooms: {
-      type: Number,
-      required: true
-    },
-    bathrooms: {
-      type: Number,
-      required: true
-    },
-    area: {
-      type: Number,
-      required: true
-    },
-    parking: {
-      type: Number,
-      default: 0
-    },
-    yearBuilt: {
-      type: Number
-    }
-  },
-  amenities: [{
-    type: String
-  }],
-  images: [{
-    type: String,
-    required: true
-  }],
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  isFeatured: {
+  required: {
     type: Boolean,
     default: false
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['skincare', 'makeup', 'haircare', 'fragrance', 'bath', 'tools']
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
-}, {
-  timestamps: true
 });
 
-// Index for search functionality
-propertySchema.index({
-  title: 'text',
-  description: 'text',
-  'location.city': 'text',
-  'location.state': 'text'
+// Update the updatedAt timestamp before saving
+propertySchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 const Property = mongoose.model('Property', propertySchema);

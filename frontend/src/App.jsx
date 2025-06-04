@@ -14,6 +14,7 @@ import Profile from "./Components/Users/profile";
 import Setting from "./Components/Users/Setting";
 import AdminDashboard from "./Components/Dashboard/AdminDashboard";
 import { Toaster } from "@/components/ui/sonner"
+import UserInfo from "./Components/Admin/UserInfo";
 
 
 function App() {
@@ -88,9 +89,10 @@ function App() {
               </AuthRoute>
             }
           >
-            <Route path="home" element={<Home />} />
-            <Route path="dashboard" element={<AdminDashboard/>} />
-            <Route path="settings" element={<AdminDashboard />} />
+            <Route path="home" element={<AdminDashboard/>} />
+            <Route path="profile" element={<UserInfo />} />
+
+         
           </Route>
 
           {/* Catch all route - redirect to home */}

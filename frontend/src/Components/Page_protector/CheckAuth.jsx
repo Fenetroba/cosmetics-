@@ -27,62 +27,57 @@ const AuthRoute = ({ children, isAuth, user }) => {
     return <Navigate to={login} />;
   }
 
-  // Check root path access for authenticated users
-  if(location.pathname === "/" ){
+  // Handle root path access first
+  if (location.pathname === home) {
     if (user?.role === "admin") {
-      return <Navigate to={AdminHome} />;
+      return <Navigate to={AdminHome} replace />;
     } else {
-      return <Navigate to={ShopHome} />;
+      return <Navigate to={ShopHome} replace />;
     }
   }
 
-  // Check authenticated user access to auth pages
-  if (
-    isAuth &&
-    (location.pathname.includes(login) ||
-      location.pathname.includes(register))
-  ) {
-    if (user?.role === "admin") {
-      return <Navigate to={AdminHome} />;
-    } else {
-      return <Navigate to={ShopHome} />;
+  // Handle admin user routing
+  if (user?.role === "admin") {
+    // If admin tries to access shop routes, redirect to admin home
+    if (location.pathname.includes("/shop")) {
+      return <Navigate to={AdminHome} replace />;
     }
+    
+    // If admin tries to access user profile/settings, redirect to admin home
+    if (location.pathname.includes(ProfilePage) || location.pathname.includes(SettingsPage)) {
+      return <Navigate to={AdminHome} replace />;
+    }
+
+    // Allow admin to access admin routes
+    if (location.pathname.includes("/admin") ||location.pathname.includes(ProfilePage)) {
+      return <>{children}</>;
+    }
+
+    // Redirect all other routes to admin home
+    return <Navigate to={AdminHome} replace />;
   }
 
-  // Check admin route access
-  if (isAuth && user?.role !== "admin" && location.pathname.includes("admin")) {
-    return <Navigate to={UnauthorizedPage} />;
-  }
+  // Handle regular user routing
+  if (isAuth) {
+    // If user tries to access admin routes, redirect to unauthorized page
+    if (location.pathname.includes("/admin")) {
+      return <Navigate to={UnauthorizedPage} replace />;
+    }
 
-  // Check admin access to shop routes
-  if (
-    isAuth &&
-    user?.role === "admin" &&
-    location.pathname.includes(ShopHome)
-  ) {
-    return <Navigate to={AdminHome} />;
-  }
+    // If user tries to access auth pages (login/register), redirect to shop home
+    if (location.pathname.includes(login) || location.pathname.includes(register)) {
+      return <Navigate to={ShopHome} replace />;
+    }
 
-  // Check shop routes access
-  if (isAuth && location.pathname.includes("/shop")) {
-    if (!user) {
-      return <Navigate to={login} />;
+    // Allow access to shop routes, profile, and settings
+    if (location.pathname.includes("/shop") || 
+        location.pathname.includes(ProfilePage) || 
+        location.pathname.includes(SettingsPage)) {
+      return <>{children}</>;
     }
-    if (user?.role === "admin") {
-      return <Navigate to={AdminHome} />;
-    }
-    // Allow access to all shop routes for authenticated non-admin users
-    return <>{children}</>;
-  }
 
-  // Check dashboard access
-  if (isAuth && (location.pathname.includes(ProfilePage) ||location.pathname.includes(SettingsPage))) {
-    if (!user) {
-      return <Navigate to={login} />;
-    }
-    if (user?.role === "admin" && !location.pathname.includes("admin")) {
-      return <Navigate to={AdminHome} />;
-    }
+    // Redirect any other routes to shop home
+    return <Navigate to={ShopHome} replace />;
   }
 
   return <>{children}</>;

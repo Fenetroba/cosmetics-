@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Header from '@/all users/Header';
 
 const Profile = () => {
@@ -46,14 +46,16 @@ const Profile = () => {
       </div>
     );
   }
+  const location=useLocation()
 
   // Check if profile.user exists (backend might be sending data nested under user property)
   const userData = profile.user || profile;
 
   return (
     <section>
-        <Header/>
-    <div className="container mx-auto  shadow-2xl h-full p-10 m-10 rounded-2xl ">
+      {location.pathname === 'shop/profile' &&  <Header/>}
+      
+    <div className="container mx-auto   h-full p-10 m-10 rounded-2xl ">
     
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Profile Header */}
