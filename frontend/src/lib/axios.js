@@ -44,7 +44,10 @@ instance.interceptors.response.use(
       data: error.response?.data
     });
     
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    // Only redirect to login if not already on login page and not checking auth status
+    if ((error.response?.status === 401 || error.response?.status === 403) && 
+        !window.location.pathname.includes('/login') &&
+        !error.config.url.includes('/checkauth')) {
       window.location.href = "/login";
     }
     return Promise.reject(error);
