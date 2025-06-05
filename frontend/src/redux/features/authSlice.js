@@ -22,8 +22,13 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post('/auth/login', userData, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       });
+      
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -50,26 +55,16 @@ export const checkAuthStatus = createAsyncThunk(
   'auth/checkStatus',
   async (_, { rejectWithValue }) => {
     try {
-      // Check if token exists in cookies
       const response = await axios.get('/auth/checkauth', {
         withCredentials: true,
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         }
       });
-
-      // If we get a successful response with user data, user is authenticated
-      if (response.data.success && response.data.user) {
-        return {
-          success: true,
-          user: response.data.user
-        };
-      }
-
-      // If no user data in response, user is not authenticated
-      return rejectWithValue({ message: 'Not authenticated' });
+      return response.data;
     } catch (error) {
-      // If there's an error or no token in cookies, user is not authenticated
+      console.error('Auth check failed:', error);
       return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
     }
   }

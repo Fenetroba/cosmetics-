@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Menu } from "lucide-react"
 
 const ProductUser = () => {
   const dispatch = useDispatch();
   const { products, isLoading, error } = useSelector((state) => state.products);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -66,6 +69,8 @@ const ProductUser = () => {
     }
 
     setFilteredProducts(filtered);
+    // Close filter sheet on mobile after applying filters
+    setIsFilterOpen(false);
   };
 
   if (error) {
@@ -73,16 +78,33 @@ const ProductUser = () => {
   }
 
   return (
-    <div className="container mx-auto py-2">
-      <div className="flex gap-8">
-        {/* Filter Sidebar */}
-        <div className="w-64 flex-shrink-0">
+    <div className="container mx-auto px-4 py-2">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
+        {/* Mobile Filter Trigger */}
+        <div className="lg:hidden w-full">
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                <Menu className="h-4 w-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0">
+              <div className="p-4">
+                <Righit_filter onFilterChange={handleFilterChange} />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* Desktop Filter Sidebar */}
+        <div className="hidden lg:block w-64 flex-shrink-0">
           <Righit_filter onFilterChange={handleFilterChange} />
         </div> 
 
         {/* Products Grid */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {isLoading ? (
               // Loading skeletons
               Array.from({ length: 8 }).map((_, index) => (
@@ -112,8 +134,8 @@ const ProductUser = () => {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-lg">{product.name}</h3>
-                      <Badge variant="secondary" className="capitalize">
+                      <h3 className="font-semibold text-lg line-clamp-1">{product.name}</h3>
+                      <Badge variant="secondary" className="capitalize shrink-0">
                         {product.category}
                       </Badge>
                     </div>
@@ -125,7 +147,7 @@ const ProductUser = () => {
                         ${product.price.toFixed(2)}
                       </span>
                       {product.discount > 0 && (
-                        <Badge variant="destructive">
+                        <Badge variant="destructive" className="shrink-0">
                           {product.discount}% OFF
                         </Badge>
                       )}
@@ -135,7 +157,7 @@ const ProductUser = () => {
                     <Button 
                       className="w-full"
                       onClick={() => {
-                        dispatch(addToCart(product));
+                        dispatch(addToCart({ productId: product._id, quantity: 1 }));
                         toast.success("Added to cart");
                       }}
                     >

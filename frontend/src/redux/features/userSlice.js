@@ -7,13 +7,19 @@ export const fetchUserProfile = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get('/users/profile', {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       });
 
-      console.log("log",response.data)
-      return response.data;
+      console.log("Profile response:", response.data);
+      // Return the user data from the response
+      return response.data.user || response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      console.error("Profile fetch error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || { message: 'Failed to fetch profile' });
     }
   }
 );

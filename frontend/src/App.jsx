@@ -24,8 +24,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Check auth status only once when the app mounts
     dispatch(checkAuthStatus());
-  }, [dispatch]);
+  }, []); // Empty dependency array means it only runs once on mount
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -67,7 +68,7 @@ function App() {
             <Route path="register" element={<Register />} />
           </Route>
 
-          {/* Shop Routes */}
+          {/* Protected Shop Routes */}
           <Route
             path="/shop"
             element={
@@ -76,13 +77,14 @@ function App() {
               </AuthRoute>
             }
           >
-            <Route path="home" element={<Home isAuthenticated={isAuthenticated} />} />
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<Home isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Setting />} />
-            <Route path="cart" element={<Cart/>} />
+            <Route path="cart" element={<Cart />} />
           </Route>
 
-          {/* Admin Routes */}
+          {/* Protected Admin Routes */}
           <Route
             path="/admin"
             element={
@@ -91,14 +93,14 @@ function App() {
               </AuthRoute>
             }
           >
-            <Route path="home" element={<AdminDashboard/>} />
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<AdminDashboard />} />
             <Route path="profile" element={<UserInfo />} />
-
-         
+            <Route path="settings" element={<UserInfo />} />
           </Route>
 
           {/* Catch all route - redirect to home */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>

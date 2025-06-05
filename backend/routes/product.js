@@ -11,7 +11,7 @@ import {
   getNewProducts,
   getProductsByCategory
 } from '../Controller/Product.js';
-import { auth, adminAuth } from '../middleware/auth.js';
+import { isAuthenticated, isAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.get('/category/:category', getProductsByCategory);
 router.get('/:id', getProduct);
 
 // Protected routes
-router.use(auth);
+router.use(isAuthenticated);
 
 // Review route
 router.post('/:id/reviews', [
@@ -46,9 +46,8 @@ router.post('/:id/reviews', [
 ], addReview);
 
 // Admin routes
-router.use(adminAuth);
-router.post('/', validateProduct, createProduct);
-router.put('/:id', [param('id').isMongoId(), ...validateProduct], updateProduct);
-router.delete('/:id', param('id').isMongoId(), deleteProduct);
+router.post('/', isAdmin, validateProduct, createProduct);
+router.put('/:id', isAdmin, [param('id').isMongoId(), ...validateProduct], updateProduct);
+router.delete('/:id', isAdmin, param('id').isMongoId(), deleteProduct);
 
 export default router; 

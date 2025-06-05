@@ -1,15 +1,14 @@
+import Logo from '../assets/LOGO.png'
+
 export function Footer() {
   return (
       <footer className="bg-[var(--one)] text-[var(--six)] py-8">
           <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-38">
                   <div>
-                      <h3 className="font-bold mb-4">Useful Links</h3>
+                      <h3 className="font-bold mb-4">GRASS COSMOTIC</h3>
                       <ul>
-                          <li><a href="/about" className="hover:underline">About Us</a></li>
-                          <li><a href="/contact" className="hover:underline">Contact Us</a></li>
-                          <li><a href="/deals" className="hover:underline">Best Deals</a></li>
-                          <li><a href="/faqs" className="hover:underline">FAQs</a></li>
+                     <img src={Logo} alt="logo" />
                       </ul>
                   </div>
                   <div>
@@ -29,16 +28,11 @@ export function Footer() {
                       <p>Email: contact@jmlint.com</p>
                   </div>
               </div>
-              <div className="mt-8">
-                  <h3 className="font-bold mb-4">Subscribe Now</h3>
-                  <div className="flex">
-                      <input type="email" placeholder="Email" className="border rounded-l px-4 py-2 w-full" />
-                      <button className="bg-[var(--four)] text-black rounded-r px-4 py-2">Submit</button>
-                  </div>
-              </div>
+             
           </div>
-          <div className="text-center py-4">
-              <p className="text-sm text-[var(--four)]">Copyright © 2022 Beauty Products Store</p>
+          <div className="text-center pt-4 mt-10 border-t-2 border-amber-50">
+              <p className="text-sm text-[var(--five)] font-bold">Copyright © 2025 by FENA</p>
+            
           </div>
       </footer>
   );

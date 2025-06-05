@@ -108,17 +108,29 @@ export const updateCartItem = async (req, res) => {
       });
     }
 
-    // Update cart item
-    const cart = await Cart.findOne({ user: req.user._id });
+    // Find or create cart
+    let cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
-      return res.status(404).json({
-        success: false,
-        message: "Cart not found"
+      cart = await Cart.create({
+        user: req.user._id,
+        items: [],
+        totalAmount: 0,
+        totalQuantity: 0
       });
     }
 
-    await cart.updateItemQuantity(productId, quantity);
-    await cart.populate('items.product', 'name price images stock');
+    // Check if item exists in cart
+    const itemExists = cart.items.some(item => item.product.toString() === productId);
+    if (!itemExists) {
+      // If item doesn't exist, add it to cart
+      await cart.addItem(product, quantity);
+    } else {
+      // If item exists, update its quantity
+      await cart.updateItemQuantity(productId, quantity);
+    }
+
+    // Populate product details
+    cart = await cart.populate('items.product', 'name price images stock');
 
     res.status(200).json({
       success: true,

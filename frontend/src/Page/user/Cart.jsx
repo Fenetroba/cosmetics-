@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,30 +8,51 @@ import { toast } from "sonner"
 import { 
   selectCartItems, 
   selectTotalAmount, 
+  selectTotalQuantity, 
+  selectCartLoading, 
+  selectCartError, 
+  fetchCart, 
+  addToCart, 
+  updateCartItem, 
   removeFromCart, 
-  updateQuantity 
+  clearCart 
 } from '../../redux/features/cartSlice'
+import OrderSummary from '@/Components/Users/OrderSummary'
 
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const totalAmount = useSelector(selectTotalAmount);
+  const totalQuantity = useSelector(selectTotalQuantity);
+  const loading = useSelector(selectCartLoading);
+  const error = useSelector(selectCartError);
 
-  const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity < 1) return;
-    dispatch(updateQuantity({ id, quantity: newQuantity }));
-    toast.success("Quantity updated");
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  const handleUpdateQuantity = (productId, quantity) => {
+    dispatch(updateCartItem({ productId, quantity }));
   };
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id));
-    toast.success("Item removed from cart");
+  const handleRemoveItem = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
 
   const handleCheckout = () => {
     // TODO: Implement checkout action
     toast.success("Proceeding to checkout");
   };
+
+  
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -59,7 +80,7 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <div key={item._id} className="flex items-center gap-4 py-4 border-b last:border-0">
                   <img
-                    src={item.images[0]}
+                    src={item.image}
                     alt={item.name}
                     className="w-24 h-24 object-cover rounded-md"
                   />
@@ -67,27 +88,19 @@ const Cart = () => {
                     <h3 className="font-semibold">{item.name}</h3>
                     <p className="text-sm text-gray-600">{item.category}</p>
                     <div className="flex items-center gap-2 mt-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
+                      <button 
+                        onClick={() => handleUpdateQuantity(item.product._id || item.product, Math.max(1, item.quantity - 1))}
+                        className="px-2 py-1 border rounded"
                       >
                         -
-                      </Button>
-                      <Input
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(item._id, parseInt(e.target.value))}
-                        className="w-16 text-center"
-                        min="1"
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button 
+                        onClick={() => handleUpdateQuantity(item.product._id || item.product, item.quantity + 1)}
+                        className="px-2 py-1 border rounded"
                       >
                         +
-                      </Button>
+                      </button>
                     </div>
                   </div>
                   <div className="text-right">
@@ -99,7 +112,7 @@ const Cart = () => {
                       variant="ghost"
                       size="sm"
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => handleRemoveItem(item._id)}
+                      onClick={() => handleRemoveItem(item.product._id || item.product)}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -112,28 +125,16 @@ const Cart = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${totalAmount.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>Free</span>
-                </div>
-                <div className="flex justify-between font-semibold text-lg pt-2 border-t">
-                  <span>Total</span>
-                  <span>${totalAmount.toFixed(2)}</span>
-                </div>
+          <OrderSummary/>
+          <div className="mt-4">
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={handleClearCart}
+            >
+              Clear Cart
+            </Button>
               </div>
-              <Button className="w-full" onClick={handleCheckout}>
-                Proceed to Checkout
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

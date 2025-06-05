@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   NavigationMenu,
@@ -21,18 +21,24 @@ import { Button } from "@/Components/ui/button";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/features/authSlice";
+import { selectCartItems, fetchCart } from "@/redux/features/cartSlice";
 
 const Header = ({ isAuthenticated }) => {
   const [clickCart, setclickCart] = useState();
   const [navVisible, setNavVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, isAuthenticated]);
+
   const LogOutHandler = () => {
     dispatch(logoutUser());
   };
-
-  const { cartItems } = useSelector((state) => state.cart);
-
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-10 relative">
@@ -126,19 +132,15 @@ const Header = ({ isAuthenticated }) => {
       <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
         {isAuthenticated && (
           <Link to="/shop/cart">
-          <p
-            className="flex cursor-pointer items-center relative"
-          
-          >
-           
-           
-            <LucideShoppingCart />
-            <span className="absolute left-[14px] top-[-5px]  bg-red-900 rounded-full  px-1.5 text-white font-bold">
-             {cartItems.length}
-            </span>{" "}
-          </p>
-           </Link>
+            <p className="flex cursor-pointer items-center relative">
+              <LucideShoppingCart />
+              <span className="absolute left-[14px] top-[-5px] bg-red-900 rounded-full px-1.5 text-white font-bold">
+                {cartItems?.length || 0}
+              </span>
+            </p>
+          </Link>
         )}
+        {console.log(isAuthenticated)}
         {isAuthenticated ? (
           <Button
             className="max-md:w-[200px] cursor-pointer"
@@ -161,7 +163,7 @@ const Header = ({ isAuthenticated }) => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to="/shop/Profile">Profile</Link>{" "}
+                <Link to="/shop/profile">Profile</Link>{" "}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link to="/shop/settings">Setting</Link>{" "}

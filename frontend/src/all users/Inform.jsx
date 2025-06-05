@@ -1,6 +1,6 @@
 import { PackageOpen } from "lucide-react";
 import React from "react";
-
+import cosmetics from '../assets/cosmetics.png'
 const Inform = () => {
   return (
     <section className="flex flex-col sm:flex-row sm:items-center w-full justify-between sm:px-20 space-x-4 p-7 border-b-2 mb-1.5">
@@ -9,9 +9,7 @@ const Inform = () => {
       for you the enviroment too.
       </div>
       <div className="flex space-x-8 mt-10">
-        <PackageOpen className="text-9xl" />
-        <PackageOpen className="text-9xl" />
-        <PackageOpen className="text-9xl" />
+       <img src={cosmetics} alt="cosmetics" />
       </div>
     </section>
   );

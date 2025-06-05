@@ -16,14 +16,14 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate('shop/home');
-  //   }
-  //   return () => {
-  //     dispatch(clearError());
-  //   };
-  // }, [isAuthenticated, navigate, dispatch]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/shop/home');
+    }
+    return () => {
+      dispatch(clearError());
+    };
+  }, [isAuthenticated, navigate, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +61,14 @@ const Login = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      dispatch(loginUser(formData));
+      try {
+        const result = await dispatch(loginUser(formData)).unwrap();
+        if (result.success) {
+          navigate('/shop/home');
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+      }
     }
   };
 

@@ -103,7 +103,7 @@ const BestSell = () => {
         ))}
       </div>
     </motion.div>
-  );
+  );yyy
 };
 
 export default BestSell;

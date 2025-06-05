@@ -72,8 +72,8 @@ export function Righit_filter({ onFilterChange }) {
   };
 
   return (
-    <div className="w-64 p-4 space-y-6 bg-white rounded-lg shadow-lg">
-      <div className="space-y-4">
+    <div className="max-sm:w-full p-4 space-y-17 shadow-amber-950 shadow sm:bg-white">
+      <div className="space-y-4 ">
         <h3 className="text-lg font-semibold">Price Range</h3>
         <div className="space-y-2">
           <Slider
@@ -126,7 +126,7 @@ export function Righit_filter({ onFilterChange }) {
       <div className="flex space-x-2">
         <Button 
           onClick={handleApplyFilters}
-          className="flex-1 bg-primary text-white hover:bg-primary/90"
+          className="flex-1 text-white hover:bg-primary/90 bg-[var(--two)]"
         >
           Apply Filters
         </Button>

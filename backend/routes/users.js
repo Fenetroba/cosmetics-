@@ -3,7 +3,9 @@ import {
   getUsers, 
   getUser, 
   updateUser, 
-  deleteUser 
+  deleteUser,
+  View_Profile,
+  UpdateUser
 } from '../Controller/user.js';
 import { isAuthenticated, isAdmin } from '../middleware/auth.js';
 
@@ -14,6 +16,12 @@ router.use(isAuthenticated);
 
 // Admin only routes
 router.get('/', isAdmin, getUsers);
+
+// Profile routes (must come before /:id routes)
+router.get('/profile', View_Profile);
+router.put('/profile', UpdateUser);
+
+// Parameterized routes
 router.get('/:id', isAdmin, getUser);
 router.put('/:id', isAdmin, updateUser);
 router.delete('/:id', isAdmin, deleteUser);

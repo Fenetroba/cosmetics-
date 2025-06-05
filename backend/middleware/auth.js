@@ -5,31 +5,45 @@ env.config()
 
 export const isAuthenticated = async (req, res, next) => {
   try {
+    console.log('Cookies:', req.cookies);
+    console.log('Headers:', req.headers);
+
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
     if (!token) {
+      console.log('No token found in request');
       return res.status(401).json({
         success: false,
         message: 'Please login to access this resource'
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id).select('-password');
 
-    if (!user) {
+      if (!user) {
+        console.log('User not found for token');
+        return res.status(401).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      req.user = user;
+      next();
+    } catch (jwtError) {
+      console.log('JWT verification failed:', jwtError.message);
       return res.status(401).json({
         success: false,
-        message: 'User not found'
+        message: 'Invalid token or token expired'
       });
     }
-
-    req.user = user;
-    next();
   } catch (error) {
-    return res.status(401).json({
+    console.error('Auth middleware error:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Invalid token or token expired'
+      message: 'Internal server error'
     });
   }
 };
