@@ -1,80 +1,69 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../lib/axios';
+import axios from 'axios';
 
-// Async thunk for registration
+// Async thunks
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/auth/login', credentials, {
+        withCredentials: true
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/auth/register', userData, {
+      const response = await axios.post('/api/auth/register', userData, {
         withCredentials: true
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data?.message || 'Registration failed');
     }
   }
 );
 
-// Async thunk for login
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/auth/login', userData, {
-        withCredentials: true,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-// Async thunk for logout
 export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post('/auth/logout', {}, {
+      await axios.post('/api/auth/logout', {}, {
         withCredentials: true
       });
+      return null;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data?.message || 'Logout failed');
     }
   }
 );
 
-// Async thunk for checking auth status
-export const checkAuthStatus = createAsyncThunk(
-  'auth/checkStatus',
+export const getCurrentUser = createAsyncThunk(
+  'auth/getCurrentUser',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/auth/checkauth', {
-        withCredentials: true,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+      const response = await axios.get('/api/auth/me', {
+        withCredentials: true
       });
       return response.data;
     } catch (error) {
-      console.error('Auth check failed:', error);
-      return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
+      return rejectWithValue(error.response?.data?.message || 'Failed to get user data');
     }
   }
 );
 
 const initialState = {
   user: null,
-  isLoading: false,
-  error: null,
+  token: null,
   isAuthenticated: false,
+  loading: false,
+  error: null
 };
 
 const authSlice = createSlice({
@@ -83,60 +72,72 @@ const authSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
-      // Register
-      .addCase(registerUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload?.message || 'Registration failed';
-      })
       // Login
       .addCase(loginUser.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = true;
+        state.loading = false;
         state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload?.message || 'Login failed';
+        state.loading = false;
+        state.error = action.payload;
       })
-      // Logout
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.user = null;
-        state.isAuthenticated = false;
-      })
-      // Check Auth Status
-      .addCase(checkAuthStatus.pending, (state) => {
-        state.isLoading = true;
+      // Register
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(checkAuthStatus.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = true;
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
         state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
       })
-      .addCase(checkAuthStatus.rejected, (state) => {
-        state.isLoading = false;
-        state.isAuthenticated = false;
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Logout
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loading = false;
         state.user = null;
-        state.error = null; // Clear any previous errors
+        state.token = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Get Current User
+      .addCase(getCurrentUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.user = null;
+        state.isAuthenticated = false;
       });
-  },
+  }
 });
 
 export const { clearError } = authSlice.actions;
