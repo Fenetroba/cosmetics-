@@ -24,11 +24,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Only check auth if not already authenticated and not on auth pages
-    if (!isAuthenticated && !location.pathname.includes('/auth/')) {
-      dispatch(checkAuthStatus());
-    }
-  }, [isAuthenticated, location.pathname, dispatch]);
+    // Check auth status only once when the app mounts
+    dispatch(checkAuthStatus());
+  }, []); // Empty dependency array means it only runs once on mount
 
   // Show loading state while checking authentication
   if (isLoading) {

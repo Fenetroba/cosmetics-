@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import logo from '../assets/Logo.png'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -42,7 +42,7 @@ const Header = ({ isAuthenticated }) => {
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-10 relative">
-      <div className="text-xl font-bold">Logo</div>
+      <div className="text-xl font-bold"><img src={logo} alt="logo" className="w-[200px]" /></div>
       <div className="flex items-center md:hidden">
         <div
           className="absolute right-3 text-2xl cursor-pointer"

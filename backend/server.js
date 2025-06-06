@@ -15,6 +15,10 @@ import productRoutes from './routes/product.js';
 import uploadRoutes from './routes/upload.js';
 import cartRoutes from './routes/cart.js';
 import orderRoutes from './routes/order.js';
+<<<<<<< HEAD
+=======
+import paymentRoutes from './routes/payment.js';
+>>>>>>> 10f23d6750099568a352848fce4f833512716dcf
 
 // Load environment variables
 dotenv.config();
@@ -44,11 +48,18 @@ app.use('/api/products', productRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+<<<<<<< HEAD
+=======
+app.use('/api/payments', paymentRoutes);
+>>>>>>> 10f23d6750099568a352848fce4f833512716dcf
 
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
+
+// Handle raw body for Stripe webhooks
+app.post('/api/payments/webhook', express.raw({ type: 'application/json' }));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

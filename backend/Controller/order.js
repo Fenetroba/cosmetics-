@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Order from '../models/order.js';
 import Cart from '../models/cart.js';
 
@@ -196,3 +197,6 @@ export const updateOrderStatus = async (req, res) => {
     });
   }
 }; 
+=======
+ 
+>>>>>>> 10f23d6750099568a352848fce4f833512716dcf
