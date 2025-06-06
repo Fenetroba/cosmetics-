@@ -2,7 +2,7 @@ import React from "react";
 import founderImage from '../assets/shampoo-4213395_640.jpg'
 const MeetTofounder = () => {
   return (
-    <div className="flex sm:flex-row flex-col justify-center items-center md:mx-40 my-10 m-3">
+    <div className="flex sm:flex-row flex-col justify-center items-center md:mx-40 my-20 m-3">
       <div className="bg-[var(--one)] p-20">
         <h1 className="text-[var(--three)] font-extrabold text-2xl p-1 uppercase">
           Meet The Founder Selame

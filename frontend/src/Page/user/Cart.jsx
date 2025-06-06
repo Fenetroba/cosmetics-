@@ -7,13 +7,13 @@ import { Trash2 } from 'lucide-react'
 import { toast } from "sonner"
 import { 
   selectCartItems, 
-  selectCartTotalAmount, 
-  selectCartTotalQuantity, 
+  selectTotalAmount, 
+  selectTotalQuantity, 
   selectCartLoading, 
   selectCartError, 
   fetchCart, 
   addToCart, 
-  updateQuantity, 
+  updateCartItem, 
   removeFromCart, 
   clearCart 
 } from '../../redux/features/cartSlice'
@@ -22,8 +22,8 @@ import OrderSummary from '@/Components/Users/OrderSummary'
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-  const totalAmount = useSelector(selectCartTotalAmount);
-  const totalQuantity = useSelector(selectCartTotalQuantity);
+  const totalAmount = useSelector(selectTotalAmount);
+  const totalQuantity = useSelector(selectTotalQuantity);
   const loading = useSelector(selectCartLoading);
   const error = useSelector(selectCartError);
 
@@ -32,7 +32,7 @@ const Cart = () => {
   }, [dispatch]);
 
   const handleUpdateQuantity = (productId, quantity) => {
-    dispatch(updateQuantity({ id: productId, quantity }));
+    dispatch(updateCartItem({ productId, quantity }));
   };
 
   const handleRemoveItem = (productId) => {
@@ -47,6 +47,8 @@ const Cart = () => {
     // TODO: Implement checkout action
     toast.success("Proceeding to checkout");
   };
+
+  
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -132,7 +134,7 @@ const Cart = () => {
             >
               Clear Cart
             </Button>
-          </div>
+              </div>
         </div>
       </div>
     </div>

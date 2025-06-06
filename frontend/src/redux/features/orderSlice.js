@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../lib/axios';
 
-<<<<<<< HEAD
 // Test order data
 const testOrder = {
   _id: 'test-order-1',
@@ -20,14 +19,10 @@ const testOrder = {
 };
 
 // Async thunks
-=======
-// Async thunks for API calls
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
 export const fetchOrders = createAsyncThunk(
   'orders/fetchOrders',
   async (_, { rejectWithValue }) => {
     try {
-<<<<<<< HEAD
       console.log('Fetching orders from API...');
       const response = await axios.get('/orders');
       console.log('Orders API response:', response.data);
@@ -43,11 +38,6 @@ export const fetchOrders = createAsyncThunk(
       return orders;
     } catch (error) {
       console.error('Error in fetchOrders:', error);
-=======
-      const response = await axios.get('/orders');
-      return response.data.data;
-    } catch (error) {
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
       return rejectWithValue(error.response?.data || { message: 'Error fetching orders' });
     }
   }
@@ -58,18 +48,13 @@ export const createOrder = createAsyncThunk(
   async (orderData, { rejectWithValue }) => {
     try {
       const response = await axios.post('/orders', orderData);
-<<<<<<< HEAD
       return response.data.data || response.data;
-=======
-      return response.data.data;
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
     } catch (error) {
       return rejectWithValue(error.response?.data || { message: 'Error creating order' });
     }
   }
 );
 
-<<<<<<< HEAD
 export const removeOrderItem = createAsyncThunk(
   'orders/removeOrderItem',
   async ({ orderId, itemId }, { rejectWithValue }) => {
@@ -109,11 +94,6 @@ export const removeOrderItem = createAsyncThunk(
 
 const initialState = {
   orders: [],
-=======
-const initialState = {
-  orders: [],
-  currentOrder: null,
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
   loading: false,
   error: null
 };
@@ -124,29 +104,17 @@ const orderSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
-<<<<<<< HEAD
-=======
-    },
-    clearCurrentOrder: (state) => {
-      state.currentOrder = null;
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
     }
   },
   extraReducers: (builder) => {
     builder
-<<<<<<< HEAD
       // Fetch orders
       .addCase(fetchOrders.pending, (state) => {
         console.log('Fetch orders pending...');
-=======
-      // Fetch Orders
-      .addCase(fetchOrders.pending, (state) => {
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-<<<<<<< HEAD
         console.log('Fetch orders fulfilled:', action.payload);
         state.loading = false;
         state.orders = Array.isArray(action.payload) ? action.payload : [];
@@ -157,32 +125,17 @@ const orderSlice = createSlice({
         state.error = action.payload?.message || 'Error fetching orders';
       })
       // Create order
-=======
-        state.loading = false;
-        state.orders = action.payload;
-      })
-      .addCase(fetchOrders.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload?.message || 'Error fetching orders';
-      })
-      // Create Order
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
       .addCase(createOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
-<<<<<<< HEAD
-=======
-        state.currentOrder = action.payload;
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
         state.orders.unshift(action.payload);
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || 'Error creating order';
-<<<<<<< HEAD
       })
       // Remove order item
       .addCase(removeOrderItem.pending, (state) => {
@@ -206,24 +159,14 @@ const orderSlice = createSlice({
         console.log('Remove item rejected:', action.payload);
         state.loading = false;
         state.error = action.payload?.message || 'Error removing item from order';
-=======
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
       });
   }
 });
 
-<<<<<<< HEAD
 export const { clearError } = orderSlice.actions;
 
 // Selectors
 export const selectOrders = (state) => state.orders.orders;
-=======
-export const { clearError, clearCurrentOrder } = orderSlice.actions;
-
-// Selectors
-export const selectOrders = (state) => state.orders.orders;
-export const selectCurrentOrder = (state) => state.orders.currentOrder;
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
 export const selectOrdersLoading = (state) => state.orders.loading;
 export const selectOrdersError = (state) => state.orders.error;
 

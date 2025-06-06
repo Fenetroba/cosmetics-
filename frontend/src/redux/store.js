@@ -1,22 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/authSlice';
+import userReducer from './features/userSlice';
+import productReducer from './features/productSlice';
 import cartReducer from './features/cartSlice';
 import orderReducer from './features/orderSlice';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userReducer,
+    products: productReducer,
     cart: cartReducer,
-<<<<<<< HEAD
     orders: orderReducer,
-=======
-    orders: orderReducer
->>>>>>> 10f23d6750099568a352848fce4f833512716dcf
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
-    })
-});
-
-export default store; 
+      serializableCheck: false,
+    }),
+}); 
