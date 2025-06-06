@@ -24,6 +24,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+<<<<<<< HEAD
     if (error.code === 'ERR_NETWORK') {
       console.error('Network error: Unable to connect to the server. Please check if the server is running.');
       return Promise.reject({
@@ -54,6 +55,17 @@ api.interceptors.response.use(
         message: 'Error setting up request',
         originalError: error
       });
+=======
+    // Log error responses for debugging
+    console.error('Request failed:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+    
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      window.location.href = "/login";
+>>>>>>> parent of 511d21a ( commit)
     }
   }
 );

@@ -61,7 +61,7 @@ const Herosection = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-  <section className='bg-[var(--two)] w-full  flex md:flex-row flex-col items-center justify-between '>
+  <section className='bg-[var(--two)] w-full  flex md:flex-row flex-col items-center justify-between'>
 <div className='w-full h-[90vh] '>
 
   <div className="relative h-[500px] overflow-hidden rounded-lg sm:h-[550px]">
@@ -79,7 +79,7 @@ const Herosection = () => {
                 {/* Background image */}
                 <div className="relative h-full w-full">
                 
-                    <img src={item.image} alt={`Slide ${index + 1}`} className={`cover p-4 text-center w-full shadow-white shadow-sm  ${item.class}`} />
+                    <img src={item.image} alt={`Slide ${index + 1}`} className={`cover p-4 text-center w-full shadow-white shadow-sm ${item.class}`} />
                   
                  
                 </div>

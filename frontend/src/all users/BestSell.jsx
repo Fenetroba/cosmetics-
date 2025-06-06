@@ -1,118 +1,109 @@
 import React, { useEffect, useRef, useState } from "react";
 import product1 from "../assets/product2.jpg";
+import product2 from "../assets/product3.jpg";
+import product3 from "../assets/product4.jpg";
+import product4 from "../assets/product5.jpg";
+import product5 from "../assets/product1.jpg";
 import { motion } from "framer-motion";
 
-const product = {
-  id: 1,
-  src: product1,
-  alt: "Premium Hair Care",
-  description: "Revitalize your hair with our premium care collection",
-  category: "Hair Care"
-};
+const products = [
+  {
+    id: 1,
+    src: product1,
+    alt: "product1",
+    className: "row-span-3",
+    imageWidth: "h-[300px]",
+    description: "Lorem ipsum, dolor sit amet consectetur  o"
+  },
+  {
+    id: 2,
+    src: product2,
+    alt: "product2",
+    className: "row-span-3",
+    imageWidth: "h-[350px]",
+    description: "Lorem ipsum, dolor sit amet consectetur"
+  },
+  {
+    id: 3,
+    src: product3,
+    alt: "product3",
+    className: "col-span-1 row-span-2 md:row-span-1",
+    imageWidth: "h-[400px]",
+    description: "Lorem ipsum, dolor sit amet consectetur"
+  },
+  {
+    id: 4,
+    src: product4,
+    alt: "product4",
+    className: "col-span-1 row-span-2 md:row-span-1",
+    imageWidth: "h-[450px]",
+    description: "Lorem ipsum, dolor sit amet consectetur"
+  },
+  {
+    id: 5,
+    src: product5,
+    alt: "product5",
+    className: "col-span-1 md:col-span-2 row-span-5 md:row-span-2",
+    imageWidth: "h-[500px]",
+    description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium o"
+  },
+];
 
 const BestSell = () => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    let observer;
-    
-    if (ref.current) {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            // Disconnect observer after first intersection
-            if (observer) {
-              observer.disconnect();
-            }
-          }
-        },
-        { 
-          threshold: 0.1,
-          rootMargin: '50px'
-        }
-      );
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect(); // Stop observing after visibility
+      }
+    });
 
+    if (ref.current) {
       observer.observe(ref.current);
     }
 
     return () => {
-      if (observer) {
-        observer.disconnect();
+      if (ref.current) {
+        observer.unobserve(ref.current);
       }
     };
-  }, []); // Empty dependency array to run only once
+  }, []);
 
   return (
-    <motion.div 
-      ref={ref} 
-      className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-16"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="container mx-auto px-4">
-        <motion.h1 
-          className="text-[var(--two)] font-extrabold text-4xl md:text-5xl mb-4"
-          initial={{ y: -20, opacity: 0 }}
-          animate={isVisible ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          Best Sellers
-        </motion.h1>
-        <motion.p 
-          className="text-gray-600 mb-12 max-w-2xl"
-          initial={{ y: -20, opacity: 0 }}
-          animate={isVisible ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Discover our most loved products, carefully selected for their quality and effectiveness
-        </motion.p>
-        
-        <motion.div
-          className="group relative w-full"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="relative overflow-hidden rounded-2xl h-[300px]">
-            <motion.img
+    <motion.div ref={ref} className="mb-30">
+      <h1 className="text-[var(--two)] font-extrabold text-3xl p-7">
+        BEST SELL
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 p-5.5 overflow-hidden ">
+        {products.map((product, index) => (
+          <motion.div
+            key={product.id}
+            className={`${product.className} relative hover:shadow-lg hover:scale-105 duration-300`}
+            initial={{ opacity: 0, y: 20 }} // Initial state
+            animate={isVisible ? { opacity: 1, y: 0 } : {}} // Animate when visible
+            transition={{ duration: 0.5, delay: index * 0.1 }} // Animation timing
+          >
+            <img
               src={product.src}
               alt={product.alt}
-              className="w-full h-full object-cover transition-transform duration-700"
-              whileHover={{ scale: 1.1 }}
+              className={`w-full ${product.imageWidth} rounded-2xl`}
             />
-            
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-green-700/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
+            <motion.p
+              className="absolute bottom-0 left-0 right-0 bg-white p-4 rounded-t-2xl shadow-md translate-y-4 opacity-100 hover:translate-y-0 transition-all duration-300"
+              initial={{ opacity: 20, y: 20 }} // Initial state for the description
+              animate={{ opacity: 20, y: 20 }} // Keep it hidden initially
+              whileHover={{ opacity: 1, y:10  }} // Show on hover
             >
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <motion.span
-                  className="text-white/80 text-sm font-medium tracking-wider uppercase"
-                  initial={{ y: 20, opacity: 0 }}
-                  whileHover={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  {product.category}
-                </motion.span>
-                <motion.p
-                  className="text-white text-xl font-medium mt-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {product.description}
-                </motion.p>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
+              {product.description}
+            </motion.p>
+          </motion.div>
+        ))}
       </div>
     </motion.div>
-  );
+  );yyy
 };
 
 export default BestSell;
