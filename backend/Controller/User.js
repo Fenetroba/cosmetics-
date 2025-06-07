@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../models/User.js';
 import Property from '../models/Property.js';
 
 export const View_Profile = async (req, res) => {
