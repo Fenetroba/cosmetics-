@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { selectTotalAmount, selectTotalQuantity } from '@/redux/features/cartSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,25 +15,58 @@ const OrderSummary = () => {
   const orders = useSelector(selectOrders);
   const ordersLoading = useSelector(selectOrdersLoading);
   const ordersError = useSelector(selectOrdersError);
+  const [localOrders, setLocalOrders] = useState([]);
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (orders) {
+      setLocalOrders(orders);
+    }
+  }, [orders]);
+
   const handleCheckout = () => {
-    // TODO: Implement checkout action
     toast.success("Proceeding to checkout");
   };
 
   const handleRemoveItem = async (orderId, itemId) => {
     try {
-      console.log('Attempting to remove item:', { orderId, itemId });
+      // Optimistically update the UI
+      setLocalOrders(prevOrders => 
+        prevOrders.map(order => {
+          if (order._id === orderId) {
+            const updatedItems = order.items.filter(item => item._id !== itemId);
+            const newTotalAmount = updatedItems.reduce(
+              (sum, item) => sum + (item.price * item.quantity), 
+              0
+            );
+            return {
+              ...order,
+              items: updatedItems,
+              totalAmount: newTotalAmount
+            };
+          }
+          return order;
+        })
+      );
+
+      // Make the API call
       const result = await dispatch(removeOrderItem({ orderId, itemId })).unwrap();
-      console.log('Remove item result:', result);
-      toast.success("Item removed from order");
-      // Refresh orders after removal
-      dispatch(fetchOrders());
+      
+      if (result.success) {
+        toast.success("Item removed successfully");
+        // Refresh orders from server to ensure consistency
+        dispatch(fetchOrders());
+      } else {
+        // Revert the optimistic update if the API call fails
+        setLocalOrders(orders);
+        toast.error(result.message || "Failed to remove item");
+      }
     } catch (error) {
+      // Revert the optimistic update if there's an error
+      setLocalOrders(orders);
       console.error('Error removing item:', error);
       toast.error(error.message || "Failed to remove item");
     }
@@ -74,9 +107,9 @@ const OrderSummary = () => {
           <div className="text-center py-4 text-red-500">
             Error: {ordersError}
           </div>
-        ) : orders && orders.length > 0 ? (
+        ) : localOrders && localOrders.length > 0 ? (
           <div className="space-y-4">
-            {orders.slice(0, 3).map((order) => (
+            {localOrders.slice(0, 3).map((order) => (
               <Card key={order._id}>
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
@@ -109,6 +142,14 @@ const OrderSummary = () => {
                             </p>
                           </div>
                         </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
+                          onClick={() => handleRemoveItem(order._id, item._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     ))}
                     {order.items.length > 2 && (
