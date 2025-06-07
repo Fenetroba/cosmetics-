@@ -6,7 +6,7 @@ import {
   deleteUser,
   View_Profile,
   UpdateUser
-} from '../Controller/user.js';
+} from '../Controller/User.js';
 import { isAuthenticated, isAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
