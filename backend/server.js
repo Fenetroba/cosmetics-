@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
 import morgan from 'morgan';
-import connectionState from './lib/connectionstate.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -70,32 +69,18 @@ app.use((req, res) => {
 });
 
 // Database connection
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
-    connectionState.setConnected(conn);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    connectionState.setDisconnected();
-    console.error('Error connecting to MongoDB:', error);
-    process.exit(1);
-  }
-};
-
-// Start server
-const startServer = async () => {
-  try {
-    await connectDB();
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('MongoDB Connected Successfully');
+    // Start server only after successful database connection
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-  } catch (error) {
-    console.error('Error starting server:', error);
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
     process.exit(1);
-  }
-};
-
-startServer();
+  });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
