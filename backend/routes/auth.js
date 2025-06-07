@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router();
 
-import { register, login, logout, getMe, checkAuth } from '../controller/auth.js';
+import { register, login, logout, getMe, checkAuth } from '../Controller/Auth.js';
 import { isAuthenticated } from '../middleware/auth.js';
 
 // Register new user
