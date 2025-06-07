@@ -10,30 +10,30 @@ const carouselItems = [
   {
     id: 1,
     image: product1,
-    title: "Drive Your Dreams Forward",
-    subtitle: "Ethiopia's Premier Vehicle Import & Sales Company",
+    title: "Lorem assumenda architecto quis porro ",
+    subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius cum quasi ",
     class:"rounded-t-full"
   },
   {
     id: 2,
     image: product2,
     title: "Luxury Vehicles for ",
-    subtitle: "Premium Selection of Imported Cars",
+    subtitle: "quaerat perspiciatis tempora minima doloremque, ",
    
     class:"rounded-tl-full "
   },
   {
     id: 3,
     image: product3,
-    title: "Experience Excellence",
-    subtitle: "Quality Service and Exceptional Value",
+    title: "Lorem ipsum dolor,",
+    subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. ",
     class:"rounded-t-full",
   },
   {
     id: 4,
     image: product4,
-    title: "Experience Excellence ",
-    subtitle: "Quality Service and Exceptional Value",
+    title: "Lorem ipsum dolor, sit amet. ",
+    subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
   },
 
   

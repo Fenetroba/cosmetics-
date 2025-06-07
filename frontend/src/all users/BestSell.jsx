@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import product1 from "../assets/product2.jpg";
+import product1 from "../assets/fulli.jpg";
 import { motion } from "framer-motion";
 
 const product = {

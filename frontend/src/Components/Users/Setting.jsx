@@ -66,7 +66,6 @@ const Setting = () => {
   return (
     <section>
      
-      <Header/>
     <div className="container mx-auto shadow-2xl h-full p-10 m-10 rounded-2xl">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>

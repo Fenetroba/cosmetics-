@@ -76,7 +76,7 @@ const Profile = () => {
 
   return (
     <section>
-      {location.pathname === '/shop/profile' && <Header />}
+
       
       <div className="container mx-auto h-full p-4 md:p-10 m-4 md:m-10 rounded-2xl">
         <div className="max-w-4xl mx-auto space-y-6">
