@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
 import morgan from 'morgan';
-import connectionState from './lib/connectionstate.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -73,10 +72,8 @@ app.use((req, res) => {
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
-    connectionState.setConnected(conn);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    connectionState.setDisconnected();
     console.error('Error connecting to MongoDB:', error);
     process.exit(1);
   }
