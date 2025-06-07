@@ -7,6 +7,10 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
   items: [{
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      auto: true
+    },
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
@@ -26,7 +30,8 @@ const orderSchema = new mongoose.Schema({
     },
     image: {
       type: String,
-      required: true
+      required: true,
+      default: '/placeholder.png'
     }
   }],
   totalAmount: {

@@ -32,9 +32,14 @@ export const fetchOrders = createAsyncThunk(
         throw new Error('Invalid response format');
       }
 
-      // Return the orders array, whether it's in data.data or just data
-      const orders = response.data.data || response.data;
+      // Return the orders array from the data field
+      const orders = response.data.data;
       console.log('Processed orders:', orders);
+      
+      if (!Array.isArray(orders)) {
+        throw new Error('Orders data is not an array');
+      }
+      
       return orders;
     } catch (error) {
       console.error('Error in fetchOrders:', error);
@@ -61,23 +66,8 @@ export const removeOrderItem = createAsyncThunk(
     try {
       console.log('Redux: Removing item:', { orderId, itemId });
       
-      // Handle different types of itemId
-      let productId;
-      if (typeof itemId === 'object' && itemId !== null) {
-        if (itemId._id) {
-          productId = itemId._id;
-        } else if (itemId.toString) {
-          productId = itemId.toString();
-        } else {
-          productId = JSON.stringify(itemId);
-        }
-      } else {
-        productId = String(itemId);
-      }
-      
-      console.log('Redux: Using product ID:', productId);
-      
-      const response = await axios.delete(`/orders/${orderId}/item/${productId}`);
+      // Ensure we're using the correct item ID
+      const response = await axios.delete(`/orders/${orderId}/item/${itemId}`);
       console.log('Redux: Remove item response:', response.data);
       
       if (!response.data.success) {

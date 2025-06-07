@@ -16,16 +16,33 @@ const OrderSummary = () => {
   const ordersLoading = useSelector(selectOrdersLoading);
   const ordersError = useSelector(selectOrdersError);
   const [localOrders, setLocalOrders] = useState([]);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
-    dispatch(fetchOrders());
-  }, [dispatch]);
+    console.log('Auth state:', { isAuthenticated, user });
+    if (isAuthenticated) {
+      console.log('Fetching orders...');
+      dispatch(fetchOrders());
+    } else {
+      console.log('User not authenticated');
+      toast.error('Please login to view your orders');
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
+    console.log('Orders updated:', orders);
     if (orders) {
       setLocalOrders(orders);
     }
   }, [orders]);
+
+  useEffect(() => {
+    if (ordersError) {
+      console.error('Orders error:', ordersError);
+      toast.error(ordersError);
+    }
+  }, [ordersError]);
 
   const handleCheckout = () => {
     toast.success("Proceeding to checkout");
@@ -55,14 +72,14 @@ const OrderSummary = () => {
       // Make the API call
       const result = await dispatch(removeOrderItem({ orderId, itemId })).unwrap();
       
-      if (result.success) {
+      if (result) {
         toast.success("Item removed successfully");
         // Refresh orders from server to ensure consistency
         dispatch(fetchOrders());
       } else {
         // Revert the optimistic update if the API call fails
         setLocalOrders(orders);
-        toast.error(result.message || "Failed to remove item");
+        toast.error("Failed to remove item");
       }
     } catch (error) {
       // Revert the optimistic update if there's an error
@@ -131,9 +148,13 @@ const OrderSummary = () => {
                       <div key={item._id} className="flex items-center justify-between space-x-2">
                         <div className="flex items-center space-x-2 flex-1">
                           <img
-                            src={item.image}
+                            src={item.image || '/placeholder.png'}
                             alt={item.name}
                             className="w-10 h-10 object-cover rounded"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = '/placeholder.png';
+                            }}
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">{item.name}</p>
