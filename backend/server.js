@@ -27,7 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://cosmetics-3o1c.onrender.com',
+    'https://cosmetics-frontend.onrender.com'
+  ],
   credentials: true
 }));
 app.use(morgan('dev'));
@@ -52,7 +57,16 @@ app.get('/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error details:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+    body: req.body,
+    query: req.query,
+    params: req.params
+  });
+  
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
@@ -62,6 +76,14 @@ app.use((err, req, res, next) => {
 
 // Handle 404 routes
 app.use((req, res) => {
+  console.log('404 Not Found:', {
+    path: req.path,
+    method: req.method,
+    body: req.body,
+    query: req.query,
+    params: req.params
+  });
+  
   res.status(404).json({
     success: false,
     message: 'Route not found'
@@ -69,12 +91,19 @@ app.use((req, res) => {
 });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+})
   .then(() => {
     console.log('MongoDB Connected Successfully');
     // Start server only after successful database connection
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`MongoDB URI: ${process.env.MONGODB_URI ? 'Configured' : 'Not configured'}`);
     });
   })
   .catch((error) => {
