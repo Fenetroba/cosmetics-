@@ -40,28 +40,17 @@ export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
   async ({ productId, quantity }, { rejectWithValue }) => {
     try {
-      // First ensure cart exists
       await ensureCart();
-      
-      // Log the request details
       console.log('Updating cart item:', { productId, quantity });
-      
-      // Make the update request
       const response = await axios.put(`/cart/${productId}`, { quantity });
-      
-      // Log the response
       console.log('Update cart response:', response.data);
-      
       return response.data.data;
     } catch (error) {
-      // Log the full error details
       console.error('Error updating cart:', {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message
       });
-      
-      // Return a more detailed error message
       return rejectWithValue({
         message: error.response?.data?.message || 'Error updating cart',
         status: error.response?.status,
@@ -122,9 +111,11 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items || [];
-        state.totalAmount = action.payload.totalAmount || 0;
-        state.totalQuantity = action.payload.totalQuantity || 0;
+        if (action.payload) {
+          state.cartItems = action.payload.items || [];
+          state.totalAmount = action.payload.totalAmount || 0;
+          state.totalQuantity = action.payload.totalQuantity || 0;
+        }
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
@@ -137,9 +128,11 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items || [];
-        state.totalAmount = action.payload.totalAmount || 0;
-        state.totalQuantity = action.payload.totalQuantity || 0;
+        if (action.payload) {
+          state.cartItems = action.payload.items || [];
+          state.totalAmount = action.payload.totalAmount || 0;
+          state.totalQuantity = action.payload.totalQuantity || 0;
+        }
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
@@ -152,9 +145,11 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items || [];
-        state.totalAmount = action.payload.totalAmount || 0;
-        state.totalQuantity = action.payload.totalQuantity || 0;
+        if (action.payload) {
+          state.cartItems = action.payload.items || [];
+          state.totalAmount = action.payload.totalAmount || 0;
+          state.totalQuantity = action.payload.totalQuantity || 0;
+        }
       })
       .addCase(updateCartItem.rejected, (state, action) => {
         state.loading = false;
@@ -167,9 +162,11 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items || [];
-        state.totalAmount = action.payload.totalAmount || 0;
-        state.totalQuantity = action.payload.totalQuantity || 0;
+        if (action.payload) {
+          state.cartItems = action.payload.items || [];
+          state.totalAmount = action.payload.totalAmount || 0;
+          state.totalQuantity = action.payload.totalQuantity || 0;
+        }
       })
       .addCase(removeFromCart.rejected, (state, action) => {
         state.loading = false;
