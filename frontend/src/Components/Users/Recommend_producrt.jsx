@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/features/productSlice";
 import { addToCart } from "../../redux/features/cartSlice";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import { toast } from "sonner";
 
 const Recommend_producrt = () => {

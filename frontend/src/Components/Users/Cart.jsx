@@ -13,8 +13,8 @@ import {
   clearCart
 } from '../../redux/features/cartSlice';
 import { fetchOrders, selectOrders, selectOrdersLoading, selectOrdersError } from '../../redux/features/orderSlice';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 import { format } from 'date-fns';
 

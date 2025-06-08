@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProfile } from '@/redux/features/userSlice';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { Badge } from "@/Components/ui/badge";
+import { Button } from "@/Components/ui/button";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Header from '@/all users/Header';
 import { toast } from "sonner";

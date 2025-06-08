@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../../redux/features/productSlice'
 import { addToCart } from '../../redux/features/cartSlice'
 import Righit_filter from '../../Components/Users/Righit_filter'
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card"
+import { Button } from "@/Components/ui/button"
+import { Badge } from "@/Components/ui/badge"
+import { Skeleton } from "@/Components/ui/skeleton"
 import { toast } from "sonner"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet"
 import { Menu } from "lucide-react"
 
 const ProductUser = () => {
