@@ -7,7 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@/Components/ui/navigation-menu";
 import { LucideMenu, LucideShoppingCart, Search, UserPen } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import { Button } from "@/Components/ui/button";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
