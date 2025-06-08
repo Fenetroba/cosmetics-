@@ -18,18 +18,11 @@ export default defineConfig({
           'react-vendor': [
             'react',
             'react-dom',
-            'react-router-dom',
-            'react-router',
-            'scheduler'
+            'react-router-dom'
           ],
           'redux-vendor': [
             '@reduxjs/toolkit',
             'react-redux'
-          ],
-          'utils-vendor': [
-            'axios',
-            'formik',
-            'yup'
           ]
         }
       },
@@ -39,10 +32,7 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
-      'react-router',
-      'scheduler'
-    ],
-    exclude: ['@reduxjs/toolkit', 'react-redux']
+      'react-router-dom'
+    ]
   },
 })
