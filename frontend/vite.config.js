@@ -15,22 +15,28 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Create chunks based on node_modules
+          // Ensure React and ReactDOM are always bundled together
+          if (id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/scheduler/')) {
+            return 'vendor-react';
+          }
+          
+          // Other vendor chunks
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
             if (id.includes('@reduxjs') || id.includes('react-redux')) {
               return 'vendor-redux';
             }
             if (id.includes('axios') || id.includes('formik') || id.includes('yup')) {
               return 'vendor-utils';
             }
-            // All other node_modules
             return 'vendor';
           }
         }
       },
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
   },
 })
