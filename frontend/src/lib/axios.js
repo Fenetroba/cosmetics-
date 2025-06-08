@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: process.env.NODE_ENV === 'production' 
-    ? 'https://cosmetics-3o1c.onrender.com/api'
+    ? 'https://grass-fuxp.onrender.com/api'
     : 'http://localhost:5000/api',
   withCredentials: true,
   headers: {
