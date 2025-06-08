@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' 
-    ? 'https://grass-fuxp.onrender.com/api'
-    : 'http://localhost:5000/api',
+  baseURL: 'https://grass-fuxp.onrender.com/api',
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
