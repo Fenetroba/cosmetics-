@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../lib/axios.js';
+import axios from '../../lib/axios';
 
 // Async thunk for creating a product
 export const createProduct = createAsyncThunk(

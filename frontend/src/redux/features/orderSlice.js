@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../lib/axios.js';
+import axios from '../../lib/axios';
 
 // Test order data
 const testOrder = {
