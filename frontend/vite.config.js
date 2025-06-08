@@ -14,13 +14,22 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000, // Increase warning limit to 1000kb
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split vendor chunks
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['@headlessui/react', '@heroicons/react'],
-          'vendor-utils': ['axios', 'date-fns', 'formik', 'yup'],
-          'vendor-redux': ['@reduxjs/toolkit', 'react-redux'],
-        },
+        manualChunks: (id) => {
+          // Create chunks based on node_modules
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('@reduxjs') || id.includes('react-redux')) {
+              return 'vendor-redux';
+            }
+            if (id.includes('axios') || id.includes('formik') || id.includes('yup')) {
+              return 'vendor-utils';
+            }
+            // All other node_modules
+            return 'vendor';
+          }
+        }
       },
     },
   },
