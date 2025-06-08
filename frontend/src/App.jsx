@@ -13,7 +13,7 @@ import { checkAuthStatus } from "./redux/features/authSlice";
 import Profile from "./Components/Users/profile";
 import Setting from "./Components/Users/Setting";
 import AdminDashboard from "./Components/Dashboard/AdminDashboard";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "sonner";
 import UserInfo from "./Components/Admin/UserInfo";
 import Cart from "./Page/user/Cart";
 
