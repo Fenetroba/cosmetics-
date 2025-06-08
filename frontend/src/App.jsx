@@ -5,7 +5,7 @@ import Login from "./Page/Auth/Login";
 import Register from "./Page/Auth/Register";
 import AllComponent from "./all users/AllComponent";
 import AuthLayer from "./Components/Layers/AuthLayer";
-import ShopLayer from "./Components/Layers/shopLayer";
+import ShopLayer from "./Components/Layers/ShopLayer.jsx";
 import Home from "./Page/user/Home";
 import AdminLayer from "./Components/Layers/AdminLayer";
 import { useEffect } from "react";
