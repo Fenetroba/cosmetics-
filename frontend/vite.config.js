@@ -14,29 +14,35 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000, // Increase warning limit to 1000kb
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Ensure React and ReactDOM are always bundled together
-          if (id.includes('node_modules/react/') || 
-              id.includes('node_modules/react-dom/') ||
-              id.includes('node_modules/scheduler/')) {
-            return 'vendor-react';
-          }
-          
-          // Other vendor chunks
-          if (id.includes('node_modules')) {
-            if (id.includes('@reduxjs') || id.includes('react-redux')) {
-              return 'vendor-redux';
-            }
-            if (id.includes('axios') || id.includes('formik') || id.includes('yup')) {
-              return 'vendor-utils';
-            }
-            return 'vendor';
-          }
+        manualChunks: {
+          'react-vendor': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            'react-router',
+            'scheduler'
+          ],
+          'redux-vendor': [
+            '@reduxjs/toolkit',
+            'react-redux'
+          ],
+          'utils-vendor': [
+            'axios',
+            'formik',
+            'yup'
+          ]
         }
       },
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'react-router',
+      'scheduler'
+    ],
+    exclude: ['@reduxjs/toolkit', 'react-redux']
   },
 })
