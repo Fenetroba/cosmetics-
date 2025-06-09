@@ -14,16 +14,24 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000, // Increase warning limit to 1000kb
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': [
-            'react',
-            'react-dom',
-            'react-router-dom'
-          ],
-          'redux-vendor': [
-            '@reduxjs/toolkit',
-            'react-redux'
-          ]
+        manualChunks: (id) => {
+          // Handle node_modules
+          if (id.includes('node_modules')) {
+            // React and related packages
+            if (id.includes('react') || 
+                id.includes('react-dom') || 
+                id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            
+            // Redux related packages
+            if (id.includes('redux') || id.includes('@reduxjs')) {
+              return 'vendor-redux';
+            }
+            
+            // All other node_modules
+            return 'vendor';
+          }
         }
       },
     },
