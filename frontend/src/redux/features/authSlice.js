@@ -65,10 +65,6 @@ export const checkAuthStatus = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error('Auth check failed:', error);
-      // Don't treat 401 as an error, just return not authenticated
-      if (error.response?.status === 401) {
-        return { user: null, isAuthenticated: false };
-      }
       return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
     }
   }
@@ -132,16 +128,25 @@ const authSlice = createSlice({
       })
       .addCase(checkAuthStatus.fulfilled, (state, action) => {
         state.isLoading = false;
+<<<<<<< HEAD
         state.isAuthenticated = !!action.payload?.user;
         state.user = action.payload?.user || null;
         state.hasCheckedAuth = true;
+=======
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+>>>>>>> parent of 2453c79 (new state)
       })
       .addCase(checkAuthStatus.rejected, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+<<<<<<< HEAD
         state.error = null;
         state.hasCheckedAuth = true;
+=======
+        state.error = null; // Clear any previous errors
+>>>>>>> parent of 2453c79 (new state)
       });
   },
 });
