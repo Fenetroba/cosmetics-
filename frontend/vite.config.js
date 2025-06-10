@@ -14,7 +14,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://grass-fuxp.onrender.com',
+        target: 'https://cosmetics-1.onrender.com',
         changeOrigin: true,
         secure: false,
       },
