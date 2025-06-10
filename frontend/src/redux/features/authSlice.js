@@ -65,6 +65,10 @@ export const checkAuthStatus = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error('Auth check failed:', error);
+      // Don't treat 401 as an error, just return not authenticated
+      if (error.response?.status === 401) {
+        return { user: null, isAuthenticated: false };
+      }
       return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
     }
   }
@@ -72,7 +76,7 @@ export const checkAuthStatus = createAsyncThunk(
 
 const initialState = {
   user: null,
-  isLoading: false,
+  isLoading: true, // Start with loading true
   error: null,
   isAuthenticated: false,
 };
@@ -127,14 +131,14 @@ const authSlice = createSlice({
       })
       .addCase(checkAuthStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.isAuthenticated = !!action.payload?.user;
+        state.user = action.payload?.user || null;
       })
       .addCase(checkAuthStatus.rejected, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
-        state.error = null; // Clear any previous errors
+        state.error = null;
       });
   },
 });
