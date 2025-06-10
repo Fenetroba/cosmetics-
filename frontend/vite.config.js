@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
+<<<<<<< HEAD
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/Components'),
       '@pages': path.resolve(__dirname, './src/Page'),
@@ -33,4 +34,20 @@ export default defineConfig({
       }
     }
   }
+=======
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'https://cosmetics-3o1c.onrender.com',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+
+>>>>>>> parent of 600661d (new state)
 })
