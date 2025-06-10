@@ -5,9 +5,7 @@ env.config()
 
 export const isAuthenticated = async (req, res, next) => {
   try {
-    console.log('Cookies:', req.cookies);
-    console.log('Headers:', req.headers);
-
+    // Get token from cookie or Authorization header
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
     if (!token) {
@@ -19,9 +17,12 @@ export const isAuthenticated = async (req, res, next) => {
     }
 
     try {
+      // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Find user
       const user = await User.findById(decoded.id).select('-password');
-
+      
       if (!user) {
         console.log('User not found for token');
         return res.status(401).json({
@@ -30,10 +31,13 @@ export const isAuthenticated = async (req, res, next) => {
         });
       }
 
+      // Attach user to request
       req.user = user;
       next();
     } catch (jwtError) {
       console.log('JWT verification failed:', jwtError.message);
+      // Clear invalid token cookie
+      res.clearCookie('token');
       return res.status(401).json({
         success: false,
         message: 'Invalid token or token expired'

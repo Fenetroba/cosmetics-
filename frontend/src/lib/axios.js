@@ -17,7 +17,15 @@ const axiosInstance = axios.create({
 // Add request interceptor
 axiosInstance.interceptors.request.use(
   config => {
-    // You can add any request modifications here
+    // Get token from cookie
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('token='))
+      ?.split('=')[1];
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   error => {
@@ -34,6 +42,8 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       // Handle unauthorized errors
       console.log('Unauthorized request');
+      // Optionally redirect to login page
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
