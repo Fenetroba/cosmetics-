@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, clearError } from '../../redux/features/authSlice';
-import Header from '@all-users/Header';
-import Footer from '@all-users/Footer';
+import Header from '../../all users/Header';
+import Footer from '../../all users/Footer';
 
 const Registration = () => {
   const navigate = useNavigate();

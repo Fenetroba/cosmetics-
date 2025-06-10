@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Header from '@all-users/Header';
+import Header from '../../all users/Header';
 import { toast } from "sonner";
 
 const Profile = () => {

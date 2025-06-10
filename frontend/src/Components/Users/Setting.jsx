@@ -6,7 +6,7 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { toast } from "sonner";
-import Header from '@all-users/Header';
+import Header from '../../all users/Header';
 
 const Setting = () => {
   const dispatch = useDispatch();
