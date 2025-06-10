@@ -3,7 +3,7 @@ import axios from "axios";
 // Determine the base URL based on the environment
 const baseURL = import.meta.env.MODE === "development" 
   ? "http://localhost:5000/api" 
-  : "https://cosmetics-1.onrender.com";
+  : "https://cosmetics-3o1c.onrender.com";
 
 const axiosInstance = axios.create({
   baseURL,
