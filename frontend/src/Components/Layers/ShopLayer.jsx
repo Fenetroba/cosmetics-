@@ -1,13 +1,12 @@
-import Header from '@/all users/Header'
+import Header from '@all-users/Header'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
 const ShopLayer = () => {
   return (
     <div>
-     
-   
-     <Outlet/>
+      <Header />
+      <Outlet/>
     </div>
   )
 }

@@ -1,5 +1,5 @@
-import Footer from '@/all users/Footer'
-import Header from '@/all users/Header'
+import Footer from '@all-users/Footer'
+import Header from '@all-users/Header'
 import Herosection from '@/Components/Users/Herosection'
 import Recommend_producrt from '@/Components/Users/Recommend_producrt'
 import Righit_filter from '@/Components/Users/Righit_filter'
