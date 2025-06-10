@@ -25,19 +25,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-<<<<<<< HEAD
     // Only check auth status if we're not already loading and not on auth pages
     if (!isLoading && !location.pathname.includes('/auth/')) {
       dispatch(checkAuthStatus());
     }
   }, [dispatch, isLoading, location.pathname]);
-=======
-    // Only check auth if not already authenticated and not on auth pages
-    if (!isAuthenticated && !location.pathname.includes('/auth/')) {
-      dispatch(checkAuthStatus());
-    }
-  }, [isAuthenticated, location.pathname, dispatch]);
->>>>>>> parent of 2453c79 (new state)
 
   // Show loading state while checking authentication
   if (isLoading) {
