@@ -5,7 +5,7 @@ import { store } from './redux/store';
 import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { SidebarProvider, SidebarTrigger } from './Components/ui/sidebar';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>

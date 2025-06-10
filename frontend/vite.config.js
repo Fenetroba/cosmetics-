@@ -10,37 +10,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    chunkSizeWarningLimit: 1000, // Increase warning limit to 1000kb
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          // Handle node_modules
-          if (id.includes('node_modules')) {
-            // React and related packages
-            if (id.includes('react') || 
-                id.includes('react-dom') || 
-                id.includes('react-router')) {
-              return 'vendor-react';
-            }
-            
-            // Redux related packages
-            if (id.includes('redux') || id.includes('@reduxjs')) {
-              return 'vendor-redux';
-            }
-            
-            // All other node_modules
-            return 'vendor';
-          }
-        }
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'https://grass-fuxp.onrender.com',
+        changeOrigin: true,
+        secure: false,
       },
     },
   },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom'
-    ]
-  },
+
 })

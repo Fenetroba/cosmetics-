@@ -29,7 +29,7 @@ const BestSell = () => {
           }
         },
         { 
-          threshold: 0.1,
+          threshold: 0.9,
           rootMargin: '50px'
         }
       );
@@ -48,33 +48,33 @@ const BestSell = () => {
     <motion.div 
       ref={ref} 
       className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-16"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 3 }}
     >
       <div className="container mx-auto px-4">
         <motion.h1 
           className="text-[var(--two)] font-extrabold text-4xl md:text-5xl mb-4"
-          initial={{ y: -20, opacity: 0 }}
+          initial={{ y: -80, opacity: 0 }}
           animate={isVisible ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 2 }}
         >
           Best Sellers
         </motion.h1>
         <motion.p 
           className="text-gray-600 mb-12 max-w-2xl"
-          initial={{ y: -20, opacity: 0 }}
+          initial={{ y: -50, opacity: 0 }}
           animate={isVisible ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 2 }}
         >
           Discover our most loved products, carefully selected for their quality and effectiveness
         </motion.p>
         
         <motion.div
           className="group relative w-full"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 3 }}
         >
           <div className="relative overflow-hidden rounded-2xl h-[300px]">
             <motion.img

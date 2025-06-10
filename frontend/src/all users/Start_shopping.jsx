@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import product3 from "../assets/product4.jpg";
-import product4 from "../assets/product5.jpg";
-import product5 from "../assets/product1.jpg";
+import product4 from "../assets/some.jpg";
+import product5 from "../assets/some.jpg";
 import { Button } from "@/Components/ui/button";
+import {motion} from 'framer-motion'
 
 const startShopItems = [
   {
@@ -25,7 +26,7 @@ const startShopItems = [
     img: product5,
     title: "FACE TREATMENT",
     description: "Find the perfect face care products for your skin type.",
-    path: "/shop/face"
+    path: "/category"
   },
 ];
 
@@ -37,7 +38,11 @@ const StartShopping = () => {
   };
 
   return (
-    <div className="mb-10 mx-4 md:mx-2 pb-4 md:p-10 border-18 rounded-lg ">
+    <motion.div className="mb-60 mx-4 md:mx-2 pb-4 md:p-10 border-18 rounded-lg "
+    initial={{ y: 0 }}
+      animate={{ y: 100 }}
+      transition={{ duration: 3}}
+    >
       <h1 className="text-[var(--one)] font-extrabold text-3xl pb-7 uppercase ">
         Start Shopping
       </h1>
@@ -57,7 +62,7 @@ const StartShopping = () => {
               <div className="absolute top-4 left-4">
                 <Button 
                   onClick={() => handleShopClick(item.path)}
-                  className="bg-white text-black hover:bg-gray-100"
+                  className="bg-white text-black cursor-pointer hover:bg-[var(--five)]"
                 >
                   Shop Now
                 </Button>
@@ -70,7 +75,7 @@ const StartShopping = () => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

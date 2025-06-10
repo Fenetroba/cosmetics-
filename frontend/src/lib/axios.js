@@ -1,57 +1,30 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: 'https://grass-fuxp.onrender.com/api',
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  }
+// Determine the base URL based on the environment
+const baseURL = import.meta.env.MODE === "development" 
+  ? "http://localhost:5000/api" 
+  : "https://grass-fuxp.onrender.com/api";
+
+const axiosInstance = axios.create({
+  baseURL,
+  withCredentials: true, // Allow sending cookies with requests
 });
 
-// Add a request interceptor
-instance.interceptors.request.use(
-  (config) => {
-    // Log the request for debugging
-    console.log('Making request to:', config.url, {
-      method: config.method,
-      headers: config.headers,
-      withCredentials: config.withCredentials
-    });
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Optional: Add interceptors for request/response handling
+axiosInstance.interceptors.request.use(config => {
+  // You can modify the request config here if needed
+  return config;
+}, error => {
+  // Handle request error here
+  return Promise.reject(error);
+});
 
-// Add a response interceptor
-instance.interceptors.response.use(
-  (response) => {
-    // Log successful responses for debugging
-    console.log('Response received:', {
-      url: response.config.url,
-      status: response.status,
-      data: response.data
-    });
-    return response;
-  },
-  (error) => {
-    // Log error responses for debugging
-    console.error('Request failed:', {
-      url: error.config?.url,
-      status: error.response?.status,
-      data: error.response?.data
-    });
+axiosInstance.interceptors.response.use(response => {
+  // You can modify the response data here if needed
+  return response;
+}, error => {
+  // Handle response error here
+  return Promise.reject(error);
+});
 
-    // Only redirect to login if not already on login page and not checking auth status
-    if ((error.response?.status === 401 || error.response?.status === 403) && 
-        !window.location.pathname.includes('/login') &&
-        !error.config.url.includes('/checkauth')) {
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
-);
-
-export default instance;
+export default axiosInstance;

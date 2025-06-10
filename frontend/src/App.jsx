@@ -16,6 +16,8 @@ import AdminDashboard from "./Components/Dashboard/AdminDashboard";
 import { Toaster } from "sonner";
 import UserInfo from "./Components/Admin/UserInfo";
 import Cart from "./Page/user/Cart";
+import AllUser_Products from "./all users/AllUser_Products";
+import ProductCollections from "./Components/Layers/Product_mainLayer";
 
 
 function App() {
@@ -52,10 +54,14 @@ function App() {
             path="/" 
             element={
               <AuthRoute isAuth={isAuthenticated} user={user}>
-                <AllComponent />
-              </AuthRoute>
+                <ProductCollections/>
+               </AuthRoute>
+           
             } 
-          />
+          >
+          <Route path='' element={<AllComponent/>}/>
+          <Route path='category' element={<AllUser_Products/>}/>
+          </Route>
 
           {/* Auth Routes */}
           <Route

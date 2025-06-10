@@ -2,8 +2,8 @@ import React from 'react'
 import product1 from "../assets/product2.jpg"
 import product2 from "../assets/product3.jpg"
 import product3 from "../assets/product4.jpg"
-import product4 from "../assets/product5.jpg"
-import product5 from "../assets/product1.jpg"
+import product4 from "../assets/some.jpg"
+import product5 from "../assets/some.jpg"
 const products = [
      { id: 1, name: "Replumping conditioner", price: "$19.50", image: product1 },
      { id: 2, name: "Advanced night repair", price: "$19.50", image: product2 },
@@ -22,7 +22,7 @@ const Founder_favorite = () => {
             <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
                 {products.map((product) => (
                     <div key={product.id} className="flex flex-col items-center">
-                        <img src={product.image} alt={product.name} className="w-49 h-49 rounded-full shadow-lg shadow-amber-50" />
+                        <img src={product.image} alt={product.name} className="w-49 h-49 rounded-full hover:shadow-lg hover:scale-105 duration-500 shadow-amber-50" />
                         <p className="mt-2 text-center">{product.name}</p>
                         <span className="text-gray-600">{product.price}</span>
                     </div>

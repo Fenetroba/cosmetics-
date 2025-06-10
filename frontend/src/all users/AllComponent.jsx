@@ -9,6 +9,7 @@ import Start_shopping from "./Start_shopping";
 import UserSay from ".//UserSay";
 import Herosection from "./herosection";
 import Footer from "./Footer";
+import ProductCollections from '../Components/Layers/Product_mainLayer';
 
 const AllComponent = ({isAuthenticated}) => {
   return (
@@ -22,6 +23,7 @@ const AllComponent = ({isAuthenticated}) => {
  <Founder_favorite />
  <UserSay />
  <Footer />
+
     </div>
   )
 }

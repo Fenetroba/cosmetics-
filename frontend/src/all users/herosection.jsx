@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import product1 from "../assets/product2.jpg"
+import product1 from "../assets/products (6).webp"
 import product2 from "../assets/product3.jpg"
 import product3 from "../assets/product4.jpg"
-import product4 from "../assets/product5.jpg"
+import product4 from "../assets/some.jpg"
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from '@/Components/ui/button'

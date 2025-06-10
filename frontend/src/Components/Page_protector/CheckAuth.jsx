@@ -8,6 +8,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
 
   const login = "/login";
   const register = "/register";
+  const startShop = "/category";
   const home = "/";
   const ShopHome = "/shop/home";
   const AdminHome = "/admin/home";
@@ -21,6 +22,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
   if (!isAuth) {
     if (location.pathname === home || 
         location.pathname.includes(login) || 
+        location.pathname.includes(startShop) || 
         location.pathname.includes(register)) {
       return <>{children}</>;
     }

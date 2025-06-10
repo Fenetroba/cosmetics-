@@ -16,8 +16,8 @@ const UserSay = () => {
         <div className='flex sm:flex-row flex-col  space-x-2 space-y-3.5 m-10'>
           {
                UserInfo.map((info)=>(
-                    <div key={info.id} className=' shadow-sm hover:shadow-lg hover:scale-105 duration-300 md:w-100 py-16 px-5'>
-                         <img src={info.img} alt="client_image" className='w-12 mb-5 rounded-full shadow-lg h-12' />
+                    <div key={info.id} className=' shadow-sm shadow-amber-700 hover:shadow-sm hover:scale-105 duration-300 md:w-100 py-16 px-5 '>
+                         <img src={info.img} alt="client_image " className=' shadow-amber-950 w-12 mb-5 rounded-full shadow-sm h-12' />
                          <p>{info.description}</p>
                          <h2 className='mt-10 text-[20px] font-bold capitalize'>{info.name}</h2>
                     </div>

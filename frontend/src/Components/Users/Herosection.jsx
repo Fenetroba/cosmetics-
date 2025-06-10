@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import product1 from '../../assets/products (1).jpg'
+import product1 from '../../assets/some.jpg'
 import product2 from '../../assets/products (7).jpg'
-import product3 from '../../assets/products (6).jpg'
-import product4 from '../../assets/products (5).jpg'
+import product3 from '../../assets/products (6).webp'
+import product4 from '../../assets/product3.jpg'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 const carouselItems = [
   {
