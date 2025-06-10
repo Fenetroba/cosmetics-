@@ -5,7 +5,7 @@ import product3 from "../assets/product4.jpg"
 import product4 from "../assets/some.jpg"
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { Button } from '@/Components/ui/button'
+import { Button } from '../Components/ui/button'
 
 const carouselItems = [
   {

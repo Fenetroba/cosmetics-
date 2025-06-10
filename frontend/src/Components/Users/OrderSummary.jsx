@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/Components/ui/card"
-import { selectTotalAmount, selectTotalQuantity } from '@/redux/features/cartSlice';
+import { selectTotalAmount, selectTotalQuantity } from '../../redux/features/cartSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import { format } from "date-fns";
-import { selectOrders, fetchOrders, selectOrdersLoading, selectOrdersError, removeOrderItem } from '@/redux/features/orderSlice';
+import { selectOrders, fetchOrders, selectOrdersLoading, selectOrdersError, removeOrderItem } from '../../redux/features/orderSlice';
 import { Trash2 } from 'lucide-react';
 
 const OrderSummary = () => {

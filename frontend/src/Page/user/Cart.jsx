@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Card, CardContent } from "@/Components/ui/card"
-import { Button } from "@/Components/ui/button"
-import { Input } from "@/Components/ui/input"
+import { Card, CardContent } from "../../Components/ui/card"
+import { Button } from "../../Components/ui/button"
+import { Input } from "../../Components/ui/input"
 import { Trash2 } from 'lucide-react'
 import { toast } from "sonner"
 import { 
@@ -17,7 +17,7 @@ import {
   removeFromCart, 
   clearCart 
 } from '../../redux/features/cartSlice'
-import OrderSummary from '@/Components/Users/OrderSummary'
+import OrderSummary from '../../Components/Users/OrderSummary'
 
 const Cart = () => {
   const dispatch = useDispatch();

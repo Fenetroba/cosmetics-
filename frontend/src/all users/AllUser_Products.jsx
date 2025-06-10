@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Header'
-import ProductUser from '@/Page/user/ProductUser'
+import ProductUser from '../Page/user/ProductUser'
 
 const AllUser_Products = () => {
   return (

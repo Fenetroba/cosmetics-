@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProfile, updateUserProfile } from '@/redux/features/userSlice';
+import { fetchUserProfile, updateUserProfile } from '../../redux/features/userSlice';
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
