@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
   }
 });
 
-<<<<<<< HEAD
+
 // Add request interceptor
 axiosInstance.interceptors.request.use(
   config => {
@@ -47,27 +47,7 @@ axiosInstance.interceptors.response.use(
       window.location.href = '/login';
     }
     return Promise.reject(error);
-=======
-// Optional: Add interceptors for request/response handling
-axiosInstance.interceptors.request.use(config => {
-  // You can modify the request config here if needed
-  return config;
-}, error => {
-  // Handle request error here
-  return Promise.reject(error);
-});
-
-axiosInstance.interceptors.response.use(response => {
-  // You can modify the response data here if needed
-  return response;
-}, error => {
-  // Handle response error here
-  if (error.response?.status === 401) {
-    // Handle unauthorized errors
-    console.log('Unauthorized request');
->>>>>>> parent of 600661d (new state)
   }
-  return Promise.reject(error);
-});
+);
 
 export default axiosInstance;
