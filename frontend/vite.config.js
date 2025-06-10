@@ -5,20 +5,14 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  server: {
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'https://cosmetics-3o1c.onrender.com',
-        changeOrigin: true,
-        secure: false,
+  server:{
+    proxy:{
+      "/api":{
+        target:"http://localhost:5000",
       },
     },
   },
+  },
+ 
 
-})
+)
