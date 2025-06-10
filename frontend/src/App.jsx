@@ -19,16 +19,17 @@ import Cart from "./Page/user/Cart";
 import AllUser_Products from "./all users/AllUser_Products";
 import ProductCollections from "./Components/Layers/Product_mainLayer";
 
-
 function App() {
   const location = useLocation();
   const { isAuthenticated, user, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check auth status on initial load and when pathname changes
-    dispatch(checkAuthStatus());
-  }, [dispatch]);
+    // Only check auth status if we're not already loading and not on auth pages
+    if (!isLoading && !location.pathname.includes('/auth/')) {
+      dispatch(checkAuthStatus());
+    }
+  }, [dispatch, isLoading, location.pathname]);
 
   // Show loading state while checking authentication
   if (isLoading) {

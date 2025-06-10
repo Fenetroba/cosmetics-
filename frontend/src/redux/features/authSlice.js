@@ -76,9 +76,10 @@ export const checkAuthStatus = createAsyncThunk(
 
 const initialState = {
   user: null,
-  isLoading: true, // Start with loading true
+  isLoading: false,
   error: null,
   isAuthenticated: false,
+  hasCheckedAuth: false
 };
 
 const authSlice = createSlice({
@@ -133,12 +134,14 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = !!action.payload?.user;
         state.user = action.payload?.user || null;
+        state.hasCheckedAuth = true;
       })
       .addCase(checkAuthStatus.rejected, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
         state.error = null;
+        state.hasCheckedAuth = true;
       });
   },
 });
