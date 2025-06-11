@@ -7,7 +7,7 @@ const baseURL = import.meta.env.MODE === "development"
 
 const axiosInstance = axios.create({
   baseURL,
-  withCredentials: true, // This is crucial for cookies
+  withCredentials: true,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -47,11 +47,13 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   error => {
+    // Log detailed error information
     console.error('Response error:', {
       url: error.config?.url,
       status: error.response?.status,
       message: error.message,
-      cookies: document.cookie
+      cookies: document.cookie,
+      headers: error.response?.headers
     });
 
     if (error.response?.status === 401) {
