@@ -29,7 +29,7 @@ function App() {
     if (!hasCheckedAuth && !isLoading) {
       dispatch(checkAuthStatus());
     }
-  }, [dispatch, hasCheckedAuth, isLoading]);
+  }, [dispatch, hasCheckedAuth]);
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -48,7 +48,7 @@ function App() {
       
       <main>
         <Routes>
-          {/* Public Route */}
+         
           <Route 
             path="/" 
             element={
