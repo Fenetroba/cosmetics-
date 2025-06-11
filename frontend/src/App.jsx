@@ -24,12 +24,12 @@ function App() {
   const { isAuthenticated, user, isLoading, hasCheckedAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Only check auth status once when the app loads
-  //   if (!hasCheckedAuth) {
-  //     dispatch(checkAuthStatus());
-  //   }
-  // }, [dispatch, hasCheckedAuth]);
+  // useEffect(() => {
+  //   // Only check auth status once when the app loads
+  // //   if (!hasCheckedAuth) {
+  // //     dispatch(checkAuthStatus());
+  // //   }
+  // // }, [dispatch, hasCheckedAuth]);
 
   // Show loading state while checking authentication
   if (isLoading) {
