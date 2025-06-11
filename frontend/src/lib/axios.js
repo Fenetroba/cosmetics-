@@ -3,11 +3,11 @@ import axios from "axios";
 // Determine the base URL based on the environment
 const baseURL = import.meta.env.MODE === "development" 
   ? "http://localhost:5000/api" 
-  : "https://cosmetics-3o1c.onrender.com/api";  // Add /api to the base URL
+  : "https://cosmetics-3o1c.onrender.com/api";
 
 const axiosInstance = axios.create({
   baseURL,
-  withCredentials: true, // Allow sending cookies with requests
+  withCredentials: true, // This is crucial for cookies
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -17,18 +17,18 @@ const axiosInstance = axios.create({
 // Add request interceptor
 axiosInstance.interceptors.request.use(
   config => {
-    // Get token from cookie
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('token='))
-      ?.split('=')[1];
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Log request details in development
+    if (import.meta.env.MODE === 'development') {
+      console.log('Making request to:', config.url, {
+        method: config.method,
+        withCredentials: config.withCredentials,
+        headers: config.headers
+      });
     }
     return config;
   },
   error => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -36,14 +36,29 @@ axiosInstance.interceptors.request.use(
 // Add response interceptor
 axiosInstance.interceptors.response.use(
   response => {
+    // Log response details in development
+    if (import.meta.env.MODE === 'development') {
+      console.log('Received response from:', response.config.url, {
+        status: response.status,
+        headers: response.headers,
+        cookies: document.cookie
+      });
+    }
     return response;
   },
   error => {
+    console.error('Response error:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      message: error.message,
+      cookies: document.cookie
+    });
+
     if (error.response?.status === 401) {
-      // Handle unauthorized errors
-      console.log('Unauthorized request');
-      // Optionally redirect to login page
-      window.location.href = '/login';
+      // Only redirect if not already on login page
+      if (!window.location.pathname.includes('/auth/login')) {
+        window.location.href = '/auth/login';
+      }
     }
     return Promise.reject(error);
   }

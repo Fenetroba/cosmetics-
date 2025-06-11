@@ -22,13 +22,8 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post('/auth/login', userData, {
-        withCredentials: true,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+        withCredentials: true
       });
-      
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -56,15 +51,10 @@ export const checkAuthStatus = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get('/auth/checkauth', {
-        withCredentials: true,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+        withCredentials: true
       });
       return response.data;
     } catch (error) {
-      console.error('Auth check failed:', error);
       return rejectWithValue(error.response?.data || { message: 'Not authenticated' });
     }
   }
@@ -120,6 +110,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+        state.hasCheckedAuth = true;
       })
       // Check Auth Status
       .addCase(checkAuthStatus.pending, (state) => {
@@ -128,7 +119,7 @@ const authSlice = createSlice({
       })
       .addCase(checkAuthStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isAuthenticated = !!action.payload?.user;
+        state.isAuthenticated = true;
         state.user = action.payload?.user || null;
         state.hasCheckedAuth = true;
       })

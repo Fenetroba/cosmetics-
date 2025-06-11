@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
+} from "../../Components/ui/dropdown-menu";
 import { UserPen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const ProfilePage = () => {

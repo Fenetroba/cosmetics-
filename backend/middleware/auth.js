@@ -9,7 +9,7 @@ export const isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      console.log('No token found in request');
+      console.log('No token found in request. Cookies:', req.cookies);
       return res.status(401).json({
         success: false,
         message: 'Please login to access this resource'
@@ -24,7 +24,7 @@ export const isAuthenticated = async (req, res, next) => {
       const user = await User.findById(decoded.id).select('-password');
       
       if (!user) {
-        console.log('User not found for token');
+        console.log('User not found for token:', decoded.id);
         return res.status(401).json({
           success: false,
           message: 'User not found'
@@ -37,7 +37,13 @@ export const isAuthenticated = async (req, res, next) => {
     } catch (jwtError) {
       console.log('JWT verification failed:', jwtError.message);
       // Clear invalid token cookie
-      res.clearCookie('token');
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        path: '/',
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+      });
       return res.status(401).json({
         success: false,
         message: 'Invalid token or token expired'

@@ -6,37 +6,36 @@ const AuthRoute = ({ children, isAuth, user }) => {
  console.log(isAuth)
   // Define route paths
 
-  const login = "/login";
-  const register = "/register";
+  const login = "/auth/login";
+  const register = "/auth/register";
   const startShop = "/category";
   const home = "/";
   const ShopHome = "/shop/home";
   const AdminHome = "/admin/home";
   const UnauthorizedPage = "/unauth-page";
-  const ProfilePage = "/profile";
-  const SettingsPage = "/settings";
-  const cart = "/cart";
+  const ProfilePage = "/shop/profile";
+  const SettingsPage = "/shop/settings";
+  const cart = "/shop/cart";
  
 
-  // If not authenticated, only allow access to login, register, and home
+  // If not authenticated, only allow access to public routes
   if (!isAuth) {
     if (location.pathname === home || 
-        location.pathname.includes(login) || 
-        location.pathname.includes(startShop) || 
-        location.pathname.includes(register)) {
+        location.pathname === startShop || 
+        location.pathname === login || 
+        location.pathname === register) {
       return <>{children}</>;
     }
     // Redirect to login for all other paths
-    return <Navigate to={login} />;
+    return <Navigate to={login} state={{ from: location }} replace />;
   }
 
-  // Handle root path access first
+  // Handle root path access
   if (location.pathname === home) {
     if (user?.role === "admin") {
       return <Navigate to={AdminHome} replace />;
-    } else {
-      return <Navigate to={ShopHome} replace />;
     }
+    return <Navigate to={ShopHome} replace />;
   }
 
   // Handle admin user routing
@@ -52,7 +51,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
     }
 
     // Allow admin to access admin routes
-    if (location.pathname.includes("/admin") ||location.pathname.includes(ProfilePage)) {
+    if (location.pathname.includes("/admin")) {
       return <>{children}</>;
     }
 
@@ -68,15 +67,13 @@ const AuthRoute = ({ children, isAuth, user }) => {
     }
 
     // If user tries to access auth pages (login/register), redirect to shop home
-    if (location.pathname.includes(login) || location.pathname.includes(register)) {
+    if (location.pathname === login || location.pathname === register) {
       return <Navigate to={ShopHome} replace />;
     }
 
     // Allow access to shop routes, profile, and settings
     if (location.pathname.includes("/shop") || 
-        location.pathname.includes(ProfilePage) || 
-        location.pathname.includes(cart) || 
-        location.pathname.includes(SettingsPage)) {
+        location.pathname === cart) {
       return <>{children}</>;
     }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, CardContent } from "@/Components/ui/card"
+import { Card, CardContent } from "../../Components/ui/card"
 import { selectTotalAmount, selectTotalQuantity } from '../../redux/features/cartSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../ui/button';

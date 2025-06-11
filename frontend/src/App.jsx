@@ -21,15 +21,15 @@ import ProductCollections from "./Components/Layers/Product_mainLayer";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated, user, isLoading } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading, hasCheckedAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Only check auth status if we're not already loading and not on auth pages
-    if (!isLoading && !location.pathname.includes('/auth/')) {
+    // Only check auth status once when the app loads
+    if (!hasCheckedAuth && !isLoading) {
       dispatch(checkAuthStatus());
     }
-  }, [dispatch, isLoading, location.pathname]);
+  }, [dispatch, hasCheckedAuth, isLoading]);
 
   // Show loading state while checking authentication
   if (isLoading) {
