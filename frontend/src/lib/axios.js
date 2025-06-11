@@ -53,8 +53,14 @@ axiosInstance.interceptors.response.use(
       status: error.response?.status,
       message: error.message,
       cookies: document.cookie,
-      headers: error.response?.headers
+      headers: error.response?.headers,
+      data: error.response?.data
     });
+
+    // Handle CORS errors specifically
+    if (error.message === 'Network Error' && !error.response) {
+      console.error('CORS Error: Request blocked by CORS policy');
+    }
 
     if (error.response?.status === 401) {
       // Only redirect if not already on login page
