@@ -26,7 +26,7 @@ function App() {
 
   useEffect(() => {
     // Only check auth status once when the app loads
-    if (!hasCheckedAuth && !isLoading) {
+    if (!hasCheckedAuth) {
       dispatch(checkAuthStatus());
     }
   }, [dispatch, hasCheckedAuth]);

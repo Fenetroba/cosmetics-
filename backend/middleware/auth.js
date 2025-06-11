@@ -39,8 +39,8 @@ export const isAuthenticated = async (req, res, next) => {
       // Clear invalid token cookie
       res.clearCookie('token', {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/'
       });
       return res.status(401).json({
