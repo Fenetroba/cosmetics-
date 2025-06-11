@@ -39,10 +39,9 @@ export const isAuthenticated = async (req, res, next) => {
       // Clear invalid token cookie
       res.clearCookie('token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        path: '/',
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+        secure: true,
+        sameSite: 'none',
+        path: '/'
       });
       return res.status(401).json({
         success: false,
