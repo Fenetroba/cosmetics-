@@ -5,7 +5,6 @@ import { Outlet } from 'react-router-dom'
 const ShopLayer = () => {
   return (
     <div>
-      <Header />
       <Outlet/>
     </div>
   )

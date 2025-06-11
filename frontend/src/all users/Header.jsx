@@ -59,9 +59,9 @@ const Header = ({ isAuthenticated }) => {
         } md:visible`}
       >
         <div className="max-sm:mb-3">
-          <a href="/" className="hover:underline">
+          <Link to="/" className="hover:underline">
             HOME
-          </a>
+          </Link>
         </div>
 
         <NavigationMenu className="max-md:my-10">

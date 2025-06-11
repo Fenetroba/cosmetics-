@@ -1,33 +1,34 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import product1 from "../assets/products (6).webp"
-import product2 from "../assets/product3.jpg"
-import product3 from "../assets/product4.jpg"
-import product4 from "../assets/some.jpg"
+import React, { useEffect, useState, useCallback } from "react";
+import product1 from "../assets/products (6).webp";
+import product2 from "../assets/product3.jpg";
+import product3 from "../assets/product4.jpg";
+import product4 from "../assets/some.jpg";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { Button } from '../Components/ui/button'
+import { Button } from "../Components/ui/button";
 
 const carouselItems = [
   {
     id: 1,
     image: product1,
     title: "Lorem assumenda architecto quis porro ",
-    subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius cum quasi ",
-    class:"rounded-t-full"
+    subtitle:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius cum quasi ",
+    class: "rounded-t-full",
   },
   {
     id: 2,
     image: product2,
     title: "Luxury Vehicles for ",
     subtitle: "quaerat perspiciatis tempora minima doloremque, ",
-    class:"rounded-tl-full "
+    class: "rounded-tl-full ",
   },
   {
     id: 3,
     image: product3,
     title: "Lorem ipsum dolor,",
     subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. ",
-    class:"rounded-t-full",
+    class: "rounded-t-full",
   },
   {
     id: 4,
@@ -64,7 +65,7 @@ const Herosection = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    
+
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [isMounted, nextSlide]);
@@ -72,36 +73,39 @@ const Herosection = () => {
   if (!isMounted) return null;
 
   return (
-    <section className='bg-[var(--two)] w-full flex md:flex-row flex-col items-center justify-between'>
-      <div className='w-full h-[90vh]'>
+    <section className="bg-[var(--two)] w-full flex md:flex-row flex-col items-center justify-between">
+      <div className="w-full h-[90vh]">
         <div className="relative h-[500px] overflow-hidden rounded-lg sm:h-[550px]">
           <AnimatePresence mode="wait">
-            {carouselItems.map((item, index) => (
-              index === currentSlide && (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0"
-                >
-                  <div className="relative h-full w-full">
-                    <img 
-                      src={item.image} 
-                      alt={`Slide ${index + 1}`} 
-                      className={`cover p-4 text-center w-full shadow-white shadow-sm ${item.class}`} 
-                    />
-                  </div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                    <p className="mb-2 text-sm sm:text-base">{item.subtitle}</p>
-                    <h2 className="mb-8 max-w-3xl text-3xl font-medium sm:text-4xl md:text-5xl">
-                      {item.title}
-                    </h2>
-                  </div>
-                </motion.div>
-              )
-            ))}
+            {carouselItems.map(
+              (item, index) =>
+                index === currentSlide && (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0"
+                  >
+                    <div className="relative h-full w-full">
+                      <img
+                        src={item.image}
+                        alt={`Slide ${index + 1}`}
+                        className={`cover p-4 text-center w-full shadow-white shadow-sm ${item.class}`}
+                      />
+                    </div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                      <p className="mb-2 text-sm sm:text-base">
+                        {item.subtitle}
+                      </p>
+                      <h2 className="mb-8 max-w-3xl text-3xl font-medium sm:text-4xl md:text-5xl">
+                        {item.title}
+                      </h2>
+                    </div>
+                  </motion.div>
+                )
+            )}
           </AnimatePresence>
 
           <button
@@ -133,10 +137,17 @@ const Herosection = () => {
           </div>
         </div>
       </div>
-      <div className='text-right mr-30 p-5'>
-        <h2 className='font-bold sm:text-4xl text-[var(--five)] mb-4'>NEW ARRIVAL</h2>
-        <p className='text-[var(--six)] text-2xl mb-2'>Selam Delicate Skin & Hair Package</p>
-        <p className='text-red-50 mb-10'>Lorem ipsum dolor sit amet consectetur adipisicing sit amet consectetur adipisicing </p>
+      <div className="sm:text-right text-center sm:mr-30 p-5">
+        <h2 className="font-bold sm:text-4xl text-[var(--five)] mb-4">
+          NEW ARRIVAL
+        </h2>
+        <p className="text-[var(--six)] text-2xl mb-2">
+          Grass Delicate Skin & Hair Package
+        </p>
+        <p className="text-red-50 mb-10">
+          Lorem ipsum dolor sit amet consectetur adipisicing sit amet
+          consectetur adipisicing{" "}
+        </p>
         <Button>SHOP NOW</Button>
       </div>
     </section>
