@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,28 +7,42 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../Components/ui/dropdown-menu";
-import { UserPen } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { UserPen } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@/redux/features/authSlice";
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+
+  const LogoutHandler = () => {
+    dispatch(logoutUser());
+  };
   return (
     <div>
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-              <UserPen className=" cursor-pointer" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link to="/admin/Profile">Profile</Link>{" "}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/admin/settings">Setting</Link>{" "}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <UserPen className=" cursor-pointer" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link to="/admin/Profile">Profile</Link>{" "}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link to="/admin/settings">Setting</Link>{" "}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Button className="cursor-pointer">
+              {" "}
+              <span onClick={LogoutHandler}>LOGOUT</span>
+            </Button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

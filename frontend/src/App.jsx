@@ -18,6 +18,9 @@ import UserInfo from "./Components/Admin/UserInfo";
 import Cart from "./Page/user/Cart";
 import AllUser_Products from "./all users/AllUser_Products";
 import ProductCollections from "./Components/Layers/Product_mainLayer";
+import Inbox from "./Page/Admin/Inbox";
+import User from "./Page/Admin/User";
+import Order from "./Page/Admin/Order";
 
 function App() {
   const location = useLocation();
@@ -40,8 +43,7 @@ function App() {
     );
   }
 
-  console.log("Auth Status:", isAuthenticated, "User:", user, "Current Path:", location.pathname);
-
+ 
   return (
     <div className="min-h-screen">
       <Toaster/>
@@ -104,6 +106,9 @@ function App() {
             <Route path="home" element={<AdminDashboard />} />
             <Route path="profile" element={<UserInfo />} />
             <Route path="settings" element={<UserInfo />} />
+            <Route path="inbox" element={<Inbox />} />
+            <Route path="user" element={<User />} />
+            <Route path="order" element={<Order />} />
           </Route>
 
           {/* Catch all route - redirect to home */}

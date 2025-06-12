@@ -11,7 +11,7 @@ import {
   getNewProducts,
   getProductsByCategory
 } from '../Controller/Product.js';
-import { isAuthenticated, isAdmin } from '../middleware/auth.js';
+import { isAuthenticated } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -28,14 +28,14 @@ const validateProduct = [
   body('images').isArray().withMessage('Images must be an array')
 ];
 
-// Public routes
+// Public routes - no authentication required
 router.get('/', getProducts);
 router.get('/featured', getFeaturedProducts);
 router.get('/new', getNewProducts);
 router.get('/category/:category', getProductsByCategory);
 router.get('/:id', getProduct);
 
-// Protected routes
+// Protected routes - require authentication
 router.use(isAuthenticated);
 
 // Review route
@@ -45,9 +45,9 @@ router.post('/:id/reviews', [
   body('comment').trim().notEmpty().withMessage('Comment is required')
 ], addReview);
 
-// Admin routes
-router.post('/', isAdmin, validateProduct, createProduct);
-router.put('/:id', isAdmin, [param('id').isMongoId(), ...validateProduct], updateProduct);
-router.delete('/:id', isAdmin, param('id').isMongoId(), deleteProduct);
+// Product management routes - require authentication
+router.post('/', validateProduct, createProduct);
+router.put('/:id', [param('id').isMongoId(), ...validateProduct], updateProduct);
+router.delete('/:id', param('id').isMongoId(), deleteProduct);
 
 export default router; 

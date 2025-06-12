@@ -3,85 +3,65 @@ import Property from '../models/Property.js';
 
 export const View_Profile = async (req, res) => {
   try {
-    // Check if user exists in request (set by auth middleware)
-    if (!req.user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'User not authenticated' 
-      });
-    }
-
-    const user = await User.findById(req.user._id)
-      .select('-password')
-      .populate('favorites');
-
+    const user = await User.findById(req.user._id).select('-password');
+    
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
       });
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
-        phone: user.phone,
-        role: user.role,
-        favorites: user.favorites
+        phone: user.phone
       }
     });
   } catch (error) {
-    console.error('View Profile Error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error fetching profile', 
-      error: error.message 
+    console.error('View profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching profile',
+      error: error.message
     });
   }
 };
 
 export const UpdateUser = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'User not authenticated' 
-      });
-    }
-
     const updates = Object.keys(req.body);
     const allowedUpdates = ['username', 'email', 'phone'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Invalid updates' 
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid updates'
       });
     }
 
     updates.forEach(update => req.user[update] = req.body[update]);
     await req.user.save();
 
-    res.json({
+    res.status(200).json({
       success: true,
       user: {
         id: req.user._id,
         username: req.user.username,
         email: req.user.email,
-        phone: req.user.phone,
-        role: req.user.role
+        phone: req.user.phone
       }
     });
   } catch (error) {
-    console.error('Update User Error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error updating profile', 
-      error: error.message 
+    console.error('Update profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating profile',
+      error: error.message
     });
   }
 };
@@ -134,51 +114,7 @@ export const GEt_fav = async (req, res) => {
   }
 };
 
-// Admin only routes
-export const Get_All_User = async (req, res) => {
-  try {
-    const users = await User.find().select('-password');
-    res.json({
-      success: true,
-      users
-    });
-  } catch (error) {
-    console.error('Get All Users Error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error fetching users', 
-      error: error.message 
-    });
-  }
-};
-
-export const delet_User = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    
-    if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
-      });
-    }
-
-    await user.remove();
-    res.json({ 
-      success: true, 
-      message: 'User deleted successfully' 
-    });
-  } catch (error) {
-    console.error('Delete User Error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error deleting user', 
-      error: error.message 
-    });
-  }
-};
-
-// Get all users (admin only)
+// Get all users
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
@@ -198,7 +134,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Get single user (admin only)
+// Get single user
 export const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
@@ -212,7 +148,7 @@ export const getUser = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: user
+      user
     });
   } catch (error) {
     console.error('Get user error:', error);
@@ -224,11 +160,9 @@ export const getUser = async (req, res) => {
   }
 };
 
-// Update user (admin only)
+// Update user
 export const updateUser = async (req, res) => {
   try {
-    const { username, email, isAdmin } = req.body;
-    
     const user = await User.findById(req.params.id);
     
     if (!user) {
@@ -238,21 +172,27 @@ export const updateUser = async (req, res) => {
       });
     }
 
-    // Update fields
-    if (username) user.username = username;
-    if (email) user.email = email;
-    if (typeof isAdmin !== 'undefined') user.isAdmin = isAdmin;
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['username', 'email', 'phone'];
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
+    if (!isValidOperation) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid updates'
+      });
+    }
+
+    updates.forEach(update => user[update] = req.body[update]);
     await user.save();
 
     res.status(200).json({
       success: true,
-      message: 'User updated successfully',
-      data: {
-        _id: user._id,
+      user: {
+        id: user._id,
         username: user.username,
         email: user.email,
-        isAdmin: user.isAdmin
+        phone: user.phone
       }
     });
   } catch (error) {
@@ -265,7 +205,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Delete user (admin only)
+// Delete user
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -278,7 +218,7 @@ export const deleteUser = async (req, res) => {
     }
 
     await user.deleteOne();
-
+    
     res.status(200).json({
       success: true,
       message: 'User deleted successfully'

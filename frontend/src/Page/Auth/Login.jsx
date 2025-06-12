@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../../redux/features/authSlice';
+import { toast } from 'sonner';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      toast.success('Login successful!', {
+        description: 'Welcome back!',
+        duration: 3000,
+      });
       navigate('/shop/home');
     }
     return () => {
@@ -25,12 +30,24 @@ const Login = () => {
     };
   }, [isAuthenticated, navigate, dispatch]);
 
+  // Show error toast when error state changes
+  useEffect(() => {
+    if (error) {
+      toast.error('Login failed', {
+        description: error,
+        duration: 3000,
+      });
+    }
+  }, [error]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    });
+    },
+
+  console.log(formData));
     // Clear validation errors when user types
     if (errors[name]) {
       setErrors({
@@ -64,10 +81,12 @@ const Login = () => {
       try {
         const result = await dispatch(loginUser(formData)).unwrap();
         if (result.success) {
-          navigate('/shop/home');
+          // Navigation will be handled by the isAuthenticated effect
+          return;
         }
       } catch (error) {
-        console.error('Login failed:', error);
+        // Error is already handled by the error state and useEffect
+        console.error('Login failed:', error.message);
       }
     }
   };

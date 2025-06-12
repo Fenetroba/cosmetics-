@@ -26,7 +26,9 @@ export const loginUser = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      // Return the error message from the backend
+      const errorMessage = error.response?.data?.message || 'Invalid email or password';
+      return rejectWithValue({ message: errorMessage });
     }
   }
 );
@@ -86,7 +88,7 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.user = action.payload.data;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -100,10 +102,13 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.user = action.payload.data;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
         state.error = action.payload?.message || 'Login failed';
       })
       // Logout

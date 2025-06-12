@@ -150,6 +150,7 @@ const Herosection = () => {
         </p>
         <Button>SHOP NOW</Button>
       </div>
+      
     </section>
   );
 };

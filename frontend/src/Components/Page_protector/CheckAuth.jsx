@@ -12,6 +12,9 @@ const AuthRoute = ({ children, isAuth, user }) => {
   const home = "/";
   const ShopHome = "/shop/home";
   const AdminHome = "/admin/home";
+  const Users = "/admin/user";
+  const inbox = "/admin/inbox";
+  const order = "/admin/order";
   const UnauthorizedPage = "/unauth-page";
   const ProfilePage = "/shop/profile";
   const SettingsPage = "/shop/settings";
@@ -40,6 +43,14 @@ const AuthRoute = ({ children, isAuth, user }) => {
 
   // Handle admin user routing
   if (user?.role === "admin") {
+    // Allow admin to access admin routes and specific pages
+    if (location.pathname.includes("/admin") || 
+        location.pathname === Users ||
+        location.pathname === inbox ||
+        location.pathname === order) {
+      return <>{children}</>;
+    }
+    
     // If admin tries to access shop routes, redirect to admin home
     if (location.pathname.includes("/shop")) {
       return <Navigate to={AdminHome} replace />;
@@ -50,19 +61,17 @@ const AuthRoute = ({ children, isAuth, user }) => {
       return <Navigate to={AdminHome} replace />;
     }
 
-    // Allow admin to access admin routes
-    if (location.pathname.includes("/admin")) {
-      return <>{children}</>;
-    }
-
     // Redirect all other routes to admin home
     return <Navigate to={AdminHome} replace />;
   }
 
   // Handle regular user routing
   if (isAuth) {
-    // If user tries to access admin routes, redirect to unauthorized page
-    if (location.pathname.includes("/admin")) {
+    // If user tries to access admin routes or inbox, redirect to unauthorized page
+    if (location.pathname.includes("/admin") || 
+        location.pathname === Users ||
+        location.pathname === inbox ||
+        location.pathname === order) {
       return <Navigate to={UnauthorizedPage} replace />;
     }
 

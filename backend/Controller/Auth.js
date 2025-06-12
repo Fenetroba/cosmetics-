@@ -18,15 +18,11 @@ export const register = async (req, res) => {
       });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create user
+    // Create user (password will be hashed by the pre-save hook)
     const user = await User.create({
       username,
       email,
-      password: hashedPassword
+      password
     });
 
     // Generate token

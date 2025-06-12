@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, clearError } from '../../redux/features/authSlice';
 import Header from '../../all users/Header';
 import Footer from '../../all users/Footer';
+import { toast } from 'sonner';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -20,12 +21,26 @@ const Registration = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      toast.success('Registration successful!', {
+        description: 'Welcome to our platform!',
+        duration: 3000,
+      });
       navigate('/user/shop');
     }
     return () => {
       dispatch(clearError());
     };
   }, [isAuthenticated, navigate, dispatch]);
+
+  // Show error toast when error state changes
+  useEffect(() => {
+    if (error) {
+      toast.error('Registration failed', {
+        description: error,
+        duration: 800,
+      });
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,12 +62,14 @@ const Registration = () => {
     
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
+    } else if (formData.username.trim().length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
     }
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.password) {
@@ -61,7 +78,9 @@ const Registration = () => {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
@@ -73,14 +92,34 @@ const Registration = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      const userData = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      };
-      
-      dispatch(registerUser(userData));
-      console.log(userData)
+      try {
+        const userData = {
+          username: formData.username.trim(),
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+        };
+        
+        const result = await dispatch(registerUser(userData)).unwrap();
+        if (result.success) {
+          toast.success('Registration successful!', {
+            description: 'Welcome to our platform!',
+            duration: 3000,
+          });
+          navigate('/user/shop');
+        }
+      } catch (error) {
+        // Error is already handled by the error state and useEffect
+        console.error('Registration failed:', error.message);
+      }
+    } else {
+      // Show validation errors in toast
+      const firstError = Object.values(errors)[0];
+      if (firstError) {
+        toast.error('Validation Error', {
+          description: firstError,
+          duration: 800,
+        });
+      }
     }
   };
 

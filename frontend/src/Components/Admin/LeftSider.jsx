@@ -1,4 +1,4 @@
-import { Calendar,ListOrdered , Home, Inbox, Search, Settings, TowerControl } from "lucide-react"
+import { Calendar,ListOrdered , Home, Inbox, Search, Settings, TowerControl, User } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/Components/ui/sidebar"
+import { Link } from "react-router-dom"
 
 // Menu items.
 const items = [
@@ -20,19 +21,19 @@ const items = [
   },
   {
     title: "Inbox",
-    url: "#",
+    url: "/admin/inbox",
     icon: Inbox,
   },
 
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Order",
+    url: "/admin/order ",
+    icon: ListOrdered,
   },
   {
-    title: "Order",
-    url: "#",
-    icon: ListOrdered,
+    title: "Users/custemer",
+    url: "/admin/user ",
+    icon: User,
   },
 ]
 
@@ -47,10 +48,10 @@ export function LeftSider() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -7,23 +7,23 @@ import {
   View_Profile,
   UpdateUser
 } from '../Controller/User.js';
-import { isAuthenticated, isAdmin } from '../middleware/auth.js';
+import { isAuthenticated } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Protected routes
 router.use(isAuthenticated);
 
-// Admin only routes
-router.get('/', isAdmin, getUsers);
+// User routes
+router.get('/', getUsers);
 
 // Profile routes (must come before /:id routes)
 router.get('/profile', View_Profile);
 router.put('/profile', UpdateUser);
 
 // Parameterized routes
-router.get('/:id', isAdmin, getUser);
-router.put('/:id', isAdmin, updateUser);
-router.delete('/:id', isAdmin, deleteUser);
+router.get('/:id', getUser);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
 
 export default router;
