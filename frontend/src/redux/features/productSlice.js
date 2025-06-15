@@ -27,6 +27,40 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+// Async thunk for deleting a product
+export const deleteProduct = createAsyncThunk(
+  'products/delete',
+  async (productId, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const user = state.auth.user;
+      const token = state.auth.token;
+      
+      // Check if user exists and has admin role
+      if (!user || user.role !== 'admin') {
+        return rejectWithValue({ message: 'Only administrators can delete products' });
+      }
+
+      // Check if token exists
+      if (!token) {
+        return rejectWithValue({ message: 'Authentication token is missing' });
+      }
+
+      const response = await axios.delete(`/products/${productId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      return productId; // Return the deleted product ID
+    } catch (error) {
+      console.error('Delete error:', error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || { message: 'Failed to delete product' });
+    }
+  }
+);
+
 // Async thunk for uploading image to Cloudinary
 export const uploadImage = createAsyncThunk(
   'products/uploadImage',
@@ -99,6 +133,20 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload?.message || 'Failed to fetch products';
+      })
+      // Delete Product
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = state.products.filter(product => product._id !== action.payload);
+        state.success = true;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload?.message || 'Failed to delete product';
       })
       // Upload Image
       .addCase(uploadImage.pending, (state) => {

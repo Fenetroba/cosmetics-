@@ -1,4 +1,4 @@
-import { Calendar,ListOrdered , Home, Inbox, Search, Settings, TowerControl, User } from "lucide-react"
+import { Calendar,ListOrdered , Home, Inbox, Search, Settings, TowerControl, User, MartiniIcon } from "lucide-react"
 
 import {
   Sidebar,
@@ -34,6 +34,11 @@ const items = [
     title: "Users/custemer",
     url: "/admin/user ",
     icon: User,
+  },
+  {
+    title: "Products",
+    url: "/admin/products ",
+    icon: MartiniIcon,
   },
 ]
 

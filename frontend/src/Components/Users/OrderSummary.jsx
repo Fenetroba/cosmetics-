@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "../../Components/ui/card"
-import { selectTotalAmount, selectTotalQuantity } from '../../redux/features/cartSlice';
+import { selectTotalAmount, selectTotalQuantity, clearCart, selectCartItems } from '../../redux/features/cartSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import { format } from "date-fns";
-import { selectOrders, fetchOrders, selectOrdersLoading, selectOrdersError, removeOrderItem } from '../../redux/features/orderSlice';
+import { selectOrders, fetchOrders, selectOrdersLoading, selectOrdersError, removeOrderItem, createOrder } from '../../redux/features/orderSlice';
 import { Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const totalAmount = useSelector(selectTotalAmount);
   const totalQuantity = useSelector(selectTotalQuantity);
   const orders = useSelector(selectOrders);
@@ -18,6 +20,7 @@ const OrderSummary = () => {
   const [localOrders, setLocalOrders] = useState([]);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.auth.user);
+  const cartItems = useSelector(selectCartItems) || [];
 
   useEffect(() => {
     console.log('Auth state:', { isAuthenticated, user });
@@ -44,8 +47,57 @@ const OrderSummary = () => {
     }
   }, [ordersError]);
 
-  const handleCheckout = () => {
-    toast.success("Proceeding to checkout");
+  const handleCheckout = async () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to proceed with checkout');
+      navigate('/payment/:orderId');
+      return;
+    }
+
+    if (!cartItems || cartItems.length === 0) {
+      toast.error('Your cart is empty');
+      return;
+    }
+
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading('Creating your order...');
+
+      // Create order with cart items
+      const orderData = {
+        items: cartItems.map(item => ({
+          product: item._id,
+          quantity: item.quantity,
+          price: item.price,
+          name: item.name,
+          image: item.image
+        })),
+        totalAmount: totalAmount || 0,
+        totalQuantity: totalQuantity || 0,
+        status: 'pending',
+        userId: user._id // Add user ID to the order
+      };
+
+      const result = await dispatch(createOrder(orderData)).unwrap();
+      
+      if (result) {
+        // Clear cart after successful order creation
+        dispatch(clearCart());
+        
+        // Dismiss loading toast and show success
+        toast.dismiss(loadingToast);
+        toast.success('Order created successfully! Redirecting to payment...');
+        
+        // Small delay to show the success message
+        setTimeout(() => {
+          // Navigate to payment page with order ID
+          navigate(`/payment/${result._id}`);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error(error.message || 'Failed to create order. Please try again.');
+    }
   };
 
   const handleRemoveItem = async (orderId, itemId) => {

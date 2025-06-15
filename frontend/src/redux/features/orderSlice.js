@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../lib/axios';
+import axios from 'axios';
 
 // Test order data
 const testOrder = {
@@ -18,32 +18,35 @@ const testOrder = {
   totalAmount: 59.98
 };
 
+// Create axios instance with base URL
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api',
+  withCredentials: true
+});
+
 // Async thunks
 export const fetchOrders = createAsyncThunk(
   'orders/fetchOrders',
   async (_, { rejectWithValue }) => {
     try {
-      console.log('Fetching orders from API...');
-      const response = await axios.get('/orders');
-      console.log('Orders API response:', response.data);
-      
-      // Check if the response has the expected structure
-      if (!response.data) {
-        throw new Error('Invalid response format');
-      }
-
-      // Return the orders array from the data field
-      const orders = response.data.data;
-      console.log('Processed orders:', orders);
-      
-      if (!Array.isArray(orders)) {
-        throw new Error('Orders data is not an array');
-      }
-      
-      return orders;
+      const response = await api.get('/orders');
+      return response.data.data;
     } catch (error) {
-      console.error('Error in fetchOrders:', error);
-      return rejectWithValue(error.response?.data || { message: 'Error fetching orders' });
+      console.error('Error fetching orders:', error);
+      return rejectWithValue(error.response?.data?.message || 'Error fetching orders');
+    }
+  }
+);
+
+export const updateOrderStatus = createAsyncThunk(
+  'orders/updateStatus',
+  async ({ orderId, status }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/orders/${orderId}/status`, { status });
+      return response.data.data;
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      return rejectWithValue(error.response?.data?.message || 'Error updating order status');
     }
   }
 );
@@ -52,7 +55,7 @@ export const createOrder = createAsyncThunk(
   'orders/createOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/orders', orderData);
+      const response = await api.post('/orders', orderData);
       return response.data.data || response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || { message: 'Error creating order' });
@@ -67,7 +70,7 @@ export const removeOrderItem = createAsyncThunk(
       console.log('Redux: Removing item:', { orderId, itemId });
       
       // Ensure we're using the correct item ID
-      const response = await axios.delete(`/orders/${orderId}/item/${itemId}`);
+      const response = await api.delete(`/orders/${orderId}/item/${itemId}`);
       console.log('Redux: Remove item response:', response.data);
       
       if (!response.data.success) {
@@ -85,7 +88,7 @@ export const removeOrderItem = createAsyncThunk(
 const initialState = {
   orders: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 const orderSlice = createSlice({
@@ -94,25 +97,38 @@ const orderSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch orders
+      // Fetch Orders
       .addCase(fetchOrders.pending, (state) => {
-        console.log('Fetch orders pending...');
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        console.log('Fetch orders fulfilled:', action.payload);
         state.loading = false;
-        state.orders = Array.isArray(action.payload) ? action.payload : [];
+        state.orders = action.payload;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
-        console.log('Fetch orders rejected:', action.payload);
         state.loading = false;
-        state.error = action.payload?.message || 'Error fetching orders';
+        state.error = action.payload;
+      })
+      // Update Order Status
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.orders.findIndex(order => order._id === action.payload._id);
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       // Create order
       .addCase(createOrder.pending, (state) => {
@@ -150,7 +166,7 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload?.message || 'Error removing item from order';
       });
-  }
+  },
 });
 
 export const { clearError } = orderSlice.actions;

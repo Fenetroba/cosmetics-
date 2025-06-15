@@ -48,8 +48,9 @@ export const register = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
-        isAdmin: user.isAdmin
-      }
+        role: user.role
+      },
+      token: token
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -107,8 +108,9 @@ export const login = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
-        isAdmin: user.isAdmin
-      }
+        role: user.role
+      },
+      token: token
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -196,7 +198,8 @@ export const checkAuth = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role
-      }
+      },
+      token: req.cookies.token
     });
   } catch (error) {
     console.error('CheckAuth Error:', error);

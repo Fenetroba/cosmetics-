@@ -12,6 +12,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
   const home = "/";
   const ShopHome = "/shop/home";
   const AdminHome = "/admin/home";
+  const productsAdmin = "/admin/products";
   const Users = "/admin/user";
   const inbox = "/admin/inbox";
   const order = "/admin/order";
@@ -47,6 +48,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
     if (location.pathname.includes("/admin") || 
         location.pathname === Users ||
         location.pathname === inbox ||
+        location.pathname === productsAdmin ||
         location.pathname === order) {
       return <>{children}</>;
     }
@@ -71,6 +73,7 @@ const AuthRoute = ({ children, isAuth, user }) => {
     if (location.pathname.includes("/admin") || 
         location.pathname === Users ||
         location.pathname === inbox ||
+        location.pathname === productsAdmin ||
         location.pathname === order) {
       return <Navigate to={UnauthorizedPage} replace />;
     }

@@ -1,7 +1,7 @@
 import Header from '../../all users/Header';
 import Footer from '../../all users/Footer';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../../redux/features/authSlice';
 import { toast } from 'sonner';
@@ -93,9 +93,9 @@ const Login = () => {
 
   return (
     <section>
-      <Header/>
-      <div className="min-h-screen bg-[var(--three)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md space-y-8 bg-[var(--two)] p-8 rounded-lg shadow-md">
+     
+      <div className="min-h-screen bg-[var(--three)] flex items-center justify-end  py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md space-y-8 bg-[var(--two)] p-8 rounded-lg shadow-md sm:mr-20">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--six)]">
               LOGIN
@@ -193,17 +193,17 @@ const Login = () => {
           <div className="text-center mt-4">
             <p className="text-sm text-gray-200">
               Don't have an account?{' '}
-              <button
-                onClick={() => navigate('/auth/register')}
+              <Link
+                 to='/auth/register'
                 className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer"
               >
                 Register here
-              </button>
+              </Link>
             </p>
           </div>
         </div>
       </div>
-      <Footer/>
+  
     </section>
   );
 };

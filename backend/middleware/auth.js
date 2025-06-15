@@ -59,7 +59,7 @@ export const isAuthenticated = async (req, res, next) => {
 
 export const isAdmin = async (req, res, next) => {
   try {
-    if (!req.user.isAdmin) {
+    if (req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
         message: 'Access denied. Admin privileges required.'

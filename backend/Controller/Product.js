@@ -136,8 +136,8 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    // Check if user is the owner
-    if (product.owner.toString() !== req.user._id.toString()) {
+    // Check if user is the owner or an admin
+    if (product.owner.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
         message: "Not authorized to update this product"
@@ -176,8 +176,8 @@ export const deleteProduct = async (req, res) => {
       });
     }
 
-    // Check if user is the owner
-    if (product.owner.toString() !== req.user._id.toString()) {
+    // Check if user is the owner or an admin
+    if (product.owner.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
         message: "Not authorized to delete this product"

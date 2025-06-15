@@ -21,18 +21,20 @@ import ProductCollections from "./Components/Layers/Product_mainLayer";
 import Inbox from "./Page/Admin/Inbox";
 import User from "./Page/Admin/User";
 import Order from "./Page/Admin/Order";
+import Payment from './Page/Payment';
+import Products from "./Page/Admin/Products";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated, user, isLoading, hasCheckedAuth } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+console.log(token)
   useEffect(() => {
     // Only check auth status once when the app loads
    
       dispatch(checkAuthStatus());
     
-  }, []);
+  }, [location]);
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -109,7 +111,18 @@ function App() {
             <Route path="inbox" element={<Inbox />} />
             <Route path="user" element={<User />} />
             <Route path="order" element={<Order />} />
+            <Route path="products" element={<Products />} />
           </Route>
+
+          {/* Payment Route */}
+          <Route
+            path="/payment/:orderId"
+            element={
+              <AuthRoute isAuth={isAuthenticated} user={user}>
+                <Payment />
+              </AuthRoute>
+            }
+          />
 
           {/* Catch all route - redirect to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
