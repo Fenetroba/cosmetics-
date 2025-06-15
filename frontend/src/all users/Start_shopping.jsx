@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import product3 from "../assets/product4.jpg";
 import product4 from "../assets/some.jpg";
-import product5 from "../assets/some.jpg";
+import product5 from "../assets/faceTritment.jpg";
 import { Button } from "@/Components/ui/button";
 import {motion} from 'framer-motion'
 
@@ -12,14 +12,14 @@ const startShopItems = [
     img: product3,
     title: "HAIR TREATMENT",
     description: "Discover our premium hair care solutions for healthy, beautiful hair.",
-    path: "/shop/hair"
+    path: "/category"
   },
   {
     id: 2,
     img: product4,
     title: "SKIN TREATMENT",
     description: "Explore our range of skin care products for radiant, glowing skin.",
-    path: "/shop/skin"
+    path: "/category"
   },
   {
     id: 3,

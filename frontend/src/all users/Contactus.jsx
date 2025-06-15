@@ -4,6 +4,7 @@ import { Input } from '../Components/ui/input';
 import { Textarea } from '../Components/ui/textarea';
 import { toast } from 'sonner';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import Header from './Header';
 
 const Contactus = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,9 @@ const Contactus = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <section>   <Header/>
+    <div className="min-h-screen bg-primary/5 py-12 px-4 sm:px-6 lg:px-8">
+   
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Contact Us</h1>
@@ -184,7 +187,7 @@ const Contactus = () => {
                     Sending...
                   </span>
                 ) : (
-                  <span className="flex items-center justify-center">
+                  <span className="flex items-center justify-center cursor-pointer">
                     <Send className="w-4 h-4 mr-2" />
                     Send Message
                   </span>
@@ -195,6 +198,7 @@ const Contactus = () => {
         </div>
       </div>
     </div>
+    </section>
   );
 };
 

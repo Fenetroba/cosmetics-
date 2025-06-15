@@ -58,7 +58,7 @@ const Header = ({ isAuthenticated }) => {
         } md:visible`}
       >
         <div className="max-sm:mb-3">
-          <Link to="/" className="hover:underline">
+          <Link to="/" className="hover:text-[var(--two)] font-bold">
             HOME
           </Link>
         </div>
@@ -66,7 +66,7 @@ const Header = ({ isAuthenticated }) => {
         <NavigationMenu className="max-md:my-10">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>BATH & BODY</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">BATH & BODY</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="md:w-[500px]">
                   Snail Oil
@@ -78,7 +78,7 @@ const Header = ({ isAuthenticated }) => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>HAIR CARE</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">HAIR CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="md:w-[500px]">
                 Castor Oil
@@ -90,7 +90,7 @@ const Header = ({ isAuthenticated }) => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>SKIN CARE</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">SKIN CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink className="sm:w-[500px]">
                 Tea Tree Oil
@@ -105,14 +105,14 @@ const Header = ({ isAuthenticated }) => {
         </NavigationMenu>
 
         <div className="max-md:my-6">
-          <Link to="/contact" className="hover:underline">
+          <Link to="/contact" className="hover:text-[var(--two)] font-bold">
             CONTACT
           </Link>
         </div>
         <div>
-          <a href="#" className="hover:underline">
+          <Link to="about us" className="hover:text-[var(--two)] font-bold">
             ABOUT US
-          </a>
+          </Link>
         </div>
         
       </nav>

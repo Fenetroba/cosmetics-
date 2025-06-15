@@ -25,6 +25,7 @@ import Payment from './Page/Payment';
 import Products from "./Page/Admin/Products";
 import EditProduct from "./Page/Admin/EditProduct";
 import Contactus from "./all users/Contactus";
+import AboutUs from "./all users/AboutUs";
 
 function App() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function App() {
             <Route index element={<AllComponent />} />
             <Route path="category" element={<AllUser_Products />} />
             <Route path="contact" element={<Contactus/>} />
+            <Route path="about us" element={<AboutUs/>} />
           </Route>
 
           {/* Auth Routes */}

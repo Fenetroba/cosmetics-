@@ -85,7 +85,7 @@ const BestSell = () => {
             />
             
             <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-green-700/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
+              className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
             >

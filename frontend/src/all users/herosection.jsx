@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import product1 from "../assets/products (6).webp";
+import product1 from "../assets/Product2Hero.webp";
 import product2 from "../assets/product3.jpg";
 import product3 from "../assets/product4.jpg";
-import product4 from "../assets/some.jpg";
+import product4 from "../assets/Product1Hero.webp";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from "../Components/ui/button";
+import { Link } from "react-router-dom";
 
 const carouselItems = [
   {
@@ -35,6 +36,7 @@ const carouselItems = [
     image: product4,
     title: "Lorem ipsum dolor, sit amet. ",
     subtitle: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+    class: "rounded-t-full",
   },
 ];
 
@@ -75,7 +77,7 @@ const Herosection = () => {
   return (
     <section className="bg-[var(--two)] w-full flex md:flex-row flex-col items-center justify-between">
       <div className="w-full h-[90vh]">
-        <div className="relative h-[500px] overflow-hidden rounded-lg sm:h-[550px]">
+        <div className="relative h-[500px] overflow-hidden rounded-lg sm:h-[550px] mt-4">
           <AnimatePresence mode="wait">
             {carouselItems.map(
               (item, index) =>
@@ -148,7 +150,7 @@ const Herosection = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing sit amet
           consectetur adipisicing{" "}
         </p>
-        <Button>SHOP NOW</Button>
+        <Button className="hover:bg-[var(--three)]"> <Link  to='/category'> SHOP NOW</Link></Button>
       </div>
       
     </section>

@@ -1,33 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import product1 from '../../assets/some.jpg'
 import product2 from '../../assets/products (7).jpg'
-import product3 from '../../assets/products (6).webp'
-import product4 from '../../assets/product3.jpg'
+import product3 from '../../assets/Product1Hero.webp'
+import product4 from '../../assets/Product2Hero.webp'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 const carouselItems = [
   {
     id: 1,
     image: product1,
-    title: "Drive Your Dreams Forward",
-    subtitle: "Ethiopia's Premier Vehicle Import & Sales Company",
+    title: "Lorem ipsum dolor sit amet consectetur ",
+    subtitle: "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quisquam optio, maxime ea consectetur,",
   },
   {
     id: 2,
     image: product2,
-    title: "Luxury Vehicles for ",
-    subtitle: "Premium Selection of Imported Cars",
+    title: "Lorem ipsum dolor sit amet consectetur ",
+    subtitle: "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias  quisquam optio, maxime ea consectetur,",
   },
   {
     id: 3,
     image: product3,
-    title: "Experience Excellence",
-    subtitle: "Quality Service and Exceptional Value",
+    title: "Lorem ipsum dolor sit amet consectetur ",
+    subtitle: "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias  quisquam optio, maxime ea consectetur,",
+
   },
   {
     id: 4,
     image: product4,
-    title: "Experience Excellence ",
-    subtitle: "Quality Service and Exceptional Value",
+    title: "Lorem ipsum dolor sit amet consectetur ",
+    subtitle: "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias  quisquam optio, maxime ea consectetur,",
+
   },
 ]
 const Herosection = () => {
@@ -60,6 +62,7 @@ const Herosection = () => {
           <div className="relative h-full">
             {carouselItems.map((item, index) => (
               <div
+              
                 key={item.id}
                 className={`absolute inset-0 transition-opacity duration-1000 ${
                   index === currentSlide
