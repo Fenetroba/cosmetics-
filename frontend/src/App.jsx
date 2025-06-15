@@ -23,21 +23,22 @@ import User from "./Page/Admin/User";
 import Order from "./Page/Admin/Order";
 import Payment from './Page/Payment';
 import Products from "./Page/Admin/Products";
+import EditProduct from "./Page/Admin/EditProduct";
+import Contactus from "./all users/Contactus";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated, user, isLoading, token } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading, hasCheckedAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-console.log(token)
-  useEffect(() => {
-    // Only check auth status once when the app loads
-   
-      dispatch(checkAuthStatus());
-    
-  }, [location]);
 
-  // Show loading state while checking authentication
-  if (isLoading) {
+  useEffect(() => {
+    if (!hasCheckedAuth) {
+      dispatch(checkAuthStatus());
+    }
+  }, [dispatch, hasCheckedAuth]);
+
+  // Show loading state only while checking initial auth status
+  if (isLoading && !hasCheckedAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
@@ -45,25 +46,16 @@ console.log(token)
     );
   }
 
- 
   return (
     <div className="min-h-screen">
-      <Toaster/>
-      
+      <Toaster />
       <main>
         <Routes>
-         
-          <Route 
-            path="/" 
-            element={
-              <AuthRoute isAuth={isAuthenticated} user={user}>
-                <ProductCollections/>
-               </AuthRoute>
-           
-            } 
-          >
-          <Route path='' element={<AllComponent/>}/>
-          <Route path='category' element={<AllUser_Products/>}/>
+          {/* Public Routes - No Auth Required */}
+          <Route path="/" element={<ProductCollections />}>
+            <Route index element={<AllComponent />} />
+            <Route path="category" element={<AllUser_Products />} />
+            <Route path="contact" element={<Contactus/>} />
           </Route>
 
           {/* Auth Routes */}
@@ -112,6 +104,7 @@ console.log(token)
             <Route path="user" element={<User />} />
             <Route path="order" element={<Order />} />
             <Route path="products" element={<Products />} />
+            <Route path="products/edit/:id" element={<EditProduct />} />
           </Route>
 
           {/* Payment Route */}

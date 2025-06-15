@@ -14,6 +14,19 @@ export const createProduct = createAsyncThunk(
   }
 );
 
+// Async thunk for updating a product
+export const updateProduct = createAsyncThunk(
+  'products/update',
+  async ({ id, productData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/products/${id}`, productData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || { message: 'Failed to update product' });
+    }
+  }
+);
+
 // Async thunk for fetching all products
 export const fetchProducts = createAsyncThunk(
   'products/fetchAll',
@@ -159,6 +172,23 @@ const productSlice = createSlice({
       .addCase(uploadImage.rejected, (state, action) => {
         state.uploadStatus.loading = false;
         state.uploadStatus.error = action.payload?.message || 'Failed to upload image';
+      })
+      // Update Product
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.products.findIndex(product => product._id === action.payload._id);
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
+        state.success = true;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload?.message || 'Failed to update product';
       });
   },
 });

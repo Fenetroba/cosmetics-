@@ -9,14 +9,17 @@ import { Badge } from "../../Components/ui/badge"
 import { Skeleton } from "../../Components/ui/skeleton"
 import { toast } from "sonner"
 import { Sheet, SheetContent, SheetTrigger } from "../../Components/ui/sheet"
-
-import { Menu } from "lucide-react"
+import { Menu, Search } from "lucide-react"
+import { Link } from 'react-router-dom'
+import { Input } from "../../Components/ui/input"
 
 const ProductUser = () => {
   const dispatch = useDispatch();
   const { products, isLoading, error } = useSelector((state) => state.products);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -28,8 +31,34 @@ const ProductUser = () => {
     }
   }, [products]);
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (!query.trim()) {
+      setFilteredProducts(products);
+      return;
+    }
+
+    const searchResults = products.filter(product => 
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.description.toLowerCase().includes(query.toLowerCase()) ||
+      product.category.toLowerCase().includes(query.toLowerCase()) ||
+      product.brand.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(searchResults);
+  };
+
   const handleFilterChange = (filters) => {
     let filtered = [...products];
+
+    // Apply search filter first
+    if (searchQuery) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
     // Apply price filter
     if (filters.priceRange) {
@@ -70,7 +99,6 @@ const ProductUser = () => {
     }
 
     setFilteredProducts(filtered);
-    // Close filter sheet on mobile after applying filters
     setIsFilterOpen(false);
   };
 
@@ -85,8 +113,8 @@ const ProductUser = () => {
         <div className="lg:hidden w-full">
           <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" className="w-full flex items-center justify-center gap-2">
-                <Menu className="h-4 w-4" />
+              <Button variant="outline" className="cursor-pointer w-full flex items-center justify-center gap-2">
+                <Menu className="h-4 w-4 cursor-pointer" />
                 Filters
               </Button>
             </SheetTrigger>
@@ -105,6 +133,20 @@ const ProductUser = () => {
 
         {/* Products Grid */}
         <div className="flex-1">
+          {/* Search Bar */}
+          <div className="mb-6 mt-6">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-10 w-full focus:border-0 focus:outline-0"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {isLoading ? (
               // Loading skeletons
@@ -147,17 +189,16 @@ const ProductUser = () => {
                       <span className="font-bold text-lg">
                         ${product.price.toFixed(2)}
                       </span>
-                      {product.discount > 0 && (
-                        <Badge variant="destructive" className="shrink-0">
-                          {product.discount}% OFF
-                        </Badge>
-                      )}
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">
                     <Button 
-                      className="w-full"
+                      className="w-full cursor-pointer"
                       onClick={() => {
+                        if (!isAuthenticated) {
+                          toast.error("Please login first to add items to cart");
+                          return;
+                        }
                         dispatch(addToCart({ productId: product._id, quantity: 1 }));
                         toast.success("Added to cart");
                       }}
@@ -168,9 +209,18 @@ const ProductUser = () => {
                 </Card>
               ))
             ) : (
-              // No products found
+              // No products found or login required message
               <div className="col-span-full text-center py-8">
-                <p className="text-gray-500">No products found matching your filters.</p>
+                {!isAuthenticated ? (
+                  <div className="space-y-4">
+                    <p className="text-gray-500">Please login first to view products.</p>
+                    <Button asChild>
+                      <Link to="/auth/login">Login Now</Link>
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No products found matching your search or filters.</p>
+                )}
               </div>
             )}
           </div>

@@ -1,61 +1,90 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createProduct } from "../../redux/features/productSlice";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { updateProduct, fetchProducts } from '../../redux/features/productSlice';
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/Components/ui/sheet";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Button } from '../../Components/ui/button';
+import { Input } from '../../Components/ui/input';
+import { Label } from '../../Components/ui/label';
+import { Textarea } from '../../Components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import ImageUpload from "./ImageUpload";
-import { toast } from "sonner";
+} from "../../Components/ui/select";
+import ImageUpload from '../../Components/Admin/ImageUpload';
 
-const Sider = () => {
+const EditProduct = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { products, isLoading } = useSelector((state) => state.products);
+  
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    brand: "",
-    stock: "",
+    name: '',
+    description: '',
+    price: '',
+    category: '',
+    brand: '',
+    stock: '',
     features: {
-      size: "",
-    },
+      size: ''
+    }
   });
 
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Fetch products if not already loaded
+    if (!products.length) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
+  useEffect(() => {
+    // Find the product to edit
+    const product = products.find(p => p._id === id);
+    if (product) {
+      setFormData({
+        name: product.name,
+        description: product.description,
+        price: product.price.toString(),
+        category: product.category,
+        brand: product.brand,
+        stock: product.stock.toString(),
+        features: {
+          size: product.features.size
+        }
+      });
+      setImages(product.images);
+    }
+  }, [products, id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
-      setFormData((prev) => ({
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setFormData(prev => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value,
-        },
+          [child]: value
+        }
       }));
     } else {
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        [name]: value,
+        [name]: value
       }));
     }
   };
@@ -69,61 +98,43 @@ const Sider = () => {
         ...formData,
         price: Number(formData.price),
         stock: Number(formData.stock),
-        images: images, // The images array should contain the Cloudinary URLs
+        images: images
       };
 
-      // Dispatch the createProduct action
-      const resultAction = await dispatch(createProduct(productData));
-
-      if (createProduct.fulfilled.match(resultAction)) {
-        toast.success("Product created successfully");
-
-        // Reset form
-        setFormData({
-          name: "",
-          description: "",
-          price: "",
-          category: "",
-          brand: "",
-          stock: "",
-          features: {
-            size: "",
-          },
-        });
-        setImages([]);
+      // Dispatch the updateProduct action
+      const resultAction = await dispatch(updateProduct({ id, productData }));
+      
+      if (updateProduct.fulfilled.match(resultAction)) {
+        toast.success("Product updated successfully");
+        navigate('/admin/products');
       } else {
-        const errorMessage =
-          resultAction.payload?.message || "Failed to create product";
+        const errorMessage = resultAction.payload?.message || 'Failed to update product';
         toast.error(errorMessage);
       }
     } catch (error) {
-      toast.error(
-        error.message || "An error occurred while creating the product"
-      );
+      toast.error(error.message || 'An error occurred while updating the product');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <div className="inline-flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-white ring-offset-background transition-colors hover:bg-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 t">
-          ADD PRODUCT
-        </div>
-      </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto p-6 font-bold ">
-        <SheetHeader>
-          <SheetTitle className="text-2xl">Add New Product</SheetTitle>
-          <SheetDescription>
-            Fill in the product details below to add a new product to the store.
-          </SheetDescription >
-        </SheetHeader>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
-        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+  return (
+    <div className="p-6">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-2xl font-semibold mb-6">Edit Product</h1>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label>Product Images</Label>
-            <ImageUpload onImagesChange={setImages} />
+            <ImageUpload onImagesChange={setImages} initialImages={images} />
           </div>
 
           <div className="space-y-2">
@@ -183,9 +194,7 @@ const Sider = () => {
             <Select
               name="category"
               value={formData.category}
-              onValueChange={(value) =>
-                handleChange({ target: { name: "category", value } })
-              }
+              onValueChange={(value) => handleChange({ target: { name: 'category', value } })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
@@ -225,17 +234,27 @@ const Sider = () => {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-primary text-white hover:bg-primary/50 cursor-pointer"
-            disabled={loading}
-          >
-            {loading ? "Adding Product..." : "Add Product"}
-          </Button>
+          <div className="flex gap-4">
+            <Button 
+              type="submit" 
+              className="flex-1 bg-primary text-white hover:bg-primary/50"
+              disabled={loading}
+            >
+              {loading ? 'Updating Product...' : 'Update Product'}
+            </Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="flex-1"
+              onClick={() => navigate('/admin/products')}
+            >
+              Cancel
+            </Button>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </div>
   );
 };
 
-export default Sider;
+export default EditProduct; 

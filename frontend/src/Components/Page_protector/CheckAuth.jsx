@@ -3,9 +3,9 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const AuthRoute = ({ children, isAuth, user }) => {
   const location = useLocation();
- console.log(isAuth)
-  // Define route paths
+  console.log('Auth status:', { isAuth, userRole: user?.role, path: location.pathname });
 
+  // Define route paths
   const login = "/auth/login";
   const register = "/auth/register";
   const startShop = "/category";
@@ -20,21 +20,21 @@ const AuthRoute = ({ children, isAuth, user }) => {
   const ProfilePage = "/shop/profile";
   const SettingsPage = "/shop/settings";
   const cart = "/shop/cart";
- 
 
-  // If not authenticated, only allow access to public routes
+  // Public routes that don't require authentication
+  const publicRoutes = [home, startShop, login, register];
+
+  // If not authenticated
   if (!isAuth) {
-    if (location.pathname === home || 
-        location.pathname === startShop || 
-        location.pathname === login || 
-        location.pathname === register) {
+    // Allow access to public routes
+    if (publicRoutes.includes(location.pathname)) {
       return <>{children}</>;
     }
     // Redirect to login for all other paths
-    return <Navigate to={login} state={{ from: location }} replace />;
+    return <Navigate to={home} state={{ from: location }} replace />;
   }
 
-  // Handle root path access
+  // Handle root path access for authenticated users
   if (location.pathname === home) {
     if (user?.role === "admin") {
       return <Navigate to={AdminHome} replace />;

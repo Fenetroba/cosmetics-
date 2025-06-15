@@ -16,23 +16,6 @@ const axiosInstance = axios.create({
 });
 
 // Add request interceptor
-axiosInstance.interceptors.request.use(
-  config => {
-    // Log request details in development
-    if (import.meta.env.MODE === 'development') {
-      console.log('Making request to:', config.url, {
-        method: config.method,
-        withCredentials: config.withCredentials,
-        headers: config.headers
-      });
-    }
-    return config;
-  },
-  error => {
-    console.error('Request interceptor error:', error);
-    return Promise.reject(error);
-  }
-);
 
 // Add response interceptor
 axiosInstance.interceptors.response.use(

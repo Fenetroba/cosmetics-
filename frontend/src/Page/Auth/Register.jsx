@@ -126,8 +126,8 @@ const Registration = () => {
   return (
     <section>
     
-      <div className="min-h-screen bg-[var(--three)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md space-y-8 bg-[var(--two)] p-8 rounded-lg shadow-md">
+      <div className="min-h-screen bg-[var(--three)] flex items-center sm:justify-end justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md space-y-8 bg-[var(--two)] p-8 rounded-lg shadow-md sm:mr-20">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--six)]">
               REGISTER

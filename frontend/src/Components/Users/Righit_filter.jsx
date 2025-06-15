@@ -75,7 +75,7 @@ export function Righit_filter({ onFilterChange }) {
     <div className="max-sm:w-full p-4 space-y-17 shadow-amber-950 shadow sm:bg-white">
       <div className="space-y-4 ">
         <h3 className="text-lg font-semibold">Price Range</h3>
-        <div className="space-y-2">
+        <div className="space-y-2 cursor-pointer">
           <Slider
             value={filters.priceRange}
             onValueChange={handlePriceChange}
@@ -94,7 +94,7 @@ export function Righit_filter({ onFilterChange }) {
         <h3 className="text-lg font-semibold">Categories</h3>
         <div className="space-y-2">
           {['skincare', 'makeup', 'haircare', 'fragrance', 'bath', 'tools'].map((category) => (
-            <div key={category} className="flex items-center space-x-2">
+            <div key={category} className="flex items-center space-x-2 cursor-pointer">
               <Checkbox
                 id={`category-${category}`}
                 checked={filters.categories.includes(category)}
@@ -111,10 +111,10 @@ export function Righit_filter({ onFilterChange }) {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Sort By</h3>
         <Select value={filters.sortBy} onValueChange={handleSortChange}>
-          <SelectTrigger>
+          <SelectTrigger className="cursor-pointer">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent >
             <SelectItem value="newest">Newest</SelectItem>
             <SelectItem value="price-low">Price: Low to High</SelectItem>
             <SelectItem value="price-high">Price: High to Low</SelectItem>
@@ -126,14 +126,14 @@ export function Righit_filter({ onFilterChange }) {
       <div className="flex space-x-2">
         <Button 
           onClick={handleApplyFilters}
-          className="flex-1 text-white hover:bg-primary/90 bg-[var(--two)]"
+          className="flex-1 text-white hover:bg-primary/90 bg-[var(--two)] cursor-pointer"
         >
           Apply Filters
         </Button>
         <Button 
           onClick={handleReset}
           variant="outline"
-          className="flex-1"
+          className="flex-1 cursor-pointer"
         >
           Reset
         </Button>

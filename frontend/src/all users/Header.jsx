@@ -8,7 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/Components/ui/navigation-menu";
-import { LucideMenu, LucideShoppingCart, Search, UserPen } from "lucide-react";
+import { LucideMenu, LucideShoppingCart, UserPen } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +26,6 @@ import { selectCartItems, fetchCart } from "@/redux/features/cartSlice";
 const Header = ({ isAuthenticated }) => {
   const [clickCart, setclickCart] = useState();
   const [navVisible, setNavVisible] = useState(false);
-  const [searchVisible, setSearchVisible] = useState(false);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
@@ -106,30 +105,16 @@ const Header = ({ isAuthenticated }) => {
         </NavigationMenu>
 
         <div className="max-md:my-6">
-          <a href="#" className="hover:underline">
+          <Link to="/contact" className="hover:underline">
             CONTACT
-          </a>
+          </Link>
         </div>
         <div>
           <a href="#" className="hover:underline">
             ABOUT US
           </a>
         </div>
-        <div
-          className="max-sm:mt-3 max-sm:mr-5 cursor-pointer"
-          onClick={() => setSearchVisible(!searchVisible)}
-        >
-          <Search className="sm:my-3" />
-        </div>
-        {searchVisible && (
-          <div className="6 top-5">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="border rounded px-2 py-1"
-            />
-          </div>
-        )}
+        
       </nav>
       <div className=" my-4 flex flex-col sm:flex-row space-y-2.5 space-x-8.5 items-center ">
         {isAuthenticated && (

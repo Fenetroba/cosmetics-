@@ -22,10 +22,8 @@ const Products = () => {
   const { products, isLoading, error } = useSelector((state) => state.products);
   const { user, token } = useSelector((state) => state.auth);
   
-  // Debug logs
-  console.log('Current user:', user);
-  console.log('User role:', user?.role);
-  console.log('Auth token:', token);
+  
+ 
 
   // Check if user can modify product
   const canModifyProduct = (product) => {
@@ -134,12 +132,7 @@ const Products = () => {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-semibold">Product Management</h1>
-          <div className="text-sm text-gray-500">
-            <p>Admin Status: {user?.role === 'admin' ? 'Admin' : 'Not Admin'}</p>
-            <p>User Role: {user?.role || 'No role'}</p>
-            <p>User ID: {user?.id || 'Not logged in'}</p>
-            <p>Email: {user?.email || 'No email'}</p>
-          </div>
+          
         </div>
         
       </div>

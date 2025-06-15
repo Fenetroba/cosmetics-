@@ -21,7 +21,7 @@ const ProfilePage = () => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger className='hover:bg-[var(--three)] cursor-pointer p-1 rounded-full'>
           <UserPen className=" cursor-pointer" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
