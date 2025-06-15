@@ -9,7 +9,7 @@ import { Badge } from "../../Components/ui/badge"
 import { Skeleton } from "../../Components/ui/skeleton"
 import { toast } from "sonner"
 import { Sheet, SheetContent, SheetTrigger } from "../../Components/ui/sheet"
-import { Menu, Search } from "lucide-react"
+import { Menu, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { Link } from 'react-router-dom'
 import { Input } from "../../Components/ui/input"
 
@@ -20,6 +20,8 @@ const ProductUser = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 4;
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -30,6 +32,17 @@ const ProductUser = () => {
       setFilteredProducts(products);
     }
   }, [products]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -166,7 +179,7 @@ const ProductUser = () => {
               ))
             ) : filteredProducts.length > 0 ? (
               // Product cards
-              filteredProducts.map((product) => (
+              currentProducts.map((product) => (
                 <Card key={product._id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <CardHeader className="p-0">
                     <img
@@ -187,7 +200,7 @@ const ProductUser = () => {
                     </p>
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-lg">
-                        ${product.price.toFixed(2)}
+                        {product.price.toFixed(2)} birr
                       </span>
                     </div>
                   </CardContent>
@@ -224,6 +237,42 @@ const ProductUser = () => {
               </div>
             )}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center mt-8 space-x-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <span>Page</span>
+                <span className="bg-primary text-white px-3 py-1 rounded-full">
+                  {currentPage}
+                </span>
+                <span>of</span>
+                <span className="font-bold">{totalPages}</span>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-2"
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

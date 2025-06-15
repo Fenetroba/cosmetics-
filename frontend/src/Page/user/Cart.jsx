@@ -104,7 +104,7 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-semibold">{(item.price * item.quantity).toFixed(2)} birr</p>
                     {item.discount > 0 && (
                       <p className="text-sm text-red-500">{item.discount}% OFF</p>
                     )}
