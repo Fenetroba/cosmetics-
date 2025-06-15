@@ -150,7 +150,7 @@ const OrderSummary = () => {
           <div className="space-y-2 mb-4">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${(totalAmount || 0).toFixed(2)}</span>
+              <span>{(totalAmount || 0).toFixed(2)} Birr</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
@@ -158,7 +158,7 @@ const OrderSummary = () => {
             </div>
             <div className="flex justify-between font-semibold text-lg pt-2 border-t">
               <span>Total</span>
-              <span>${(totalAmount || 0).toFixed(2)}</span>
+              <span>{(totalAmount || 0).toFixed(2)} Birr</span>
             </div>
           </div>
           <Button className="w-full" onClick={handleCheckout}>
@@ -236,7 +236,7 @@ const OrderSummary = () => {
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Total:</span>
                       <span className="font-bold">
-                        ${order.totalAmount.toFixed(2)}
+                        {order.totalAmount.toFixed(2)} Birr
                       </span>
                     </div>
                   </div>

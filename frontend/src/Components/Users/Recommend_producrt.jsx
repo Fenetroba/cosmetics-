@@ -97,7 +97,7 @@ const Recommend_producrt = () => {
                   </p>
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-lg">
-                      ${product.price.toFixed(2)}
+                      {product.price.toFixed(2)} Birr
                     </span>
                     {product.ratings?.average > 0 && (
                       <div className="flex items-center gap-1">

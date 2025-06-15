@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import { FaSearch, FaEdit, FaTrash, FaPlus, FaSpinner } from 'react-icons/fa';
+import { FaSearch, FaEdit, FaTrash, FaPlus, FaSpinner, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { fetchProducts, deleteProduct } from '../../redux/features/productSlice';
 import { Card, CardContent } from '../../Components/ui/card';
 import { Button } from '../../Components/ui/button';
@@ -38,7 +38,8 @@ const Products = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-  const productsPerPage = 9;
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const productsPerPage = 6;
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -79,11 +80,23 @@ const Products = () => {
     }
   });
 
-  // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+  // Calculate total slides
+  const totalSlides = Math.ceil(sortedProducts.length / productsPerPage);
+
+  // Get current slide products
+  const currentProducts = sortedProducts.slice(
+    currentSlide * productsPerPage,
+    (currentSlide + 1) * productsPerPage
+  );
+
+  // Handle slide navigation
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
 
   // Get unique categories
   const categories = ['all', ...new Set(products?.map(product => product.category) || [])];
@@ -108,13 +121,13 @@ const Products = () => {
   // Handle category change
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
-    setCurrentPage(1);
+    setCurrentSlide(0);
   };
 
   // Handle sort change
   const handleSortChange = (value) => {
     setSortBy(value);
-    setCurrentPage(1);
+    setCurrentSlide(0);
   };
 
   if (isLoading) {
@@ -184,13 +197,36 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Products Grid with Slider */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-gray-500">No products found</p>
         </div>
       ) : (
-        <>
+        <div className="relative">
+          {/* Slider Navigation Buttons */}
+          {totalSlides > 1 && (
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white shadow-lg hover:bg-gray-50"
+                onClick={prevSlide}
+              >
+                <FaChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white shadow-lg hover:bg-gray-50"
+                onClick={nextSlide}
+              >
+                <FaChevronRight className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+
+          {/* Products Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentProducts.map((product) => (
               <Card key={product._id} className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -225,7 +261,7 @@ const Products = () => {
                   </p>
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-bold text-lg">
-                      ${product.price.toFixed(2)}
+                      {product.price.toFixed(2)} Birr
                     </span>
                     <span className="text-sm text-gray-500">
                       Stock: {product.stock}
@@ -255,29 +291,42 @@ const Products = () => {
             ))}
           </div>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-6 space-x-2">
+          {/* Numbered Pagination */}
+          {totalSlides > 1 && (
+            <div className="flex justify-center items-center mt-6 space-x-4">
               <Button
                 variant="outline"
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
+                size="sm"
+                onClick={prevSlide}
+                disabled={currentSlide === 0}
+                className="flex items-center gap-2"
               >
+                <FaChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
-              <span className="px-3 py-1">
-                Page {currentPage} of {totalPages}
-              </span>
+              
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <span>Page</span>
+                <span className="bg-primary text-white px-3 py-1 rounded-full">
+                  {currentSlide + 1}
+                </span>
+                <span>of</span>
+                <span className="font-bold">{totalSlides}</span>
+              </div>
+
               <Button
                 variant="outline"
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
+                size="sm"
+                onClick={nextSlide}
+                disabled={currentSlide === totalSlides - 1}
+                className="flex items-center gap-2"
               >
                 Next
+                <FaChevronRight className="h-4 w-4" />
               </Button>
             </div>
           )}
-        </>
+        </div>
       )}
 
       {/* Delete Confirmation Modal */}

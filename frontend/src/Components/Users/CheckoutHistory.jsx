@@ -39,7 +39,7 @@ const CheckoutHistory = ({ orders }) => {
                         <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                       </div>
                     </div>
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">{(item.price * item.quantity).toFixed(2)} Birr</p>
                   </div>
                 ))}
               </div>
@@ -47,7 +47,7 @@ const CheckoutHistory = ({ orders }) => {
               <div className="mt-4 pt-4 border-t">
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">Total Amount:</span>
-                  <span className="font-bold">${order.totalAmount.toFixed(2)}</span>
+                  <span className="font-bold">{order.totalAmount.toFixed(2)} Birr</span>
                 </div>
               </div>
             </CardContent>

@@ -84,8 +84,8 @@ export function Righit_filter({ onFilterChange }) {
             className="w-full"
           />
           <div className="flex justify-between text-sm text-gray-600">
-            <span>${filters.priceRange[0]}</span>
-            <span>${filters.priceRange[1]}</span>
+            <span>{filters.priceRange[0]} Birr</span>
+            <span>{filters.priceRange[1]} Birr</span>
           </div>
         </div>
       </div>
