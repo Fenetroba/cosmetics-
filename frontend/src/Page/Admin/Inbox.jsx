@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { FaSearch, FaEnvelope, FaEnvelopeOpen, FaTrash, FaSpinner, FaPaperPlane } from 'react-icons/fa';
 import { fetchMessages, sendMessage, markAsRead, deleteMessage } from '../../redux/features/messageSlice';
+import { Button } from '@/components/ui/button';
 
 const Inbox = () => {
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ const Inbox = () => {
             <h3 className="font-medium">{message.subject}</h3>
             <p className="text-sm text-gray-600">
               From: {message.sender.username}
+              {message.sender.email && ` (${message.sender.email})`}
             </p>
           </div>
         </div>
@@ -236,7 +238,10 @@ const Inbox = () => {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-600">From</p>
-                  <p className="font-medium">{selectedMessage.sender.username}</p>
+                  <p className="font-medium">
+                    {selectedMessage.sender.username}
+                    {selectedMessage.sender.email && ` (${selectedMessage.sender.email})`}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Date</p>
@@ -247,6 +252,25 @@ const Inbox = () => {
                 <div className="border-t pt-4">
                   <p className="whitespace-pre-wrap">{selectedMessage.content}</p>
                 </div>
+                {selectedMessage.sender.email && (
+                  <div className="border-t pt-4">
+                    <Button
+                      onClick={() => {
+                        setShowComposeModal(true);
+                        setNewMessage({
+                          subject: `Re: ${selectedMessage.subject}`,
+                          content: '',
+                          recipient: selectedMessage.sender.email
+                        });
+                        setSelectedMessage(null);
+                      }}
+                      className="flex items-center space-x-2"
+                    >
+                      <FaPaperPlane />
+                      <span>Reply</span>
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

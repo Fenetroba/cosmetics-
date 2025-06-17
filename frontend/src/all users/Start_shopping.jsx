@@ -38,16 +38,16 @@ const StartShopping = () => {
   };
 
   return (
-    <motion.div className="mb-60 mx-4 md:mx-2 pb-4 md:p-10 border-18 rounded-lg "
+    <motion.div className="mb-60 mx-2 md:mx-2 pb-4 md:p-10 sm:border-18 rounded-lg "
     initial={{ y: 0 }}
       animate={{ y: 100 }}
       transition={{ duration: 3}}
     >
-      <h1 className="text-[var(--one)] font-extrabold text-3xl pb-7 uppercase ">
+      <h1 className="text-[var(--two)] font-extrabold text-3xl pb-7 uppercase ">
         Start Shopping
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-18">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
         {startShopItems.map((item) => (
           <div 
             key={item.id} 
@@ -62,7 +62,7 @@ const StartShopping = () => {
               <div className="absolute top-4 left-4">
                 <Button 
                   onClick={() => handleShopClick(item.path)}
-                  className="bg-white text-black cursor-pointer hover:bg-[var(--five)]"
+                  className="bg-white text-black cursor-pointer hover:bg-[var(--five)] md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                 >
                   Shop Now
                 </Button>

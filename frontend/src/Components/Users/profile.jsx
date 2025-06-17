@@ -162,8 +162,8 @@ const Profile = () => {
                 <Button variant="outline" asChild>
                   <Link to="/shop/settings">Edit Profile</Link>
                 </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/shop/orders">View Orders</Link>
+                <Button variant="outline" className="bg-[var(--four)]" asChild>
+                  <Link to="/shop/orders">Back To Home</Link>
                 </Button>
               </div>
             )}

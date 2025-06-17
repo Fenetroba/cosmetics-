@@ -17,8 +17,8 @@ const Home = ({isAuthenticated}) => {
       <SidebarProvider>
 
         
-        <div className="flex-1 p-6">
-          <div className="bg-white rounded-lg shadow p-6 flex justify-between">
+        <div className="flex-1 sm:p-6">
+          <div className="bg-white rounded-lg shadow sm:p-6 flex justify-between">
           <ProductUser/>
           </div>
         </div>

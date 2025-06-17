@@ -120,7 +120,7 @@ const ProductUser = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-2">
+    <div className="container px-4 py-2">
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         {/* Mobile Filter Trigger */}
         <div className="lg:hidden w-full">
@@ -160,7 +160,7 @@ const ProductUser = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {isLoading ? (
               // Loading skeletons
               Array.from({ length: 8 }).map((_, index) => (

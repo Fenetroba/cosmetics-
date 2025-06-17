@@ -14,11 +14,7 @@ import { Link } from "react-router-dom"
 
 // Menu items.
 const items = [
-  {
-    title: "Home",
-    url: "/admin/home",
-    icon: Home,
-  },
+
   {
     title: "Inbox",
     url: "/admin/inbox",
@@ -47,11 +43,11 @@ export function LeftSider() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="mb-10 font-bold text-2xl"><span>ADMIN</span><span><TowerControl/></span></SidebarGroupLabel>
+          <SidebarGroupLabel className="mb-10 font-bold text-3xl mt-3.5"><span>ADMIN</span><span className="text-red-600"><TowerControl/></span></SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu >
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem  key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
                       <item.icon />

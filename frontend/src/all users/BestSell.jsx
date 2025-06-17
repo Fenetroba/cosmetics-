@@ -47,14 +47,14 @@ const BestSell = () => {
   return (
     <motion.div 
       ref={ref} 
-      className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-16"
+      className=" bg-gradient-to-b from-white to-gray-50 py-16"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 3 }}
     >
       <div className="container mx-auto px-4">
         <motion.h1 
-          className="text-[var(--two)] font-extrabold text-4xl md:text-5xl mb-4"
+          className="text-[var(--two)] font-extrabold text-4xl md:text-5xl sm:mb-4"
           initial={{ y: -80, opacity: 0 }}
           animate={isVisible ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 2 }}

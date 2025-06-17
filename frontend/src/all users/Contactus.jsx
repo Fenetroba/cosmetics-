@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '../Components/ui/button';
 import { Input } from '../Components/ui/input';
 import { Textarea } from '../Components/ui/textarea';
 import { toast } from 'sonner';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import Header from './Header';
+import { sendMessage } from '../redux/features/messageSlice';
 
 const Contactus = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,9 +32,18 @@ const Contactus = () => {
     setLoading(true);
 
     try {
-      // Here you would typically send the form data to your backend
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Format the message for the inbox system
+      const messageData = {
+        subject: formData.subject,
+        content: `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
+        recipient: 'admin', // This will be sent to the admin inbox
+        sender: {
+          username: formData.name,
+          email: formData.email
+        }
+      };
+
+      await dispatch(sendMessage(messageData)).unwrap();
       
       toast.success('Message sent successfully! We will get back to you soon.');
       setFormData({
@@ -41,7 +53,7 @@ const Contactus = () => {
         message: ''
       });
     } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+      toast.error(error || 'Failed to send message. Please try again.');
     } finally {
       setLoading(false);
     }

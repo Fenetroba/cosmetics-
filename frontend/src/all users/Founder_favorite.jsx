@@ -5,11 +5,11 @@ import product3 from "../assets/product4.jpg"
 import product4 from "../assets/some.jpg"
 import product5 from "../assets/some.jpg"
 const products = [
-     { id: 1, name: "Replumping conditioner", price: "$19.50", image: product1 },
-     { id: 2, name: "Advanced night repair", price: "$19.50", image: product2 },
-     { id: 3, name: "Tropical rehab shampoo", price: "$19.00", image: product3 },
-     { id: 4, name: "Lorem ipsum anti-cellulite body oil", price: "$19.50", image: product4 },
-     { id: 5, name: "Conditioner for dry or dehydrated hair", price: "$19.50", image: product5 },
+     { id: 1, name: "Replumping conditioner", image: product1 },
+     { id: 2, name: "Advanced night repair",  image: product2 },
+     { id: 3, name: "Tropical rehab shampoo",  image: product3 },
+     { id: 4, name: "Lorem ipsum anti-cellulite body oil", image: product4 },
+     { id: 5, name: "Conditioner for dry or dehydrated hair",  image: product5 },
  ];
 const Founder_favorite = () => {
   return (
@@ -24,7 +24,7 @@ const Founder_favorite = () => {
                     <div key={product.id} className="flex flex-col items-center">
                         <img src={product.image} alt={product.name} className="w-49 h-49 rounded-full hover:shadow-lg hover:scale-105 duration-500 shadow-amber-50" />
                         <p className="mt-2 text-center">{product.name}</p>
-                        <span className="text-gray-600">{product.price}</span>
+                      
                     </div>
                 ))}
             </div>

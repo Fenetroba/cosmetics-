@@ -127,7 +127,7 @@ const Header = ({ isAuthenticated }) => {
             </p>
           </Link>
         )}
-        {console.log(isAuthenticated)}
+        
         {isAuthenticated ? (
           <Button
             className="max-md:w-[200px] cursor-pointer"
