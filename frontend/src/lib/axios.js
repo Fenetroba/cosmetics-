@@ -16,6 +16,25 @@ const axiosInstance = axios.create({
 });
 
 // Add request interceptor
+axiosInstance.interceptors.request.use(
+  config => {
+    // Get the token from cookies
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('token='))
+      ?.split('=')[1];
+
+    // Add token to headers if it exists
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 // Add response interceptor
 axiosInstance.interceptors.response.use(
