@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { FaSearch, FaEnvelope, FaEnvelopeOpen, FaTrash, FaSpinner, FaPaperPlane } from 'react-icons/fa';
 import { fetchMessages, sendMessage, markAsRead, deleteMessage } from '../../redux/features/messageSlice';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 
 const Inbox = () => {
   const dispatch = useDispatch();

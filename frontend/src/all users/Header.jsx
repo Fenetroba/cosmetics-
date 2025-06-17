@@ -63,12 +63,12 @@ const Header = ({ isAuthenticated }) => {
           </Link>
         </div>
 
-        <NavigationMenu className="max-md:my-10">
+        <NavigationMenu className="max-md:my-10 max-sm:bg-[var(--one)]">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">BATH & BODY</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="md:w-[500px]">
+                <NavigationMenuLink className="md:w-[500px] w-[300px]">
                   Snail Oil
                 </NavigationMenuLink>
                 <NavigationMenuLink>Avocado Oil</NavigationMenuLink>
@@ -80,7 +80,7 @@ const Header = ({ isAuthenticated }) => {
             <NavigationMenuItem>
               <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">HAIR CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="md:w-[500px]">
+                <NavigationMenuLink className="md:w-[500px] w-[300px]">
                 Castor Oil
                 </NavigationMenuLink>
                 <NavigationMenuLink>Coconut Oil</NavigationMenuLink>
@@ -92,7 +92,7 @@ const Header = ({ isAuthenticated }) => {
             <NavigationMenuItem>
               <NavigationMenuTrigger className="hover:text-[var(--two)] font-bold">SKIN CARE</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink className="sm:w-[500px]">
+                <NavigationMenuLink className="sm:w-[500px] w-[300px]">
                 Tea Tree Oil
                 </NavigationMenuLink>
                 <NavigationMenuLink>Grapeseed Oil</NavigationMenuLink>
